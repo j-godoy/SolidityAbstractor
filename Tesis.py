@@ -587,6 +587,9 @@ if __name__ == "__main__":
     configFile = sys.argv[1]
     verbose = False
     time_mode = False
+    
+    
+    #TODO: ser consistente
     reduced = False
     reducedTrue = True
     reducedEqual = False

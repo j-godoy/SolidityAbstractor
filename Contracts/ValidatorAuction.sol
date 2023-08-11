@@ -48,7 +48,7 @@ contract DepositLocker is DepositLockerInterface, Ownable {
     address public depositorsProxy;
     uint public releaseTimestamp;
 
-    mapping(address => bool) public canWithdraw;
+    mapping(address => uint) public canWithdraw;
     uint numberOfDepositors = 0;
     uint valuePerDepositor;
     uint time;
@@ -117,10 +117,10 @@ contract DepositLocker is DepositLockerInterface, Ownable {
         onlyDepositorsProxy
     {
         require(
-            canWithdraw[_depositor] == false,
+            canWithdraw[_depositor] == 0,
             "can only register Depositor once"
         );
-        canWithdraw[_depositor] = true;
+        canWithdraw[_depositor] = 1;
         numberOfDepositors += 1;
         time = time + 1;
         // emit DepositorRegistered(_depositor, numberOfDepositors);
@@ -157,9 +157,9 @@ contract DepositLocker is DepositLockerInterface, Ownable {
             time >= releaseTimestamp,
             "The deposit cannot be withdrawn yet."
         );
-        require(canWithdraw[msg.sender], "cannot withdraw from sender");
+        require(canWithdraw[msg.sender] == 1, "cannot withdraw from sender");
 
-        canWithdraw[msg.sender] = false;
+        canWithdraw[msg.sender] = 0;
         time = time + 1;
         //msg.sender.transfer(valuePerDepositor);
         //emit Withdraw(msg.sender, valuePerDepositor);
@@ -174,8 +174,8 @@ contract DepositLocker is DepositLockerInterface, Ownable {
             msg.sender == slasher,
             "Only the slasher can call this function."
         );
-        require(canWithdraw[_depositorToBeSlashed], "cannot slash address");
-        canWithdraw[_depositorToBeSlashed] = false;
+        require(canWithdraw[_depositorToBeSlashed] == 1, "cannot slash address");
+        canWithdraw[_depositorToBeSlashed] = 0;
         time = time + 1;
         //address(0x0).transfer(valuePerDepositor);
         //emit Slash(_depositorToBeSlashed, valuePerDepositor);
@@ -192,43 +192,46 @@ contract ValidatorAuction is Ownable {
 
     AuctionState public auctionState;
     DepositLocker public depositLocker;
-    mapping(address => bool) public whitelist;
+    mapping(address => uint) public whitelist;
+    uint countWhitelist = 0;
     mapping(address => uint) public bids;
-    address[] public bidders = new address[](0);
-    address[] public biddersArray = new address[](0);
+    // address[] public bidders = new address[](0);
+    // address[] public biddersArray = new address[](0);
+    uint countBidders = 0;
+    uint biddersTotal = 0;
     uint count = 0;
-    address[] auxArray;
-    address A;
-    bool hasA = false;
+    // address[] auxArray;
+    // address A;
+    // bool hasA = false;
     uint public startTime;
     uint public closeTime;
     uint public lowestSlotPrice;
 
-    event BidSubmitted(
-        address bidder,
-        uint bidValue,
-        uint slotPrice,
-        uint timestamp
-    );
-    event AddressWhitelisted(address whitelistedAddress);
-    event AuctionDeployed(
-        uint startPrice,
-        uint auctionDurationInDays,
-        uint minimalNumberOfParticipants,
-        uint maximalNumberOfParticipants
-    );
-    event AuctionStarted(uint startTime);
-    event AuctionDepositPending(
-        uint closeTime,
-        uint lowestSlotPrice,
-        uint totalParticipants
-    );
-    event AuctionEnded(
-        uint closeTime,
-        uint lowestSlotPrice,
-        uint totalParticipants
-    );
-    event AuctionFailed(uint closeTime, uint numberOfBidders);
+    // event BidSubmitted(
+    //     address bidder,
+    //     uint bidValue,
+    //     uint slotPrice,
+    //     uint timestamp
+    // );
+    // event AddressWhitelisted(address whitelistedAddress);
+    // event AuctionDeployed(
+    //     uint startPrice,
+    //     uint auctionDurationInDays,
+    //     uint minimalNumberOfParticipants,
+    //     uint maximalNumberOfParticipants
+    // );
+    // event AuctionStarted(uint startTime);
+    // event AuctionDepositPending(
+    //     uint closeTime,
+    //     uint lowestSlotPrice,
+    //     uint totalParticipants
+    // );
+    // event AuctionEnded(
+    //     uint closeTime,
+    //     uint lowestSlotPrice,
+    //     uint totalParticipants
+    // );
+    // event AuctionFailed(uint closeTime, uint numberOfBidders);
 
     enum AuctionState {
         Deployed,
@@ -253,8 +256,12 @@ contract ValidatorAuction is Ownable {
         uint _maximalNumberOfParticipants,
         DepositLocker _depositLocker,
         uint _time,
-        address _A,
-        uint _lowestPrice
+        // address _A,
+        uint _lowestPrice,
+        uint dloker_releaseTimestamp,
+        address dloker_slasher,
+        address dloker_depositorsProxy,
+        uint dloker_time
     ) public {
         require(
             _auctionDurationInDays >= 0,
@@ -298,7 +305,10 @@ contract ValidatorAuction is Ownable {
         );*/
         auctionState = AuctionState.Deployed;
         time = _time;
-        A = _A;
+        // A = _A;
+        //Deposit Locker init
+        _depositLocker.init(dloker_releaseTimestamp, dloker_slasher, dloker_depositorsProxy, dloker_time);
+
         t();
     }
 
@@ -312,36 +322,40 @@ contract ValidatorAuction is Ownable {
             time <= startTime + auctionDurationInDays,
             "Auction has already ended."
         );
-        uint slotPrice = 1;
+        // uint slotPrice = 1; 
+        uint slotPrice = currentPrice();// 
         require(
             msg.value >= slotPrice,
             "Not enough ether was provided for bidding."
         );
-        //require(whitelist[msg.sender] == true, "The sender is not whitelisted.");
-        require(!isSenderContract(), "The sender cannot be a contract.");
+        require(whitelist[msg.sender] == 1, "The sender is not whitelisted.");
+        // require(!isSenderContract(), "The sender cannot be a contract.");
         require(
-            bidders.length < maximalNumberOfParticipants,
+            biddersTotal < maximalNumberOfParticipants,
             "The limit of participants has already been reached."
         );
         require(bids[msg.sender] == 0, "The sender has already bid.");
 
+        bids[msg.sender] = msg.value;
+        // bidders.push(msg.sender);
+        biddersTotal += 1;
+        // biddersArray.push(msg.sender);
+        countBidders += 1;
+
         if (slotPrice < lowestSlotPrice) {
             lowestSlotPrice = slotPrice;
         }
-        bids[msg.sender] = msg.value;
-        bidders.push(msg.sender);
-        biddersArray.push(msg.sender);
 
         depositLocker.registerDepositor(msg.sender);
         //emit BidSubmitted(msg.sender, msg.value, slotPrice, now);
 
-        if (bidders.length == maximalNumberOfParticipants) {
+        if (biddersTotal == maximalNumberOfParticipants) {
             transitionToDepositPending();
         }
         
-        if (msg.sender == A) {
-            hasA = true;
-        }
+        // if (msg.sender == A) {
+        //     hasA = true;
+        // }
 
         t();
     }
@@ -360,11 +374,11 @@ contract ValidatorAuction is Ownable {
 
     function depositBids() public stateIs(AuctionState.DepositPending) {
         auctionState = AuctionState.Ended;
-        // depositLocker.deposit.value(lowestSlotPrice * bidders.length)(
-        //     lowestSlotPrice
-        // );
+        depositLocker.deposit.value(lowestSlotPrice * biddersTotal)(
+            lowestSlotPrice
+        );
         t();
-        //emit AuctionEnded(closeTime, lowestSlotPrice, bidders.length);
+        //emit AuctionEnded(closeTime, lowestSlotPrice, biddersTotal);
     }
 
     function closeAuction() public stateIs(AuctionState.Started) {
@@ -372,9 +386,9 @@ contract ValidatorAuction is Ownable {
             time > startTime + auctionDurationInDays,
             "The auction cannot be closed this early."
         );
-        require(bidders.length < maximalNumberOfParticipants);
+        require(biddersTotal < maximalNumberOfParticipants);
 
-        if (bidders.length >= minimalNumberOfParticipants) {
+        if (biddersTotal >= minimalNumberOfParticipants) {
             transitionToDepositPending();
         } else {
             transitionToAuctionFailed();
@@ -382,58 +396,90 @@ contract ValidatorAuction is Ownable {
         t();
     }
 
-    function addToWhitelist(address[] memory addressesToWhitelist)
+    function addToWhitelist(address addressToWhitelist)
         public
         onlyOwner
         stateIs(AuctionState.Deployed)
     {
-        for (uint32 i = 0; i < addressesToWhitelist.length; i++) {
-            whitelist[addressesToWhitelist[i]] = true;
-            //emit AddressWhitelisted(addressesToWhitelist[i]);
+        if (whitelist[addressToWhitelist] == 0) {
+            countWhitelist += 1;
         }
-        //whitelist[A] = true;
+        whitelist[addressToWhitelist] = 1;
         t();
     }
 
-    function withdrawA() public {
+    // function addToWhitelist(address[] memory addressesToWhitelist)
+    //     public
+    //     onlyOwner
+    //     stateIs(AuctionState.Deployed)
+    // {
+    //     for (uint32 i = 0; i < addressesToWhitelist.length; i++) {
+    //         whitelist[addressesToWhitelist[i]] = true;
+    //         //emit AddressWhitelisted(addressesToWhitelist[i]);
+    //     }
+    //     //whitelist[A] = true;
+    //     t();
+    // }
+
+    function withdraw() public {
         require(
-            ((auctionState == AuctionState.Ended ||
-                auctionState == AuctionState.Failed)),
+            auctionState == AuctionState.Ended ||
+                auctionState == AuctionState.Failed,
             "You cannot withdraw before the auction is ended or it failed."
         );
-
-        require(biddersArray.length > 0 && hasA && msg.sender == A);
+        require(countBidders > 0);
 
         if (auctionState == AuctionState.Ended) {
             withdrawAfterAuctionEnded();
         } else if (auctionState == AuctionState.Failed) {
             withdrawAfterAuctionFailed();
         } else {
-            //require(false); // Should be unreachable
+            // require(false); // Should be unreachable
         }
-        hasA = false;
-        biddersArray = remove(msg.sender, biddersArray);
-        t();
+         t();
     }
 
-        function withdrawNoA() public {
-        require(
-        ((auctionState == AuctionState.Ended ||
-                auctionState == AuctionState.Failed) && bids[msg.sender] > 0),
-            "You cannot withdraw before the auction is ended or it failed."
-        );
-        require(biddersArray.length > 0 && (!hasA || biddersArray.length > 1)  && msg.sender != A);
+    // function withdrawA() public {
+    //     require(
+    //         ((auctionState == AuctionState.Ended ||
+    //             auctionState == AuctionState.Failed)),
+    //         "You cannot withdraw before the auction is ended or it failed."
+    //     );
 
-        if (auctionState == AuctionState.Ended) {
-            withdrawAfterAuctionEnded();
-        } else if (auctionState == AuctionState.Failed) {
-            withdrawAfterAuctionFailed();
-        } else {
-            //require(false); // Should be unreachable
-        }
-        biddersArray = remove(msg.sender, biddersArray);
-        t();
-    }
+    //     // require(biddersArray.length > 0 && hasA && msg.sender == A);
+    //     require(countBidders > 0 && hasA && msg.sender == A);
+
+    //     if (auctionState == AuctionState.Ended) {
+    //         withdrawAfterAuctionEnded();
+    //     } else if (auctionState == AuctionState.Failed) {
+    //         withdrawAfterAuctionFailed();
+    //     } else {
+    //         //require(false); // Should be unreachable
+    //     }
+    //     hasA = false;
+    //     countBidders -= 1;
+    //     // biddersArray = remove(msg.sender, biddersArray);
+    //     t();
+    // }
+
+    // function withdrawNoA() public {
+    //     require(
+    //     ((auctionState == AuctionState.Ended ||
+    //             auctionState == AuctionState.Failed) && bids[msg.sender] > 0),
+    //         "You cannot withdraw before the auction is ended or it failed."
+    //     );
+    //     require(countBidders > 0 && (!hasA || countBidders > 1)  && msg.sender != A);
+
+    //     if (auctionState == AuctionState.Ended) {
+    //         withdrawAfterAuctionEnded();
+    //     } else if (auctionState == AuctionState.Failed) {
+    //         withdrawAfterAuctionFailed();
+    //     } else {
+    //         //require(false); // Should be unreachable
+    //     }
+    //     // biddersArray = remove(msg.sender, biddersArray);
+    //     t();
+    // }
 
     function currentPrice()
         public
@@ -465,21 +511,21 @@ contract ValidatorAuction is Ownable {
         return price;
     }
 
-    function withdrawAfterAuctionEnded() internal stateIs(AuctionState.Ended) {
-        // require(
-        //     bids[msg.sender] > lowestSlotPrice,
-        //     "The sender has nothing to withdraw."
-        // );
+     function withdrawAfterAuctionEnded() internal stateIs(AuctionState.Ended) {
+        require(
+            bids[msg.sender] > lowestSlotPrice,
+            "The sender has nothing to withdraw."
+        );
 
         uint valueToWithdraw = bids[msg.sender] - lowestSlotPrice;
-        // require(valueToWithdraw <= bids[msg.sender]);
+        require(valueToWithdraw <= bids[msg.sender]);
 
         bids[msg.sender] = lowestSlotPrice;
-        // if (lowestSlotPrice == 0) {
-           //biddersArray = remove(msg.sender, biddersArray);
-        // }
+        if (lowestSlotPrice == 0) {
+           countBidders -= 1;
+        }
 
-        //msg.sender.transfer(valueToWithdraw);
+        // msg.sender.transfer(valueToWithdraw);
     }
 
     function withdrawAfterAuctionFailed()
@@ -489,8 +535,8 @@ contract ValidatorAuction is Ownable {
         require(bids[msg.sender] > 0, "The sender has nothing to withdraw.");
 
         uint valueToWithdraw = bids[msg.sender];
-
         bids[msg.sender] = 0;
+        countBidders -= 1;
         //msg.sender.transfer(valueToWithdraw);
     }
 
@@ -503,17 +549,17 @@ contract ValidatorAuction is Ownable {
         //emit AuctionDepositPending(closeTime, lowestSlotPrice, bidders.length);
     }
 
-    function remove(address _valueToFindAndRemove, address[] memory _array) private  returns(address[] memory) {
+    // function remove(address _valueToFindAndRemove, address[] memory _array) private  returns(address[] memory) {
 
-        auxArray = new address[](0); 
+    //     auxArray = new address[](0); 
 
-        for (uint i = 0; i < _array.length; i++){
-            if(_array[i] != _valueToFindAndRemove)
-                auxArray.push(_array[i]);
-        }
+    //     for (uint i = 0; i < _array.length; i++){
+    //         if(_array[i] != _valueToFindAndRemove)
+    //             auxArray.push(_array[i]);
+    //     }
 
-        return auxArray;
-    }
+    //     return auxArray;
+    // }
 
     function transitionToAuctionFailed()
         internal
@@ -537,5 +583,22 @@ contract ValidatorAuction is Ownable {
     function t() public {
         time = time + 1;
     }
+
+    // function vc0x3x2() payable public {
+    //     bool pre_bid = (countWhitelist > 0 && depositLocker.initialized() && !depositLocker.deposited() && (biddersTotal < maximalNumberOfParticipants) && ((time - startTime) < (100 * 365) && time > startTime && time <= (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
+    //     bool pre_startAuction = depositLocker.initialized() && auctionState == AuctionState.Deployed;
+    //     bool pre_depositsBids = auctionState == AuctionState.DepositPending;
+    //     bool pre_closeAuction = ((biddersTotal < maximalNumberOfParticipants) && (time > (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
+    //     bool pre_addToWhitelist = auctionState == AuctionState.Deployed;
+    //     bool pre_withdraw = countBidders > 0 && (auctionState == AuctionState.Ended || auctionState == AuctionState.Failed);
+    //     // bool pre_withdrawA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && hasA);
+    //     // bool pre_withdrawNoA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
+    //     // require(pre_startAuction && pre_addToWhitelist);
+
+
+
+    //     // addToWhitelist(addressToWhitelist);
+    //     assert(!(!pre_bid && !pre_startAuction && !pre_depositsBids && !pre_closeAuction && !pre_addToWhitelist && pre_withdraw));
+    // }
 
 }

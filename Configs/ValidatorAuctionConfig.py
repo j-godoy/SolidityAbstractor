@@ -5,19 +5,16 @@ functions = [
 "startAuction();",
 "depositBids();",
 "closeAuction();",
-"addToWhitelist(addressesToWhitelist);",
-
-"withdrawA();",
-"withdrawNoA();",
+"addToWhitelist(addressToWhitelist);",
+"withdraw();",
 ]
 statePreconditions = [
-"((bidders.length < maximalNumberOfParticipants) && ((time - startTime) < (100 * 365) && time >= startTime && time <= (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started)",
+"(countWhitelist > 0 && depositLocker.initialized() && !depositLocker.deposited() && (biddersTotal < maximalNumberOfParticipants) && ((time - startTime) < (100 * 365) && time > startTime && time <= (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started)",
 "depositLocker.initialized() && auctionState == AuctionState.Deployed",
 "auctionState == AuctionState.DepositPending",
-"((bidders.length < maximalNumberOfParticipants) && (time > (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started)",
+"((biddersTotal < maximalNumberOfParticipants) && (time > (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started)",
 "auctionState == AuctionState.Deployed",
-"((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && biddersArray.length > 0 && hasA)",
-"((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && biddersArray.length > 0 && (!hasA || biddersArray.length > 1))",
+"countBidders > 0 && (auctionState == AuctionState.Ended || auctionState == AuctionState.Failed)",
 ]
 functionPreconditions = [
 "true",
@@ -25,10 +22,9 @@ functionPreconditions = [
 "true",
 "true",
 "true",
-"msg.sender == A && bids[msg.sender] > 0",
-"msg.sender != A && bids[msg.sender] > 0", 
+"true",
 ]
-functionVariables = "address[] memory addressesToWhitelist"
+functionVariables = "address addressToWhitelist"
 tool_output = "Found a counterexample"
 
 statesModeState = [[1,0,0,0,0,0,0,0,0,0], [0,2,0,0,0,0,0,0,0,0], [0,0,3,0,0,0,0,0,0,0], [0,0,0,4,0,0,0,0,0,0], [0,0,0,0,5,0,0,0,0,0], [0,0,0,0,0,6,0,0,0,0], [0,0,0,0,0,0,7,0,0,0], [0,0,0,0,0,0,0,8,0,0], [0,0,0,0,0,0,0,0,9,0], [0,0,0,0,0,0,0,0,0,10]]

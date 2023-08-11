@@ -31,8 +31,6 @@ contract SimpleAuction {
     // Allowed withdrawals of previous bids
     mapping(address => uint) pendingReturns;
     uint pendingReturnsCount = 0;
-    address[] pendingReturnsArray = new address[](0);
-    address[] auxArray;
 
     // Set to true at the end, disallows any change
     bool ended;
@@ -89,9 +87,10 @@ contract SimpleAuction {
             // because it can be prevented by the caller by e.g.
             // raising the call stack to 1023. It is always safer
             // to let the recipients withdraw their money themselves.
+            if (pendingReturns[highestBidder] == 0){
+                pendingReturnsCount += 1;
+            }
             pendingReturns[highestBidder] += highestBid;
-            pendingReturnsCount = pendingReturnsCount + 1;
-            pendingReturnsArray.push(msg.sender);
         }
         highestBidder = msg.sender;
         highestBid = msg.value;
@@ -102,7 +101,7 @@ contract SimpleAuction {
     /// Withdraw a bid that was overbid.
     function withdraw() public returns (bool) {
         //time = time + 1;
-        require(pendingReturnsArray.length != 0);
+        require(pendingReturnsCount > 0);
         uint amount = pendingReturns[msg.sender];
         if (amount > 0) {
             // It is important to set this to zero because the recipient
@@ -110,12 +109,10 @@ contract SimpleAuction {
             // before `send` returns.
             pendingReturns[msg.sender] = 0;
             pendingReturnsCount = pendingReturnsCount - 1;
-            pendingReturnsArray = remove(msg.sender, pendingReturnsArray);
 
             // if (!msg.sender.send(amount)) {
             //     // No need to call throw here, just reset the amount owing
             //     pendingReturns[msg.sender] = amount;
-            //     time = now;
             //     return false;
             // }
         }
@@ -152,18 +149,6 @@ contract SimpleAuction {
         // 3. Interaction
         // beneficiary.transfer(highestBid);
         t();
-    }
-
-    function remove(address _valueToFindAndRemove, address[] memory _array) public  returns(address[] memory) {
-
-        auxArray = new address[](0); 
-
-        for (uint i = 0; i < _array.length; i++){
-            if(_array[i] != _valueToFindAndRemove)
-                auxArray.push(_array[i]);
-        }
-
-        return auxArray;
     }
 
     function t() public {

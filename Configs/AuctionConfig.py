@@ -8,7 +8,7 @@ functions = [
 ]
 statePreconditions = [
 "(!ended && (auctionStart + biddingTime) >= blockNumber)",
-"pendingReturnsArray.length != 0",
+"pendingReturnsCount > 0",
 "(ended && blockNumber > (auctionStart + biddingTime))",
 # "true",
 ]

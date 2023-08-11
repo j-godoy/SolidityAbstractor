@@ -4,6 +4,67 @@
 
 pragma solidity ^0.5.0;
 
+library SafeMath {
+    /**
+     * @dev Multiplies two unsigned integers, reverts on overflow.
+     */
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
+        // benefit is lost if 'b' is also tested.
+        // See: https://github.com/OpenZeppelin/openzeppelin-solidity/pull/522
+        if (a == 0) {
+            return 0;
+        }
+
+        uint256 c = a * b;
+        require(c / a == b);
+
+        return c;
+    }
+
+    /**
+     * @dev Integer division of two unsigned integers truncating the quotient, reverts on division by zero.
+     */
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+        // Solidity only automatically asserts when dividing by 0
+        require(b > 0);
+        uint256 c = a / b;
+        // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+
+        return c;
+    }
+
+    /**
+     * @dev Subtracts two unsigned integers, reverts on overflow (i.e. if subtrahend is greater than minuend).
+     */
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b <= a);
+        uint256 c = a - b;
+
+        return c;
+    }
+
+    /**
+     * @dev Adds two unsigned integers, reverts on overflow.
+     */
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        uint256 c = a + b;
+        require(c >= a);
+
+        return c;
+    }
+
+    /**
+     * @dev Divides two unsigned integers and returns the remainder (unsigned integer modulo),
+     * reverts when dividing by zero.
+     */
+    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b != 0);
+        return a % b;
+    }
+}
+
+
 
 /**
  * @title RefundEscrow
@@ -17,6 +78,8 @@ pragma solidity ^0.5.0;
  * RefundableCrowdsale contract for an example of RefundEscrow’s use.
  */
 contract RefundEscrow {
+    using SafeMath for uint256;
+
     enum State { Active, Refunding, Closed }
 
     event RefundsClosed();
@@ -24,8 +87,9 @@ contract RefundEscrow {
 
     State private _state;
     address payable private _beneficiary;
-    bool hasA = false;
     address private _primary;
+
+    bool hasA = false;
     address public A;
 
     /**
@@ -38,6 +102,31 @@ contract RefundEscrow {
         _state = State.Active;
         A = _A;
         _primary = msg.sender;
+    }
+
+    /**
+     * @dev Reverts if called from any account other than the primary.
+     */
+    modifier onlyPrimary() {
+        require(msg.sender == _primary);
+        _;
+    }
+
+    /**
+     * @return the address of the primary.
+     */
+    function primary() public view returns (address) {
+        return _primary;
+    }
+
+    /**
+     * @dev Transfers contract to a new primary.
+     * @param recipient The address of new primary.
+     */
+    function transferPrimary(address recipient) public onlyPrimary {
+        require(recipient != address(0));
+        _primary = recipient;
+        // emit PrimaryTransferred(_primary);
     }
 
     /**
@@ -58,7 +147,7 @@ contract RefundEscrow {
      * @dev Stores funds that may later be refunded.
      * @param refundee The address funds will be sent to if a refund occurs.
      */
-    function deposit(address refundee) public payable {
+    function deposit(address refundee) public payable onlyPrimary {
         require(_state == State.Active);
         depositInternal(refundee);
     }
@@ -67,9 +156,8 @@ contract RefundEscrow {
      * @dev Allows for the beneficiary to withdraw their funds, rejecting
      * further deposits.
      */
-    function close() public  {
+    function close() public onlyPrimary  {
         require(_state == State.Active);
-        require(msg.sender == _primary);
         _state = State.Closed;
         //emit RefundsClosed();
     }
@@ -77,9 +165,8 @@ contract RefundEscrow {
     /**
      * @dev Allows for refunds to take place, rejecting further deposits.
      */
-    function enableRefunds() public {
+    function enableRefunds() public  onlyPrimary{
         require(_state == State.Active);
-        require(msg.sender == _primary);
         _state = State.Refunding;
         //emit RefundsEnabled();
     }
@@ -100,8 +187,7 @@ contract RefundEscrow {
         return _state == State.Refunding;
     }
 
-    address[] public depositsArray = new address[](0);
-    address[] auxArray;
+    uint depositsCount = 0;
 
     event Deposited(address indexed payee, uint256 weiAmount);
     event Withdrawn(address indexed payee, uint256 weiAmount);
@@ -118,9 +204,10 @@ contract RefundEscrow {
      */
     function depositInternal(address payee) internal {
         uint256 amount = msg.value;
-        _deposits[payee] = _deposits[payee] + (amount);
-        depositsArray.push(payee);
-
+        if (_deposits[payee] == 0) {
+            depositsCount += 1;
+        }
+        _deposits[payee] = _deposits[payee].add(amount);
         if (payee == A) {
             hasA = true;
         }
@@ -139,25 +226,9 @@ contract RefundEscrow {
 
         //payee.transfer(payment);
 
-        depositsArray = remove(payee, depositsArray);
+        depositsCount -= 1;
 
        // emit Withdrawn(payee, payment);
-    }
-
-    function remove(address _valueToFindAndRemove, address[] memory _array) private  returns(address[] memory) {
-
-        auxArray = new address[](0); 
-        bool alreadyDeleted = false;
-
-        for (uint i = 0; i < _array.length; i++){
-            if(_array[i] != _valueToFindAndRemove || alreadyDeleted) {
-                auxArray.push(_array[i]);
-            } else {
-                alreadyDeleted = true;
-            }
-        }
-
-        return auxArray;
     }
 
     // function length() public returns(uint) {
@@ -165,18 +236,19 @@ contract RefundEscrow {
     // }
 
 
-    function withdrawA(address payable payee) public {
+    function withdrawA(address payable payee) public onlyPrimary {
         require(withdrawalAllowed(payee));
-        require(A == payee && depositsArray.length > 0);
+        require(A == payee && depositsCount > 0);
         require(_deposits[payee] > 0);
         withdrawInternal(payee);
         hasA = false;
     }
-
-    function withdrawNoA(address payable payee) public {
+    
+    function withdrawNoA(address payable payee) public onlyPrimary {
         require(withdrawalAllowed(payee));
-        require(A != payee && depositsArray.length > 0 && (!hasA || depositsArray.length > 1));
+        require(A != payee && depositsCount > 0 && (!hasA || depositsCount > 1));
         require(_deposits[payee] > 0);
         withdrawInternal(payee);
     }
+
 }

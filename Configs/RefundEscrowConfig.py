@@ -13,7 +13,7 @@ statePreconditions = [
 "_state == State.Active",
 "_state == State.Active",
 "_state == State.Closed",
-"true",
+"depositsCount > 0 && _state == State.Refunding",
 "true"
 ]
 functionPreconditions = [

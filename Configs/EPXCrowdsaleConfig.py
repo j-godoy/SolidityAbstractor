@@ -13,7 +13,7 @@ statePreconditions = [
 "(tokensRemaining > 0 && (blockNumber <= fundingEndBlock) && (blockNumber >= fundingStartBlock))",
 # "(areFundsReleasedToBeneficiary && (amountRaisedInWei >= fundingMinCapInWei))",
 "isCrowdSaleSetup",
-"((amountRaisedInWei < fundingMinCapInWei) && (isCrowdSaleClosed) && (blockNumber > fundingEndBlock) && (usersEPXfundValueArray.length != 0))",
+"((amountRaisedInWei < fundingMinCapInWei) && (isCrowdSaleClosed) && (blockNumber > fundingEndBlock) && (usersEPXfundValueCount != 0))",
 "true"
 ]
 functionPreconditions = [

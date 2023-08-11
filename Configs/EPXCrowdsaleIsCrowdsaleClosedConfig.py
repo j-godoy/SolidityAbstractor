@@ -1,20 +1,20 @@
-fileName = "EPXCrowdsale.sol"
+fileName = "EPXCrowdsaleIsCrowdsaleClosed.sol"
 contractName = "EPXCrowdsale"
 functions = [
 "SetupCrowdsale(_fundingStartBlock, _fundingEndBlock);",
 "buy();",
-# "beneficiaryMultiSigWithdraw(_amount);",
 "checkGoalReached();",
 "refund();",
-"t();"
+"t();",
+"IsCrowdsaleClosed();"
 ]
 statePreconditions = [
 "(!isCrowdSaleSetup && !(beneficiaryWallet != address(0x0)))",
 "(tokensRemaining > 0 && (blockNumber <= fundingEndBlock) && (blockNumber >= fundingStartBlock))",
-# "(areFundsReleasedToBeneficiary && (amountRaisedInWei >= fundingMinCapInWei))",
 "isCrowdSaleSetup",
-"((amountRaisedInWei < fundingMinCapInWei) && (isCrowdSaleClosed) && (blockNumber > fundingEndBlock) && (usersEPXfundValueArray.length != 0))",
-"true"
+"((amountRaisedInWei < fundingMinCapInWei) && (isCrowdSaleClosed) && (blockNumber > fundingEndBlock) && (usersEPXfundValueCount > 0))",
+"true",
+"isCrowdSaleClosed"
 ]
 functionPreconditions = [
 "msg.sender == admin && msg.sender == owner",
@@ -22,6 +22,7 @@ functionPreconditions = [
 # "true",
 "msg.sender == owner",
 "(usersEPXfundValue[msg.sender] > 0)",
+"true",
 "true"
 ]
 functionVariables = "uint256 _amount, uint256 _fundingStartBlock,  uint256 _fundingEndBlock"

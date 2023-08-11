@@ -171,9 +171,7 @@ def delete_directory(final_directory):
 def create_file(index, final_directory):
     global contractName, fileName
     fileNameTemp = "OutputTemp"+str(index)+".sol"
-    #fileNameTemp = final_directory +"/"+ fileNameTemp
-    fileNameTemp = os.path.join(final_directory, fileNameTemp)#Javi
-    tool = "VeriSol " + fileNameTemp + " " + contractName
+    fileNameTemp = os.path.join(final_directory, fileNameTemp)
     if os.path.isfile(fileNameTemp):
         os.remove(fileNameTemp)
     shutil.copyfile(fileName, fileNameTemp)
@@ -181,8 +179,7 @@ def create_file(index, final_directory):
 
 def create_file_base(final_directory, name):
     global contractName, fileName
-    #fileNameTemp = final_directory +"/"+ name
-    fileNameTemp = os.path.join(final_directory, name)#Javi
+    fileNameTemp = os.path.join(final_directory, name)
     if os.path.isfile(fileNameTemp):
         os.remove(fileNameTemp)
     shutil.copyfile(fileName, fileNameTemp)
@@ -191,7 +188,6 @@ def create_file_base(final_directory, name):
 def write_file(fileNameTemp, body):
     inputfile = open(fileNameTemp, 'r').readlines()
     write_file = open(fileNameTemp,'w')
-    fuctionCombinations = []
     for line in inputfile:
         write_file.write(line)
         if 'contract ' + contractName in line:
@@ -333,15 +329,17 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
         for proc in process.children(recursive=True):
             proc.kill()
         process.kill()
-        process.wait(2)
+        process.wait(2) # wait for killing subprocess
         return True,"?"
 
     output_verisol = str(result[0].decode('utf-8'))
-    if verbose and not tool_output in output_verisol:
+    output_successful = "Formal Verification successful"
+    if verbose and not tool_output in output_verisol and not output_successful in output_verisol:
         print(output_verisol)
     
     #Corral can "fail"
-    if "Corral may have aborted abnormally" in output_verisol:
+    output_error = "Corral may have aborted abnormally"
+    if output_error in output_verisol:
         if not trackAllVars:
             number_corral_fail += 1
             return False,TRACK_VARS
@@ -372,8 +370,7 @@ def reduceCombinations(arg):
     fileNameTemp = create_file(arg, final_directory)
     body,fuctionCombinations = get_valid_preconditions_output(preconditionsTemp, extraConditionsTemp)
     write_file(fileNameTemp, body)
-    #tool = "Verisol " + fileNameTemp + " " + contractName
-    tool = "VeriSol " + fileNameTemp + " " + contractName#Javi
+    tool = "VeriSol " + fileNameTemp + " " + contractName
     preconditionsTemp2, statesTemp2, extraConditionsTemp2 = try_preconditions(tool, fuctionCombinations, final_directory, statesTemp, preconditionsTemp, extraConditionsTemp , arg)
     preconditionsThreads[arg] = preconditionsTemp2
     statesThreads[arg] = statesTemp2
@@ -390,8 +387,7 @@ def validCombinations(arg):
     fileNameTemp = create_file(arg, final_directory)
     body, fuctionCombinations = get_valid_transitions_output(preconditionsTemp, preconditions, extraConditionsTemp, extraConditions, functions, statesTemp)
     write_file(fileNameTemp, body)
-    #tool = "Verisol " + fileNameTemp + " " + contractName
-    tool = "VeriSol " + fileNameTemp + " " + contractName#Javi
+    tool = "VeriSol " + fileNameTemp + " " + contractName
     try_transaction(tool, fuctionCombinations, final_directory, statesTemp, states, arg)
     if not verbose:
         delete_directory(final_directory)
@@ -404,8 +400,7 @@ def validInit(arg):
     body, fuctionCombinations = get_init_output(preconditions, extraConditions)
     write_file(fileNameTemp, body)
     
-    #tool = "Verisol " + fileNameTemp + " " + contractName
-    tool = "VeriSol " + fileNameTemp + " " + contractName#Javi
+    tool = "VeriSol " + fileNameTemp + " " + contractName
     try_init(tool, fuctionCombinations, final_directory, states)
     delete_directory(final_directory)
 
@@ -433,7 +428,7 @@ def make_global_variables(config):
         try:
             time_out = float(config.time_out)
         except Exception:
-            time_out = 600
+            time_out = 600.0
     else:
         print("time_out en config ignorado. Usando parámetro time_out="+ str(time_out))
     statePreconditionsModeState = config.statePreconditionsModeState
@@ -472,7 +467,6 @@ def main():
            extraConditions = ["true" for i in range(len(states))]
     
     tempDir = create_directory_base("temp")
-    # tempFilePre = create_file_base(tempDir, configFile + "-" + str(mode) + ".txt")
 
     countPreInitial = len(preconditions)
 
@@ -511,12 +505,10 @@ def main():
     realThreadCount = threadCount if len(preconditionsThreads) > threadCount else len(preconditionsThreads)
 
     countPreFinal = len(preconditions)
-    # f = open(tempDir + "/" + configFile + "-" + str(mode) + ".txt", "w")
-    temp_dir = os.path.join(tempDir, configFile + "-" + str(mode) + ".txt")#Javi
+    temp_dir = os.path.join(tempDir, configFile + "-" + str(mode) + ".txt")
     f = open(temp_dir, "w")
     f.write(str(countPreInitial) + "\n" + str(countPreFinal) + "\n" + str(len(functions)))
     f.close()
-    # write_file(tempFilePre, str(countPreInitial) + "\n" + str(countPreFinal))
 
     threads = []
     divideThreads = 1
@@ -577,8 +569,7 @@ number_corral_fail = 0
 number_corral_fail_with_tackvars = 0
 TRACK_VARS = "trackAllVars"
 
-#sys.path.append("/Users/etorres/Proyectos/verisol-test/Configs")
-sys.path.append(os.path.join(os.getcwd(), "Configs"))#Javi
+sys.path.append(os.path.join(os.getcwd(), "Configs"))
 
 if __name__ == "__main__":
     global mode, config, verbose, time_mode, txBound
@@ -587,6 +578,7 @@ if __name__ == "__main__":
     init = time.time()
     epaMode = False
     statesMode = False
+    # For Debug
     # sys.argv.append("HelloBlockchainFixedConfig")
     # sys.argv.append("-t")
     # sys.argv.append("-e")
@@ -595,6 +587,9 @@ if __name__ == "__main__":
     configFile = sys.argv[1]
     verbose = False
     time_mode = False
+    
+    
+    #TODO: ser consistente
     reduced = False
     reducedTrue = True
     reducedEqual = False

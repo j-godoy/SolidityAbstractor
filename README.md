@@ -10,7 +10,7 @@ python3 SolidityAbstractor.py [contract_name] [mode] [info_level] [optim_params]
 where
 - contract_name: name of the config file in /config folder. Example: HelloBlockchainConfig
 - mode: "-e" for EPA and "-s" for states.
-- info_level: "-v" for verbose and "-t" for basic info.
+- info_level: "-v" for verbose and "-b" for basic info.
 - optim_params: "-default" for default parameters.
 - time_out: "time_out=n", n=seconds
 - bound: "txbound=n", n=max transaction bound for Verisol

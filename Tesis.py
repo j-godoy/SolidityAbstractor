@@ -91,6 +91,7 @@ def getToolCommand(includeNumber, toolCommand, combinations, txBound, trackAllVa
     global contractName
     command = toolCommand + " " 
     command = command + "/txBound:" + str(txBound) + " "
+    command = command + "/noPrf "
     if trackAllVars:
         command = command + "/trackAllVars"+ " "
     for indexCombination, combi in enumerate(combinations):
@@ -140,12 +141,12 @@ def output_combination(indexCombination, tempCombinations):
 
 def print_combination(indexCombination, tempCombinations):
     output = output_combination(indexCombination, tempCombinations)
-    if time_mode == False:
+    if basic_mode == False:
         print(output + "---------")
 
 def print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, combinations, fullCombination, succes_by_to):
     output ="Desde este estado:\n"+ output_combination(indexPreconditionRequire, combinations) + "\nHaciendo " + str(functions[indexFunction]+succes_by_to) + "\n\nLlegas al estado:\n" + output_combination(indexPreconditionAssert, fullCombination) + "\n---------"
-    if time_mode == False or succes_by_to != "":
+    if basic_mode == False or succes_by_to != "":
         print(output)
 
 def create_directory(index):
@@ -246,7 +247,7 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
     extraConditionsTemp2 = []
     
     for functionName in tempFunctionNames:
-        if time_mode == False:
+        if basic_mode == False:
             print(functionName + "---" + str(arg))
         indexPreconditionRequire, _, indexFunction = get_params_from_function_name(functionName)
         query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, False)
@@ -267,7 +268,7 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
 def try_transaction(tool, tempFunctionNames, final_directory, statesTemp, states, arg):
     global txBound, time_out
     for functionName in tempFunctionNames:
-        if time_mode == False:
+        if basic_mode == False:
             print(functionName + "---" + str(arg))
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(functionName)
         
@@ -310,8 +311,8 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
                 return (True,"")
     
     command = getToolCommand(temp_function_name, tool, tempFunctionNames, txBound, trackAllVars)
-    # if verbose:
-    #     print(command)
+    if verbose:
+       print(command)
     result = ""
     try:    
         if platform.system() == "Windows":
@@ -334,7 +335,11 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
 
     output_verisol = str(result[0].decode('utf-8'))
     output_successful = "Formal Verification successful"
-    if verbose and not tool_output in output_verisol and not output_successful in output_verisol:
+
+    if verbose:
+        print(output_verisol)
+
+    if not tool_output in output_verisol and not output_successful in output_verisol:
         print(output_verisol)
     
     #Corral can "fail"
@@ -434,6 +439,7 @@ def make_global_variables(config):
     statePreconditionsModeState = config.statePreconditionsModeState
     statesModeState = config.statesModeState
     SAVE_GRAPH_PATH = "graph/k_"+str(txBound)+"/"
+    print("path to save: " + SAVE_GRAPH_PATH)
 
 def main():
     global config, dot, preconditionsThreads, statesThreads, states, preconditions, extraConditionsThreads, extraConditions, SAVE_GRAPH_PATH
@@ -478,7 +484,7 @@ def main():
     if len(extraConditionsThreads) != 0:
         extraConditionsThreads = np.array_split(extraConditions, threadCount)
 
-    if time_mode == False:
+    if basic_mode == False:
         print("Length")
         print(len(preconditions))
 
@@ -514,11 +520,11 @@ def main():
     divideThreads = 1
     moduleThreadsConut = 0
     divideCount = realThreadCount
-    if time_mode == False:
+    if basic_mode == False:
         print("Length")
         print(len(preconditionsThreads))
     if len(preconditionsThreads) > 30:
-        if time_mode == False:
+        if basic_mode == False:
             print("MAYOR A 200")
         divideCount = len(preconditionsThreads)
         divideThreads = int(divideCount/threadCount)
@@ -586,7 +592,7 @@ if __name__ == "__main__":
     
     configFile = sys.argv[1]
     verbose = False
-    time_mode = False
+    basic_mode = False
     
     
     #TODO: ser consistente
@@ -596,8 +602,8 @@ if __name__ == "__main__":
     for i in range(1, len(sys.argv)):
         if sys.argv[i] == "-v":
             verbose = True
-        if sys.argv[i] == "-t":
-            time_mode = True
+        if sys.argv[i] == "-b":
+            basic_mode = True
         if sys.argv[i] == "-e":
             epaMode = True
         if sys.argv[i] == "-s":

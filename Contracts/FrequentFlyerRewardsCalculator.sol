@@ -42,7 +42,7 @@ contract FrequentFlyerRewardsCalculator {
         State = StateType.MilesAdded;
     }
 
-    function ComputeTotalRewards() private
+    function ComputeTotalRewards() internal
     {
         // make length uint compatible
         uint milesLength = uint(Miles.length);
@@ -53,7 +53,7 @@ contract FrequentFlyerRewardsCalculator {
         }
     }
 
-    function GetMiles() public view returns (uint[] memory) {
+    function GetMiles() internal view returns (uint[] memory) {
         return Miles;
     }
 }

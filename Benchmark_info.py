@@ -19,8 +19,8 @@ def runCommand(command):
     return result
 
 def run(mode, params, extra=""):
-    global table, command, configName, REPETICIONES, TXBOUND
-    commandEpa = command + " " + params + " txbound="+str(TXBOUND) + " time_out="+str(TIME_OUT)
+    global table, command, configName, REPETICIONES, TXBOUND_END
+    commandEpa = command + " " + params + " txbound="+str(TXBOUND_END) + " time_out="+str(TIME_OUT)
     modeName = mode + ("-" + extra if extra != "" else "")
     print("Modo " + modeName)
     print("Command " + commandEpa)
@@ -44,7 +44,7 @@ def run(mode, params, extra=""):
     name = configName
     statesCount = 2**int(functions) if mode == "epa" else initEpa
     
-    table.append([name+"_k="+str(TXBOUND), modeName, avgEpa, statesCount , initEpa, finiStates, functions]) 
+    table.append([name+"_k="+str(TXBOUND_END), modeName, avgEpa, statesCount , initEpa, finiStates, functions]) 
 
 configs = [
 
@@ -59,88 +59,60 @@ configs = [
     # ["RoomThermostatConfig",["s"]],
     # ["SimpleMarketplaceConfig",["s"]],
     ###Benchmark1-fixed
-    ["AssetTransferFixedConfig",["s"]],
-    ["BasicProvenanceFixedConfig",["s"]],
-    ["DigitalLockerFixedConfig",["s"]],
-    ["DefectiveComponentCounterFixedConfig",["s"]],
-    ["HelloBlockchainFixedConfig",["s"]],
-    ["RefrigeratedTransportationFixedConfig",["s"]],
-    ["SimpleMarketplaceFixedConfig",["s"]],
-    
-    # V1
-    # ["HelloBlockchainConfig",["e"]],
-    # ["BasicProvenanceConfig",["e"]],
-    # ["DefectiveComponentCounterConfig",["e"]], 
-    # ["FrequentFlyerRewardsCalculatorConfig",["e"]],
-    # ["RefrigeratedTransportationConfig",["e"]],
-    # ["RoomThermostatConfig",["e"]],
-    # ["SimpleMarketplaceConfig",["e"]],
-
-    # Fixed
-    # ["HelloBlockchainFixedConfig",["e"]],
-    # ["SimpleMarketplaceFixedConfig",["e"]],
-    # ["BasicProvenanceFixedConfig",["e"]],
-    # ["DefectiveComponentCounterFixedConfig",["e"]],
-    # ["RefrigeratedTransportationFixedConfig",["e"]],
-
-
-    # ["HelloBlockchainConfig",["s"]],
-    # ["BasicProvenanceConfig",["s"]],
-    # ["DefectiveComponentCounterConfig",["s"]],
-    # ["DigitalLockerConfig",["s"]],    
-    # ["FrequentFlyerRewardsCalculatorConfig",["s"]],
-    # ["RefrigeratedTransportationConfig",["s"]],
-    # ["RoomThermostatConfig",["s"]],
-    # ["SimpleMarketplaceConfig",["s"]],
-    # ["AssetTransferConfig",["s"]],
-
-    # ["DigitalLockerConfig",["e"]],   
-    # ["AssetTransferConfig",["e"]], 
-    # ["DigitalLockerFixedConfig",["e"]],
-    # ["AssetTransferFixedConfig",["e"]],
-    # Fixed
-    # ["HelloBlockchainFixedConfig",["s"]],
-    # ["SimpleMarketplaceFixedConfig",["s"]],
-    # ["BasicProvenanceFixedConfig",["s"]],
-    # ["DefectiveComponentCounterFixedConfig",["s"]],
-    # ["DigitalLockerFixedConfig",["s"]],
     # ["AssetTransferFixedConfig",["s"]],
+    # ["BasicProvenanceFixedConfig",["s"]],
+    # ["DigitalLockerFixedConfig",["s"]],
+    # ["DefectiveComponentCounterFixedConfig",["s"]],
+    # ["HelloBlockchainFixedConfig",["s"]],
     # ["RefrigeratedTransportationFixedConfig",["s"]],
+    # ["SimpleMarketplaceFixedConfig",["s"]],
+    
+
 
     # Benchmark2-original
-    ["RefundEscrowConfig", ["e"]],
-    ["EscrowVaultConfig", ["e"]],
-    ["EPXCrowdsaleConfig", ["e"]],
-    ["CrowdfundingConfig", ["e"]],
-    ["ValidatorAuctionConfig", ["e"]],
-    ["SimpleAuctionConfig", ["e"]],
-    ["AuctionConfig", ["e"]],
-    ["RockPaperScissorsConfig", ["e"]],
+    # ["RefundEscrowConfig", ["e"]],
+    # ["EscrowVaultConfig", ["e"]],
+    # ["EPXCrowdsaleConfig", ["e"]],
+    # ["Crowdfunding_BaseConfig", ["e"]],
+    # ["ValidatorAuctionConfig", ["e"]],
+    # ["SimpleAuctionConfig", ["e"]],
+    # ["AuctionConfig", ["e"]],
+    # ["RockPaperScissorsConfig", ["e"]],
     
+    # # Benchmark2-PA
     # ["AuctionWithdrawConfig", ["e"]],
+    # ["AuctionEndedConfig", ["e"]],
+    # ["Crowdfunding_BaseConfig_models", ["s", "e"]],
+    # ["CrowdfundingTime_BaseBalanceConfig", ["e"]],
+    # ["CrowdfundingTime_BaseBalanceConfigFix", ["e"]],
+    # ["CrowdfundingTime_BaseBalanceConfigFix_states", ["s"]],
+    # ["CrowdfundingTime_BaseConfig", ["e"]],
+    # ["CrowdfundingTimeClaimBakersRefinementConfig", ["e"]],
+    # ["CrowdfundingTimeClaimRefinementConfig", ["e"]],
     # ["CrowdfundingTimeConfig", ["e"]],
-    # ["RefundEscrowWithdrawConfig", ["e"]],
-    # ["SimpleAuctionTimeConfig", ["e"]],
-    
-    
-    # ["AuctionEndedConfig", ["s"]],
-    # ["CrowdfundingBalanceConfig", ["s"]],
-    # ["CrowdfundingTimeBalanceConfig", ["s"]],
+    # ["CrowdfundingTimeDonateRefinementConfig", ["e"]],
+    # # ["CrowdfundingTimeReentrancyConfig", ["e"]],
+    # # ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
+    # # ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],
     # ["EPXCrowdsaleConfig", ["s"]],
-    # ["EPXCrowdsaleIsCrowdsaleClosedConfig", ["s"]],
+    # ["EPXCrowdsaleIsCrowdsaleClosedConfig", ["e"]],
     # ["EscrowVaultConfig", ["s"]],
     # ["RefundEscrowConfig", ["s"]],
-    # ["RockPaperScissorsConfig", ["s"]],
-    # ["SimpleAuctionConfig", ["s"]],
+    # ["RefundEscrowWithdrawConfig", ["e"]],
+    # ["RockPaperScissorsConfig", ["e", "s"]],
+    # ["SimpleAuctionTimeConfig", ["e"]],
+    # ["SimpleAuctionHBConfig", ["s"]],
+    # ["ValidatorAuctionConfig_withdraw", ["e"]],
+    
 ]
 
 table = [['Config', 'Mode' ,'Time', 'Inital pre count' , 'Pre count after true', 'Reduce Pr count', 'Functions count']]
 
 REPETICIONES = 1
-TXBOUND = 10
+TXBOUND_INIT = 4
+TXBOUND_END = 10 #Include
 TIME_OUT = 600
 init = time.time()
-
 
 for config in configs:
     configName = config[0]
@@ -149,9 +121,9 @@ for config in configs:
     command = "python.exe .\Tesis.py " + configName + " -t" #windows
     # command = "python3 Tesis.py " + configName + " -t"
 
-    upper_bound = TXBOUND
-    for curr_txBound in range(4,upper_bound+1):
-        TXBOUND = curr_txBound
+    upper_bound = TXBOUND_END
+    for curr_txBound in range(TXBOUND_INIT, upper_bound+1):
+        TXBOUND_END = curr_txBound
         for mode in modes:
             if mode == "e":
                 run("epa", "-e")

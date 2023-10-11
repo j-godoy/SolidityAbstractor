@@ -151,6 +151,10 @@ contract SimpleAuction {
         t();
     }
 
+    function dummy_isEnded() view public {
+        require(ended);
+    }
+
     function t() internal {
         time = time + 1;
     }

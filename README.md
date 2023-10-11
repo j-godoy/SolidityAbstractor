@@ -21,6 +21,8 @@ It requires that the corresponding Solidity contract is in the /contract folder 
 - VeriSol: You can download this from: https://github.com/microsoft/verisol/blob/master/INSTALL.md
 - Add VeriSol to path (home/user/.dot/...)
 - pip install graphviz
+- pip install numpy
+- pip install psutil
 - run the SolidiAbstractor.py with some basic example. If it works fine, then:
     - remove VeriSol: dotnet remove verisol
     - install a fork version of Verisol running:

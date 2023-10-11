@@ -28,7 +28,8 @@ def diff(file1Name, file2Name):
     if not are_dot_files_equivalent(file1Name, file2Name):
         print(file1Name + " is different from " + file2Name)
 
-entries = os.listdir('graph/k_10/')
-for entry in entries:
-    if not entry.endswith("pdf"):
-        diff("graph/k_10/" + entry, "graph/k_8/" + entry)
+entries = os.listdir('graph/k_10/to_600/')
+for i in range(9,10):
+    for entry in entries:
+        if not entry.endswith("pdf") and not entry.endswith("txt"):
+            diff("graph/k_10/to_600/" + entry, "graph/k_{}/to_600/".format(i) + entry)

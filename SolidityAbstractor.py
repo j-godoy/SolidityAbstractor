@@ -438,8 +438,7 @@ def make_global_variables(config):
         print("time_out en config ignorado. Usando parámetro time_out="+ str(time_out))
     statePreconditionsModeState = config.statePreconditionsModeState
     statesModeState = config.statesModeState
-    SAVE_GRAPH_PATH = "graph/k_"+str(txBound)+"/"
-    print("path to save: " + SAVE_GRAPH_PATH)
+    SAVE_GRAPH_PATH = "graph/k_"+str(txBound)+"/to_"+str(int(time_out))+"/"
 
 def main():
     global config, dot, preconditionsThreads, statesThreads, states, preconditions, extraConditionsThreads, extraConditions, SAVE_GRAPH_PATH

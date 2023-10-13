@@ -29,7 +29,7 @@ contract DefectiveComponentCounter {
         }
 
         // calculate total for only the first 12 values, in case more than 12 are entered
-        for (uint i = 0; i < 3; i++)
+        for (uint i = 0; i < 12; i++)
         {
             Total += DefectiveComponentsCount[i];
         }

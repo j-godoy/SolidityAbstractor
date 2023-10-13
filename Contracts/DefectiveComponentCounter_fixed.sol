@@ -8,11 +8,11 @@ contract DefectiveComponentCounter {
     //List of properties
     StateType State;
     address Manufacturer;
-    int[] DefectiveComponentsCount;
+    int[12] DefectiveComponentsCount;
     int Total;
 
     // constructor function
-    constructor(int[] memory defectiveComponentsCount) public
+    constructor(int[12] memory defectiveComponentsCount) public
     {
         Manufacturer = msg.sender;
         DefectiveComponentsCount = defectiveComponentsCount;
@@ -35,7 +35,7 @@ contract DefectiveComponentCounter {
         }
 
         // calculate total for only the first 12 values, in case more than 12 are entered
-        for (uint i = 0; i < 3; i++)
+        for (uint i = 0; i < 12; i++)
         {
             Total += DefectiveComponentsCount[i];
         }
@@ -44,7 +44,7 @@ contract DefectiveComponentCounter {
     }
 
     // add the required getter function for array DefectiveComponentsCount
-    function GetDefectiveComponentsCount() public view returns (int[] memory) {
+    function GetDefectiveComponentsCount() public view returns (int[12] memory) {
         return DefectiveComponentsCount;
     }
 }

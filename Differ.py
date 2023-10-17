@@ -110,7 +110,7 @@ def get_alloy_subjects(subjects, benchmark):
     alloy_subjects_b1 = ["AssetTransfer_fixed", "AssetTransfer_original", "BasicProvenance_fixed", "BasicProvenance_original", "DefectiveComponentCounter_fixed", "DefectiveComponentCounter_original", "DigitalLocker_fixed", "DigitalLocker_original", "FrequentFlyerRewardsCalculator_original", "HelloBlockchain_fixed", "HelloBlockchain_original", "RefrigeratedTransportation_fixed", "RefrigeratedTransportation_original", "RoomThermostat_original", "SimpleMarketplace_fixed", "SimpleMarketplace_original"]
     
     solidityabstractor_subjects_b2 = ["RefundEscrow_Mode.states", "RefundEscrow_Mode.epa", "RefundEscrowWithdraw_Mode.epa", "EscrowVault_Mode.states", "EscrowVault_Mode.epa", "EPXCrowdsale_Mode.states", "EPXCrowdsale_Mode.epa", "EPXCrowdsaleIsCrowdsaleClosed_Mode.epa", "CrowdfundingTime_Base_Mode.epa", "CrowdfundingTime_BaseBalance_Mode.epa", "CrowdfundingTime_BaseBalanceFix_Mode.epa", "ValidatorAuction_Mode.states", "ValidatorAuction_Mode.epa", "ValidatorAuction_withdraw_Mode.epa", "SimpleAuction_Mode.epa", "SimpleAuctionTime_Mode.epa", "SimpleAuctionEnded_Mode.epa", "SimpleAuctionHB_Mode.states", "Auction_Mode.epa", "AuctionEnded_Mode.epa", "AuctionWithdraw_Mode.epa", "RockPaperScissors_Mode.states", "RockPaperScissors_Mode.epa"]
-    alloy_subjects_b2 = ["RefundEscrow", "RefundEscrow_EPA", "RefundEscrow_withdrawA", "EscrowVault", "EscrowVault_EPA", "EPXCrowdsale", "EPXCrowdsale_EPA", "EPXCrowdsale_EPA_isCrowdSaleClosed", "CrowdfundingTime_Base", "CrowdfundingTime_BaseBalance", "CrowdfundingTime_BaseBalanceFix", "ValidatorAuction_EPA", "ValidatorAuction", "ValidatorAuction_WithdrawA+NotA", "SimpleAuction_EPA", "SimpleAuction_EPA_time", "SimpleAuction+Ended", "SimpleAuction+Ended+highestBidder", "Auction_EPA", "Auction_EPA+predicateEnded", "Auction_EPA_withdrawA", "RockPaperScissors+predicateOneWinner", "RockPaperScissors_EPA"]
+    alloy_subjects_b2 =              ["RefundEscrow", "RefundEscrow_EPA", "RefundEscrow_withdrawA", "EscrowVault", "EscrowVault_EPA", "EPXCrowdsale", "EPXCrowdsale_EPA", "EPXCrowdsale_EPA_isCrowdSaleClosed", "CrowdfundingTime_Base", "CrowdfundingTime_BaseBalance", "CrowdfundingTime_BaseBalanceFix", "ValidatorAuction", "ValidatorAuction_EPA", "ValidatorAuction_WithdrawA+NotA", "SimpleAuction_EPA", "SimpleAuction_EPA_time", "SimpleAuction+Ended", "SimpleAuction+Ended+highestBidder", "Auction_EPA", "Auction_EPA+predicateEnded", "Auction_EPA_withdrawA", "RockPaperScissors+predicateOneWinner", "RockPaperScissors_EPA"]
     
     to_find_verisol = []
     to_find_alloy = []
@@ -144,11 +144,11 @@ def get_diff(solidityabstractor_subjects, benchmark):
         if solidityabstractor_subjects[i].endswith("_Mode.states") or solidityabstractor_subjects[i].endswith("_Mode.epa"):
             solidityabstractor_dot = os.path.join(path_solidityabstractor, solidityabstractor_subjects[i])
         else:
-            print(r"agregar modo states o epa al subject '{solidityabstractor_subjects[i]}'")
+            print(f"agregar modo states o epa al subject '{solidityabstractor_subjects[i]}'")
             # file_dot = os.path.join(path_solidityabstractor,solidityabstractor_subjects[i]+"_Mode.states")
             # solidityabstractor_dot = file_dot if os.path.exists(file_dot) else file_dot.replace("_Mode.states","_Mode.epa")
             
-        alloy_dot = os.path.join(path_alloy,alloy_subjects[i],alloy_subjects[i]+"_original.dot")
+        alloy_dot = os.path.join(path_alloy,alloy_subjects[i],alloy_subjects[i]+"_reachable.dot")
         if not os.path.exists(alloy_dot) or not os.path.exists(solidityabstractor_dot):
             if not os.path.exists(alloy_dot):
                 print(f"NO EXISTE ARCHIVO ALLOY {alloy_dot}")
@@ -164,14 +164,13 @@ def get_diff(solidityabstractor_subjects, benchmark):
     print(subjects_diff)
     return subjects_diff
 
-# subjects = ["RefundEscrow_Mode.states", "RefundEscrow_Mode.epa", "RefundEscrowWithdraw_Mode.epa", "EscrowVault_Mode.states", "EscrowVault_Mode.epa", "EPXCrowdsale_Mode.states", "EPXCrowdsale_Mode.epa", "EPXCrowdsaleIsCrowdsaleClosed_Mode.epa", "CrowdfundingTime_Base_Mode.epa", "CrowdfundingTime_BaseBalance_Mode.epa", "CrowdfundingTime_BaseBalanceFix_Mode.epa", "ValidatorAuction_Mode.states", "ValidatorAuction_Mode.epa", "ValidatorAuction_withdraw_Mode.epa", "SimpleAuction_Mode.epa", "SimpleAuctionTime_Mode.epa", "SimpleAuctionEnded_Mode.epa", "SimpleAuctionHB_Mode.states", "Auction_Mode.epa", "AuctionEnded_Mode.epa", "AuctionWithdraw_Mode.epa", "RockPaperScissors_Mode.states", "RockPaperScissors_Mode.epa"]
-subjects = ['RefundEscrow_Mode.epa', 'RefundEscrowWithdraw_Mode.epa', 'EPXCrowdsale_Mode.states', 'EPXCrowdsale_Mode.epa', 'EPXCrowdsaleIsCrowdsaleClosed_Mode.epa', 'CrowdfundingTime_Base_Mode.epa', 'CrowdfundingTime_BaseBalance_Mode.epa', 'CrowdfundingTime_BaseBalanceFix_Mode.epa', 'ValidatorAuction_Mode.states', 'ValidatorAuction_Mode.epa', 'ValidatorAuction_withdraw_Mode.epa', 'SimpleAuction_Mode.epa', 'SimpleAuctionTime_Mode.epa', 'SimpleAuctionEnded_Mode.epa', 'Auction_Mode.epa', 'AuctionEnded_Mode.epa', 'AuctionWithdraw_Mode.epa']
+subjects = ["RefundEscrow_Mode.states", "RefundEscrow_Mode.epa", "RefundEscrowWithdraw_Mode.epa", "EscrowVault_Mode.states", "EscrowVault_Mode.epa", "EPXCrowdsale_Mode.states", "EPXCrowdsale_Mode.epa", "EPXCrowdsaleIsCrowdsaleClosed_Mode.epa", "CrowdfundingTime_Base_Mode.epa", "CrowdfundingTime_BaseBalance_Mode.epa", "CrowdfundingTime_BaseBalanceFix_Mode.epa", "ValidatorAuction_Mode.states", "ValidatorAuction_Mode.epa", "ValidatorAuction_withdraw_Mode.epa", "SimpleAuction_Mode.epa", "SimpleAuctionTime_Mode.epa", "SimpleAuctionEnded_Mode.epa", "SimpleAuctionHB_Mode.states", "Auction_Mode.epa", "AuctionEnded_Mode.epa", "AuctionWithdraw_Mode.epa", "RockPaperScissors_Mode.states", "RockPaperScissors_Mode.epa"]
 Benchmark = "B2"
 total_diff_antes = len(subjects)
 total_diff_despues = len(subjects)
 k_parameter = 4
-# first=True
-first = False
+time_out = 600
+first = True
 segunda_vez_igual = False
 while (total_diff_despues <= total_diff_antes and not segunda_vez_igual) or first:
     if not first:
@@ -181,13 +180,16 @@ while (total_diff_despues <= total_diff_antes and not segunda_vez_igual) or firs
     first = False
     total_diff_antes = total_diff_despues
     total_subjects = len(subjects)
-    Benchmark_info.main(subjects, 1, k_parameter, k_parameter, 300)
+    Benchmark_info.main(subjects, 1, k_parameter, k_parameter, time_out)
     subjects = get_diff(subjects, Benchmark)
     total_diff_despues = len(subjects)
     tempFileName = "diff_result_"+Benchmark+".txt"
     with open(os.path.join(tempFileName), 'a+') as file:
-        file.write(f"Con k={k_parameter}\n")
+        if first:
+            file.write(f"Benchmark: {Benchmark}\n")
+            file.write(f"time out: {time_out}\n")
+        file.write(f"k: {k_parameter}\n")
         file.write(f"total diff: {total_diff_despues} de un total de {total_subjects}\n")
         file.write("subjects diferentes:\n")
-        file.write(str(subjects)+"\n")
+        file.write(str(subjects)+"\n\n")
         file.close()

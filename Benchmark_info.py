@@ -71,43 +71,43 @@ def config_B1():
 
 def config_B2():
     configs = [
-        # Benchmark2-original
-        ["RefundEscrowConfig", ["s"]],
-        ["RefundEscrowConfig", ["e"]],
-        ["RefundEscrowWithdrawConfig", ["e"]],
-        ["EscrowVaultConfig", ["s"]],
-        ["EscrowVaultConfig", ["e"]],
-        ["EPXCrowdsaleConfig", ["s"]],
-        ["EPXCrowdsaleConfig", ["e"]],
-        ["EPXCrowdsaleIsCrowdsaleClosedConfig", ["e"]],
-        ["CrowdfundingTime_BaseConfig", ["e"]],
-        ["CrowdfundingTime_BaseBalanceConfig", ["e"]],
-        ["CrowdfundingTime_BaseBalanceFixConfig", ["e"]],
-        ["ValidatorAuctionConfig", ["s"]],
-        ["ValidatorAuctionConfig", ["e"]],
-        ["ValidatorAuction_withdrawConfig", ["e"]],
-        ["SimpleAuctionConfig", ["e"]],
-        ["SimpleAuctionTimeConfig", ["e"]],
-        ["SimpleAuctionEndedConfig", ["e"]],
-        ["SimpleAuctionHBConfig", ["s"]],
-        ["AuctionConfig", ["e"]],
-        ["AuctionEndedConfig", ["e"]],
-        ["AuctionWithdrawConfig", ["e"]],
-        ["RockPaperScissorsConfig", ["s"]],
-        ["RockPaperScissorsConfig", ["e"]],
-        
-        # ["Crowdfunding_BaseConfig", ["e"]],    
-        
-        # # Benchmark2-PA
-        # ["Crowdfunding_BaseConfig_models", ["s", "e"]],    
-        # ["CrowdfundingTime_BaseBalanceConfigFix_states", ["s"]],
-        # ["CrowdfundingTimeClaimBakersRefinementConfig", ["e"]],
-        # ["CrowdfundingTimeClaimRefinementConfig", ["e"]],
-        # ["CrowdfundingTimeConfig", ["e"]],
-        # ["CrowdfundingTimeDonateRefinementConfig", ["e"]],
-        # ["CrowdfundingTimeReentrancyConfig", ["e"]],
-        # ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
-        # ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],
+    # Benchmark2
+    ["RefundEscrowConfig", ["s"]],
+    ["RefundEscrowConfig", ["e"]],
+    ["RefundEscrowWithdrawConfig", ["e"]],
+    ["EscrowVaultConfig", ["s"]],
+    ["EscrowVaultConfig", ["e"]],
+    ["EPXCrowdsaleConfig", ["s"]],
+    ["EPXCrowdsaleConfig", ["e"]],
+    ["EPXCrowdsaleIsCrowdsaleClosedConfig", ["e"]],
+    ["CrowdfundingTime_BaseConfig", ["e"]],
+    ["CrowdfundingTime_BaseBalanceConfig", ["e"]],
+    ["CrowdfundingTime_BaseBalanceFixConfig", ["e"]],
+    ["ValidatorAuctionConfig", ["s"]],
+    ["ValidatorAuctionConfig", ["e"]],
+    ["ValidatorAuction_withdrawConfig", ["e"]],
+    ["SimpleAuctionConfig", ["e"]],
+    ["SimpleAuctionTimeConfig", ["e"]],
+    ["SimpleAuctionEndedConfig", ["e"]],
+    ["SimpleAuctionHBConfig", ["s"]],
+    ["AuctionConfig", ["e"]],
+    ["AuctionEndedConfig", ["e"]],
+    ["AuctionWithdrawConfig", ["e"]],
+    ["RockPaperScissorsConfig", ["s"]],
+    ["RockPaperScissorsConfig", ["e"]],
+    
+    # ["Crowdfunding_BaseConfig", ["e"]],    
+    
+    # # Benchmark2-PA
+    # ["Crowdfunding_BaseConfig_models", ["s", "e"]],    
+    # ["CrowdfundingTime_BaseBalanceConfigFix_states", ["s"]],
+    # ["CrowdfundingTimeClaimBakersRefinementConfig", ["e"]],
+    # ["CrowdfundingTimeClaimRefinementConfig", ["e"]],
+    # ["CrowdfundingTimeConfig", ["e"]],
+    # ["CrowdfundingTimeDonateRefinementConfig", ["e"]],
+    # ["CrowdfundingTimeReentrancyConfig", ["e"]],
+    # ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
+    # ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],
     ]
     return configs
 
@@ -118,7 +118,7 @@ def rename_configs(config):
         configs.append([c.replace("_Mode.epa", "Config").replace("_Mode.states", "Config"), mode])
     return configs
 
-table = [['Config', 'Mode' ,'Time', 'Inital pre count' , 'Pre count after true', 'Reduce Pr count', 'Functions count']]
+table = [[]]
 cofigs = []
 command = ""
 configName = ""
@@ -134,6 +134,8 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
     TXBOUND_INIT = txbound_init
     TXBOUND_END = txbound_end
     TIME_OUT = timeout
+
+    table = [['Config', 'Mode' ,'Time', 'Inital pre count' , 'Pre count after true', 'Reduce Pr count', 'Functions count']]
     init = time.time()
 
     all_names_ok = True
@@ -165,19 +167,6 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
                     # run("epa", "-e -ra", "noReduceAll")
                 if mode == "s":
                     run("states", "-s")
-            
-                # now = str(datetime.datetime.now()).replace(":","-")
-                # with open('Tiempos-'+ now +'.txt', 'w') as outputfile:
-                #     print(tabulate(table, headers='firstrow', tablefmt='simple'), file=outputfile)
-                # if mode == "e":
-                #     run("epa", "-e -rs", "noReduceStates")
-            
-                # now = str(datetime.datetime.now()).replace(":","-")
-                # with open('Tiempos-'+ now +'.txt', 'w') as outputfile:
-                #     print(tabulate(table, headers='firstrow', tablefmt='simple'), file=outputfile)
-
-                # if mode == "e":
-                #     run("epa", "-e -ra", "noReduceAll")
         
             
     now = str(datetime.datetime.now()).replace(":","-")

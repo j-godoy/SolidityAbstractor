@@ -130,9 +130,9 @@ def get_alloy_subjects(subjects, benchmark):
                 ret.append(to_find_alloy[j])
     return ret
     
-def get_diff(solidityabstractor_subjects, benchmark):
-    path_solidityabstractor = "C:\\Users\\JavierGodoy\\Repos\\SolidityAbstractor\\graph\\k_4\\to_300"
-    path_alloy = "C:\\Users\\JavierGodoy\\Repos\\sosym23\\models_alloy\\B2\\"
+def get_diff(solidityabstractor_subjects, benchmark, k, timeout):
+    path_solidityabstractor = f"C:\\Users\\JavierGodoy\\Repos\\SolidityAbstractor\\graph\\k_{k}\\to_{timeout}"
+    path_alloy = f"C:\\Users\\JavierGodoy\\Repos\\sosym23\\models_alloy\\{benchmark}\\"
     cant_dif = 0
     subjects_diff = []
 
@@ -171,17 +171,19 @@ total_diff_despues = len(subjects)
 k_parameter = 4
 time_out = 600
 first = True
-segunda_vez_igual = False
-while (total_diff_despues <= total_diff_antes and not segunda_vez_igual) or first:
+cant_iguales_consecutivas = 0
+while (len(subjects)>0 and total_diff_despues <= total_diff_antes and cant_iguales_consecutivas<2) or first:
     if not first:
         k_parameter *= 2
         if total_diff_antes == total_diff_despues:
-            segunda_vez_igual = True
-    first = False
+            cant_iguales_consecutivas += 1
+        else:
+            cant_iguales_consecutivas = 0
     total_diff_antes = total_diff_despues
     total_subjects = len(subjects)
     Benchmark_info.main(subjects, 1, k_parameter, k_parameter, time_out)
-    subjects = get_diff(subjects, Benchmark)
+    first = False
+    subjects = get_diff(subjects, Benchmark, k_parameter, time_out)
     total_diff_despues = len(subjects)
     tempFileName = "diff_result_"+Benchmark+".txt"
     with open(os.path.join(tempFileName), 'a+') as file:

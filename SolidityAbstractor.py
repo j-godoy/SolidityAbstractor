@@ -249,7 +249,7 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
     for functionName in tempFunctionNames:
         if basic_mode == False:
             print(functionName + "---" + str(arg))
-        indexPreconditionRequire, _, indexFunction = get_params_from_function_name(functionName)
+        indexPreconditionRequire, _, _ = get_params_from_function_name(functionName)
         query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, False)
         if query_result[1] == TRACK_VARS:
             query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, True)
@@ -260,7 +260,7 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
             statesTemp2.append(statesTemp[indexPreconditionRequire])
             extraConditionsTemp2.append(extraConditionsTemp[indexPreconditionRequire])
             if query_result[1] != "":
-                print("[try_preconditions] Time out en función: " + functions[indexFunction] + " desde estado inicial:")
+                print("[try_preconditions] Time out en función: " + functionName + " desde estado inicial:")
                 i_state = output_combination(indexPreconditionRequire, statesTemp)
                 print(i_state)
     return preconditionsTemp2, statesTemp2, extraConditionsTemp2
@@ -298,6 +298,8 @@ def try_init(tool, tempFunctionNames, final_directory, states):
 
 def try_command(tool, temp_function_name, tempFunctionNames, final_directory, statesTemp, txBound, time_out, trackAllVars):
     global tool_output, verbose, number_to, number_corral_fail, number_corral_fail_with_tackvars
+
+    trackAllVars = True #
     
     #Evito chequear funciones "dummy"
     if len(statesTemp) > 0:
@@ -364,7 +366,9 @@ def add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFu
     global dot, functions
     dot.node(combinationToString(statesTemp[indexPreconditionRequire]), output_combination(indexPreconditionRequire, statesTemp))
     dot.node(combinationToString(states[indexPreconditionAssert]), output_combination(indexPreconditionAssert, states))
-    dot.edge(combinationToString(statesTemp[indexPreconditionRequire]),combinationToString(states[indexPreconditionAssert]) , label=str(functions[indexFunction]+succes_by_to))
+    # transiciones dummy no las agrego
+    if not functions[indexFunction].startswith("dummy_"):
+        dot.edge(combinationToString(statesTemp[indexPreconditionRequire]),combinationToString(states[indexPreconditionAssert]) , label=str(functions[indexFunction]+succes_by_to))
 
 def reduceCombinations(arg):
     global fileName, preconditionsThreads, statesThreads, extraConditionsThreads, contractName
@@ -488,6 +492,7 @@ def main():
         print(len(preconditions))
 
     if mode == Mode.epa and not(reduced):
+        print("Reducing combinations...")
         for i in range(threadCount):
             thread = Thread(target = reduceCombinations, args = [i])
             thread.start()
@@ -496,6 +501,7 @@ def main():
         for thread in threads:
             thread.join()
 
+    print("Reducing combinations Ended.")
     preconditionsThreads = [x for x in preconditionsThreads if len(x)]
     statesThreads = [x for x in statesThreads if len(x)]
     extraConditionsThreads = [x for x in extraConditionsThreads if len(x)]
@@ -533,22 +539,22 @@ def main():
     statesThreads = np.array_split(statesThreads, divideCount)
     extraConditionsThreads = np.array_split(extraConditionsThreads, divideCount)
 
-    # for y in range(divideThreads):
-    #     threads = []
-        # for i in range(realThreadCount):
-        #     thread = Thread(target = validCombinations, args = [i + y * threadCount])
-        #     thread.start()
-        #     threads.append(thread)
+    for y in range(divideThreads):
+        threads = []
+        for i in range(realThreadCount):
+            thread = Thread(target = validCombinations, args = [i + y * threadCount])
+            thread.start()
+            threads.append(thread)
 
-        # for thread in threads:
-        #     thread.join()
+        for thread in threads:
+            thread.join()
             
     
     # Otra alternativa
-    with concurrent.futures.ThreadPoolExecutor(max_workers=threadCount) as executor:
-        for y in range(divideThreads):
-            for i in range(realThreadCount):
-                executor.submit(validCombinations, i + y * threadCount)
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=threadCount) as executor:
+    #     for y in range(divideThreads):
+    #         for i in range(realThreadCount):
+    #             executor.submit(validCombinations, i + y * threadCount)
 
     threads = []
     
@@ -583,11 +589,6 @@ if __name__ == "__main__":
     init = time.time()
     epaMode = False
     statesMode = False
-    # For Debug
-    # sys.argv.append("HelloBlockchainFixedConfig")
-    # sys.argv.append("-t")
-    # sys.argv.append("-e")
-    # sys.argv.append("-re")
     
     configFile = sys.argv[1]
     verbose = False
@@ -660,6 +661,7 @@ if __name__ == "__main__":
     print(total_cfail2)
     tempFileName = configFile.replace('Config','')+"-"+str(mode)+".txt"
     with open(os.path.join(SAVE_GRAPH_PATH,tempFileName), 'w') as file:
+        file.write("Subject: " + tempFileName.replace(".txt", "")+"\n")
         file.write(total_time+"\n")
         file.write(total_to+"\n")
         file.write(total_cfail1+"\n")

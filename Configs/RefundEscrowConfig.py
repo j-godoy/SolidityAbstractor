@@ -12,7 +12,7 @@ statePreconditions = [
 "_state == State.Active",
 "_state == State.Active",
 "_state == State.Active",
-"_state == State.Closed",
+"_state == State.Closed && address(this).balance > 0",
 "depositsCount > 0 && _state == State.Refunding",
 "true"
 ]

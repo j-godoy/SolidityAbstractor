@@ -148,7 +148,6 @@ contract DepositLocker is DepositLockerInterface, Ownable {
 
         valuePerDepositor = _valuePerDepositor;
         deposited = true;
-        // time = time + 1;
         //emit Deposit(msg.value, valuePerDepositor, numberOfDepositors);
     }
 
@@ -308,13 +307,13 @@ contract ValidatorAuction_withdraw is Ownable {
         A = _A;
 
         //Deposit Locker init
-        _depositLocker.init(dloker_releaseTimestamp, dloker_slasher, dloker_depositorsProxy, dloker_time);
+        depositLocker.init(dloker_releaseTimestamp, dloker_slasher, dloker_depositorsProxy, dloker_time);
         t();
     }
 
-    function() external payable stateIs(AuctionState.Started) {
-        bid();
-    }
+    // function() external payable stateIs(AuctionState.Started) {
+    //     bid();
+    // }
 
     function bid() public payable stateIs(AuctionState.Started) {
         require(time > startTime, "It is too early to bid.");
@@ -446,7 +445,7 @@ contract ValidatorAuction_withdraw is Ownable {
         t();
     }
 
-        function withdrawNoA() public {
+    function withdrawNoA() public {
         require(
         ((auctionState == AuctionState.Ended ||
                 auctionState == AuctionState.Failed) && bids[msg.sender] > 0),
@@ -467,7 +466,7 @@ contract ValidatorAuction_withdraw is Ownable {
     }
 
     function currentPrice()
-        public
+        internal
         view
         stateIs(AuctionState.Started)
         returns (uint)
@@ -478,7 +477,7 @@ contract ValidatorAuction_withdraw is Ownable {
     }
 
     function priceAtElapsedTime(uint secondsSinceStart)
-        public
+        internal
         view
         returns (uint)
     {
@@ -570,37 +569,7 @@ contract ValidatorAuction_withdraw is Ownable {
     }
 
 
-// Desde este estado:
-// withdrawA();
-// withdrawNoA();
 
-// Haciendo withdrawNoA();fail?
-
-// Llegas al estado:
-// withdrawA();
-
-
-// VeriSol C:\Users\j_god\Downloads\verisol-test\V2\verisol-test\output2\OutputTemp2.sol ValidatorAuction_withdraw /txBound:6 /trackAllVars /ignoreMethod:vc0x1x2@ValidatorAuction_withdraw /ignoreMethod:vc0x2x2@ValidatorAuction_withdraw /ignoreMethod:vc0x3x2@ValidatorAuction_withdraw /ignoreMethod:vc0x4x2@ValidatorAuction_withdraw /ignoreMethod:vc0x5x2@ValidatorAuction_withdraw /ignoreMethod:vc0x6x2@ValidatorAuction_withdraw
-// Desde este estado:
-// startAuction();
-// addToWhitelist(addressToWhitelist);
-
-// Haciendo startAuction();
-
-// Llegas al estado:
-// Vacio
-
-
-
-
-// VeriSol C:\Users\j_god\Downloads\verisol-test\V2\verisol-test\output2\OutputTemp2.sol ValidatorAuction_withdraw /txBound:6 /trackAllVars /ignoreMethod:vc0x0x2@ValidatorAuction_withdraw /ignoreMethod:vc0x2x2@ValidatorAuction_withdraw /ignoreMethod:vc0x3x2@ValidatorAuction_withdraw /ignoreMethod:vc0x4x2@ValidatorAuction_withdraw /ignoreMethod:vc0x5x2@ValidatorAuction_withdraw /ignoreMethod:vc0x6x2@ValidatorAuction_withdraw
-// Desde este estado:
-// depositBids();
-
-// Haciendo depositBids();fail?
-
-// Llegas al estado:
-// bid();
 
     // function vc0x3x2() payable public {
     //     bool pre_bid = (countWhitelist > 0 && depositLocker.initialized() && !depositLocker.deposited() && (biddersTotal < maximalNumberOfParticipants) && ((time - startTime) < (100 * 365) && time > startTime && time <= (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);

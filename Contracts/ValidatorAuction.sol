@@ -305,16 +305,15 @@ contract ValidatorAuction is Ownable {
         );*/
         auctionState = AuctionState.Deployed;
         time = _time;
-        // A = _A;
         //Deposit Locker init
-        _depositLocker.init(dloker_releaseTimestamp, dloker_slasher, dloker_depositorsProxy, dloker_time);
+        depositLocker.init(dloker_releaseTimestamp, dloker_slasher, dloker_depositorsProxy, dloker_time);
 
         t();
     }
 
-    function() external payable stateIs(AuctionState.Started) {
-        bid();
-    }
+    // function() external payable stateIs(AuctionState.Started) {
+    //     bid();
+    // }
 
     function bid() public payable stateIs(AuctionState.Started) {
         require(time > startTime, "It is too early to bid.");
@@ -353,10 +352,6 @@ contract ValidatorAuction is Ownable {
             transitionToDepositPending();
         }
         
-        // if (msg.sender == A) {
-        //     hasA = true;
-        // }
-
         t();
     }
 
@@ -401,11 +396,11 @@ contract ValidatorAuction is Ownable {
         onlyOwner
         stateIs(AuctionState.Deployed)
     {
-        if (whitelist[addressToWhitelist] == 0) {
-            countWhitelist += 1;
-        }
-        whitelist[addressToWhitelist] = 1;
-        t();
+            if (whitelist[addressToWhitelist] == 0) {
+                countWhitelist += 1;
+            }
+            whitelist[addressToWhitelist] = 1;
+            t();
     }
 
     // function addToWhitelist(address[] memory addressesToWhitelist)
@@ -439,50 +434,9 @@ contract ValidatorAuction is Ownable {
          t();
     }
 
-    // function withdrawA() public {
-    //     require(
-    //         ((auctionState == AuctionState.Ended ||
-    //             auctionState == AuctionState.Failed)),
-    //         "You cannot withdraw before the auction is ended or it failed."
-    //     );
-
-    //     // require(biddersArray.length > 0 && hasA && msg.sender == A);
-    //     require(countBidders > 0 && hasA && msg.sender == A);
-
-    //     if (auctionState == AuctionState.Ended) {
-    //         withdrawAfterAuctionEnded();
-    //     } else if (auctionState == AuctionState.Failed) {
-    //         withdrawAfterAuctionFailed();
-    //     } else {
-    //         //require(false); // Should be unreachable
-    //     }
-    //     hasA = false;
-    //     countBidders -= 1;
-    //     // biddersArray = remove(msg.sender, biddersArray);
-    //     t();
-    // }
-
-    // function withdrawNoA() public {
-    //     require(
-    //     ((auctionState == AuctionState.Ended ||
-    //             auctionState == AuctionState.Failed) && bids[msg.sender] > 0),
-    //         "You cannot withdraw before the auction is ended or it failed."
-    //     );
-    //     require(countBidders > 0 && (!hasA || countBidders > 1)  && msg.sender != A);
-
-    //     if (auctionState == AuctionState.Ended) {
-    //         withdrawAfterAuctionEnded();
-    //     } else if (auctionState == AuctionState.Failed) {
-    //         withdrawAfterAuctionFailed();
-    //     } else {
-    //         //require(false); // Should be unreachable
-    //     }
-    //     // biddersArray = remove(msg.sender, biddersArray);
-    //     t();
-    // }
 
     function currentPrice()
-        public
+        internal
         view
         stateIs(AuctionState.Started)
         returns (uint)
@@ -493,7 +447,7 @@ contract ValidatorAuction is Ownable {
     }
 
     function priceAtElapsedTime(uint secondsSinceStart)
-        public
+        internal
         view
         returns (uint)
     {

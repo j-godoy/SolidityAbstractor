@@ -6,7 +6,7 @@ functions = [
 "Claim();",
 "dummy_balanceGTZero();",
 "dummy_balanceIsZero();",
-"t();",
+"t(n);",
 ]
 statePreconditions = [
 "(max_block >= blockNumber)",
@@ -24,7 +24,7 @@ functionPreconditions = [
 "true",
 "true"
 ]
-functionVariables = ""
+functionVariables = "uint n"
 tool_output = "Found a counterexample"
 
 statesModeState = []

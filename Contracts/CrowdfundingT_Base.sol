@@ -64,7 +64,8 @@ contract CrowdfundingT_Base {
     //     return auxArray;
     // }
 
-    function t() public {
-        blockNumber = blockNumber + 1;
+    function t(uint n) public {
+        require(n >= 0);
+        blockNumber = blockNumber + n;
     }
  }

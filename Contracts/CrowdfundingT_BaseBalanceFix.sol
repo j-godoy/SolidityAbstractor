@@ -55,58 +55,19 @@ contract CrowdfundingBase {
         balance = balance - val;
     }
 
-    // function remove(address _valueToFindAndRemove, address[] memory _array) public  returns(address[] memory) {
-    //     auxArray = new address[](0); 
-    //     for (uint i = 0; i < _array.length; i++){
-    //         if(_array[i] != _valueToFindAndRemove)
-    //             auxArray.push(_array[i]);
-    //     }
-    //     return auxArray;
-    // }
 
-    function dummy_balanceGTZero() public { }
-    function dummy_balanceIsZero() public { }
-
-    function t() public {
-        blockNumber = blockNumber + 1;
+    function dummy_balanceGTZero() public {
+        require(balance > 0);
+    }
+    
+    function dummy_balanceIsZero() public {
+        require(balance == 0);
     }
 
-    // function Si_to_Se_from_f() public {
-    // // Donate
-    // bool pre_donate = (max_block > blockNumber);
-
-    // // Funds
-    // bool pre_funds = (max_block < blockNumber) && (goal <= balance);
-
-    // // Claim
-    // bool pre_claim = (max_block < blockNumber) && (!funded) && (goal > balance) && countBackers > 0;
+    function t(uint n) public {
+        require(n >= 0);
+        blockNumber = blockNumber + n;
+    }
 
 
-    // // tau
-    // bool pre_tau = true;
-
-    // bool balance_positivo = balance > 0;
-
-	// require(pre_donate);
-    // require(!pre_funds);
-    // require(!pre_claim);
-    // require(pre_tau);
-    // require(balance_positivo);
-		
-    // Donate();
-	
-    // //Donate
-    // bool pre_donate1 = (max_block > blockNumber);
-    // // Funds
-    // bool pre_funds1 = (max_block < blockNumber) && (goal <= balance);
-    // // Claim
-    // bool pre_claim1 = (max_block < blockNumber) && (!funded) && (goal > balance) && countBackers > 0;
-    // // tau
-    // bool pre_tau1 = true;
-
-    // bool balance_positivo1 = balance > 0;
-    
-    // bool final_state = pre_donate1 && !pre_funds1 && !pre_claim1 && pre_tau1 && balance_positivo1;
-    // assert(!final_state);
-	// }
  }

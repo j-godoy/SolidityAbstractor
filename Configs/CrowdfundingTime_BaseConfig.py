@@ -4,7 +4,7 @@ functions = [
 "Donate();",
 "GetFunds();",
 "Claim();",
-"t();"
+"t(n);"
 ]
 statePreconditions = [
 "(max_block > blockNumber)",
@@ -18,7 +18,7 @@ functionPreconditions = [
 "backers[msg.sender] != 0",
 "true"
 ]
-functionVariables = ""
+functionVariables = "uint n"
 tool_output = "Found a counterexample"
 
 statesModeState = []

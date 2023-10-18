@@ -64,10 +64,16 @@ contract CrowdfundingBase {
     //     return auxArray;
     // }
 
-    // function dummy_balanceGTZero() public { }
-    // function dummy_balanceIsZero() public { }
+    function dummy_balanceGTZero() public {
+        require(balance > 0);
+    }
 
-    function t() public {
-        blockNumber = blockNumber + 1;
+    function dummy_balanceIsZero() public {
+        require(balance == 0);
+    }
+
+    function t(uint n) public {
+        require(n >= 0);
+        blockNumber = blockNumber + n;
     }
  }

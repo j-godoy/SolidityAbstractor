@@ -176,14 +176,15 @@ contract RefundEscrow {
      */
     function beneficiaryWithdraw() public {
         require(_state == State.Closed);
-        //_beneficiary.transfer(address(this).balance);
+        require(address(this).balance > 0);
+        _beneficiary.transfer(address(this).balance);
     }
 
     /**
      * @dev Returns whether refundees can withdraw their deposits (be refunded). The overridden function receives a
      * 'payee' argument, but we ignore it here since the condition is global, not per-payee.
      */
-    function withdrawalAllowed(address) public view returns (bool) {
+    function withdrawalAllowed(address) internal view returns (bool) {
         return _state == State.Refunding;
     }
 
@@ -194,7 +195,7 @@ contract RefundEscrow {
 
     mapping(address => uint256) private _deposits;
 
-    function depositsOf(address payee) public view returns (uint256) {
+    function depositsOf(address payee) internal view returns (uint256) {
         return _deposits[payee];
     }
 
@@ -224,7 +225,7 @@ contract RefundEscrow {
 
         _deposits[payee] = 0;
 
-        //payee.transfer(payment);
+        payee.transfer(payment);
 
         depositsCount -= 1;
 
@@ -238,7 +239,7 @@ contract RefundEscrow {
 
     function withdrawA(address payable payee) public onlyPrimary {
         require(withdrawalAllowed(payee));
-        require(A == payee && depositsCount > 0);
+        require(hasA && A == payee && depositsCount > 0);
         require(_deposits[payee] > 0);
         withdrawInternal(payee);
         hasA = false;

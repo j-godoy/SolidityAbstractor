@@ -24,7 +24,6 @@ contract SimpleAuction {
 
     // Current state of the auction.
     address public highestBidder = address(0x0);
-    address public highestBidderA;
     uint public highestBid;
     uint time;
 
@@ -53,13 +52,12 @@ contract SimpleAuction {
     // unicefstories.org/2017/08/04/unicef-ventures-exploring-smart-contracts/
     address payable beneficiary;
     
-    constructor(uint _time, uint _biddingTime, uint _auctionStart, address _highestBidderA) public
+    constructor(uint _time, uint _biddingTime, uint _auctionStart) public
     {
         time = _time;
         beneficiary = _beneficiary;
         auctionStart = _auctionStart;
         biddingTime = _biddingTime;
-        highestBidderA = _highestBidderA;
     }
 
     /// Bid on the auction with the value sent
@@ -120,7 +118,7 @@ contract SimpleAuction {
         return true;
     }
     // Users want to know when the auction ends, seconds from 1970-01-01
-    function auctionEndTime() public view returns (uint256) {
+    function auctionEndTime() internal view returns (uint256) {
         return auctionStart + biddingTime;
     }
     

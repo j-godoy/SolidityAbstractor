@@ -6,7 +6,7 @@ functions = [
 "checkGoalReached();",
 "refund();",
 "t();",
-"IsCrowdsaleClosed();"
+"dummy_isCrowdsaleClosed();"
 ]
 statePreconditions = [
 "(!isCrowdSaleSetup && !(beneficiaryWallet != address(0x0)))",

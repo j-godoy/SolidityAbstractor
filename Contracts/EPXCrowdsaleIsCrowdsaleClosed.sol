@@ -112,7 +112,7 @@ contract EPXCrowdsale is owned, safeMath {
   event Buy(address indexed _sender, uint256 _eth, uint256 _EPX);
   event Refund(address indexed _refunder, uint256 _value);
   event Burn(address _from, uint256 _value);
-  mapping(address => uint256) balancesArray;
+  // mapping(address => uint256) balancesArray;
   mapping(address => uint256) usersEPXfundValue;
   uint usersEPXfundValueCount = 0;
 
@@ -254,7 +254,7 @@ contract EPXCrowdsale is owned, safeMath {
 
     // //burn user's token EPX token balance, refund Eth sent
     uint256 ethRefund = usersEPXfundValue[msg.sender];
-    balancesArray[msg.sender] = 0;
+    // balancesArray[msg.sender] = 0;
     usersEPXfundValue[msg.sender] = 0;
     usersEPXfundValueCount = usersEPXfundValueCount - 1;
 
@@ -272,7 +272,7 @@ contract EPXCrowdsale is owned, safeMath {
     blockNumber = blockNumber + 1;
   }
 
-  function IsCrowdsaleClosed() view public {
+  function dummy_isCrowdsaleClosed() view public {
     require(isCrowdSaleClosed);
   }
 

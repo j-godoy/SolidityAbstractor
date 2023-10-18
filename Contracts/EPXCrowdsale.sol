@@ -112,7 +112,7 @@ contract EPXCrowdsale is owned, safeMath {
   event Buy(address indexed _sender, uint256 _eth, uint256 _EPX);
   event Refund(address indexed _refunder, uint256 _value);
   event Burn(address _from, uint256 _value);
-  mapping(address => uint256) balancesArray;
+  // mapping(address => uint256) balancesArray;
   mapping(address => uint256) usersEPXfundValue;
   uint usersEPXfundValueCount = 0;
 
@@ -209,11 +209,11 @@ contract EPXCrowdsale is owned, safeMath {
     //emit Buy(msg.sender, msg.value, rewardTransferAmount);
   }
 
-  function beneficiaryMultiSigWithdraw(uint256 _amount) public onlyOwner {
-    require(areFundsReleasedToBeneficiary && (amountRaisedInWei >= fundingMinCapInWei));
-    beneficiaryWallet.transfer(_amount);
-    //emit Transfer(address(this), beneficiaryWallet, _amount);
-  }
+  // function beneficiaryMultiSigWithdraw(uint256 _amount) internal onlyOwner {
+  //   require(areFundsReleasedToBeneficiary && (amountRaisedInWei >= fundingMinCapInWei));
+  //   beneficiaryWallet.transfer(_amount);
+  //   //emit Transfer(address(this), beneficiaryWallet, _amount);
+  // }
 
   function checkGoalReached() public onlyOwner { // return crowdfund status to owner for each result case, update public vars
     // update state & status variables
@@ -254,7 +254,7 @@ contract EPXCrowdsale is owned, safeMath {
 
     // //burn user's token EPX token balance, refund Eth sent
     uint256 ethRefund = usersEPXfundValue[msg.sender];
-    balancesArray[msg.sender] = 0;
+    // balancesArray[msg.sender] = 0;
     usersEPXfundValue[msg.sender] = 0;
     usersEPXfundValueCount = usersEPXfundValueCount - 1;
 

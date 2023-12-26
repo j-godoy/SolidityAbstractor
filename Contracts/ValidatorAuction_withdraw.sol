@@ -395,33 +395,33 @@ contract ValidatorAuction_withdraw is Ownable {
         t();
     }
 
-    function addToWhitelist(address addressToWhitelist)
-        public
-        onlyOwner
-        stateIs(AuctionState.Deployed)
-    {
-        if (whitelist[addressToWhitelist] == 0) {
-            countWhitelist += 1;
-        }
-        whitelist[addressToWhitelist] = 1;
-        t();
-    }
-
-    // function addToWhitelist(address[] memory addressesToWhitelist)
+    // function addToWhitelist(address addressToWhitelist)
     //     public
     //     onlyOwner
     //     stateIs(AuctionState.Deployed)
     // {
-    //     for (uint32 i = 0; i < addressesToWhitelist.length; i++) {
-    //         if (whitelist[addressesToWhitelist[i]] == 0) {
-    //             countWhitelist += 1;
-    //         }
-    //         whitelist[addressesToWhitelist[i]] = 1;
-    //         //emit AddressWhitelisted(addressesToWhitelist[i]);
+    //     if (whitelist[addressToWhitelist] == 0) {
+    //         countWhitelist += 1;
     //     }
-    //     //whitelist[A] = true;
+    //     whitelist[addressToWhitelist] = 1;
     //     t();
     // }
+
+    function addToWhitelist(address[] memory addressesToWhitelist)
+        public
+        onlyOwner
+        stateIs(AuctionState.Deployed)
+    {
+        for (uint32 i = 0; i < addressesToWhitelist.length; i++) {
+            if (whitelist[addressesToWhitelist[i]] == 0) {
+                countWhitelist += 1;
+            }
+            whitelist[addressesToWhitelist[i]] = 1;
+            //emit AddressWhitelisted(addressesToWhitelist[i]);
+        }
+        //whitelist[A] = true;
+        t();
+    }
 
     function withdrawA() public {
         require(
@@ -445,7 +445,7 @@ contract ValidatorAuction_withdraw is Ownable {
         t();
     }
 
-    function withdrawNoA() public {
+    function withdrawOther() public {
         require(
         ((auctionState == AuctionState.Ended ||
                 auctionState == AuctionState.Failed) && bids[msg.sender] > 0),
@@ -578,10 +578,10 @@ contract ValidatorAuction_withdraw is Ownable {
     //     bool pre_closeAuction = ((biddersTotal < maximalNumberOfParticipants) && (time > (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
     //     bool pre_addToWhitelist = auctionState == AuctionState.Deployed;
     //     bool pre_withdrawA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && hasA);
-    //     bool pre_withdrawNoA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
-    //     require(!pre_bid && !pre_startAuction && !pre_depositsBids && !pre_closeAuction && !pre_addToWhitelist && pre_withdrawA && pre_withdrawNoA);
+    //     bool pre_withdrawOther = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
+    //     require(!pre_bid && !pre_startAuction && !pre_depositsBids && !pre_closeAuction && !pre_addToWhitelist && pre_withdrawA && pre_withdrawOther);
 
-    //     withdrawNoA();
+    //     withdrawOther();
 
     //     bool pre_bid2 = (countWhitelist > 0 && depositLocker.initialized() && !depositLocker.deposited() && (biddersTotal < maximalNumberOfParticipants) && ((time - startTime) < (100 * 365) && time > startTime && time <= (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
     //     bool pre_startAuction2 = depositLocker.initialized() && auctionState == AuctionState.Deployed;
@@ -589,10 +589,10 @@ contract ValidatorAuction_withdraw is Ownable {
     //     bool pre_closeAuction2 = ((biddersTotal < maximalNumberOfParticipants) && (time > (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
     //     bool pre_addToWhitelist2 = auctionState == AuctionState.Deployed;
     //     bool pre_withdrawA2 = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && hasA);
-    //     bool pre_withdrawNoA2 = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
+    //     bool pre_withdrawOther2 = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
 
 
-    //     assert(!(!pre_bid2 && !pre_startAuction2 && !pre_depositsBids2 && !pre_closeAuction2 && !pre_addToWhitelist2 && pre_withdrawA2 && !pre_withdrawNoA2));
+    //     assert(!(!pre_bid2 && !pre_startAuction2 && !pre_depositsBids2 && !pre_closeAuction2 && !pre_addToWhitelist2 && pre_withdrawA2 && !pre_withdrawOther2));
     // }
 
 }

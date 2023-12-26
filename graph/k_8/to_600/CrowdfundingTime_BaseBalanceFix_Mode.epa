@@ -1,0 +1,223 @@
+// CrowdfundingT_BaseBalanceFix.sol
+digraph {
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" -> "0-0-0-0-5-6-" [label="t(n);"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" -> "0-0-0-0-5-6-" [label="Claim();"]
+	"0-2-0-4-0-6-" [label="GetFunds();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-4-0-6-" -> "0-0-0-0-5-6-" [label="GetFunds();"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" -> "0-0-0-0-5-6-" [label="t(n);"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" -> "1-0-0-4-0-6-" [label="Donate();"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" -> "1-0-0-4-0-6-" [label="Donate();"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" -> "1-0-0-4-0-6-" [label="t(n);"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" -> "1-0-0-0-5-6-" [label="Donate();"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" -> "1-0-0-0-5-6-" [label="t(n);"]
+	"0-2-0-4-0-6-" [label="GetFunds();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-2-0-4-0-6-" [label="GetFunds();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-2-0-4-0-6-" [label="GetFunds();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-2-0-4-0-6-" [label="GetFunds();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-2-0-4-0-6-" -> "0-2-0-4-0-6-" [label="t(n);"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-2-0-4-0-6-" [label="GetFunds();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" -> "0-2-0-4-0-6-" [label="t(n);"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" -> "0-2-0-0-5-6-" [label="GetFunds();"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-4-0-6-" [label="GetFunds();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-4-0-6-" -> "0-2-0-0-5-6-" [label="GetFunds();"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" -> "0-2-0-0-5-6-" [label="t(n);"]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"1-0-0-0-5-6-" -> "0-2-0-0-5-6-" [label="t(n);"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" -> "0-0-3-4-0-6-" [label="Claim();"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" -> "0-0-3-4-0-6-" [label="t(n);"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" -> "0-0-3-4-0-6-" [label="t(n);"]
+	init [label=init]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	init -> "0-0-0-0-5-6-" [label=constructor]
+	init [label=init]
+	"1-0-0-0-5-6-" [label="Donate();
+dummy_balanceIsZero();
+t(n);
+"]
+	init -> "1-0-0-0-5-6-" [label=constructor]
+	init [label=init]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	init -> "0-2-0-0-5-6-" [label=constructor]
+}

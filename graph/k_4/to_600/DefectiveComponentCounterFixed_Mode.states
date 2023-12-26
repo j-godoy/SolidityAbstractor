@@ -1,0 +1,9 @@
+// DefectiveComponentCounter_fixed.sol
+digraph {
+	"1-0-" [label=Create]
+	"1-0-" [label=Create]
+	"1-0-" -> "1-0-" [label="GetDefectiveComponentsCount();"]
+	init [label=init]
+	"1-0-" [label=Create]
+	init -> "1-0-" [label=constructor]
+}

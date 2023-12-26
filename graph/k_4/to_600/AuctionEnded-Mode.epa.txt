@@ -1,0 +1,5 @@
+Subject: AuctionEnded-Mode.epa
+Total time: 39.77664351463318
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

@@ -245,7 +245,7 @@ contract RefundEscrow {
         hasA = false;
     }
     
-    function withdrawNoA(address payable payee) public onlyPrimary {
+    function withdrawOther(address payable payee) public onlyPrimary {
         require(withdrawalAllowed(payee));
         require(A != payee && depositsCount > 0 && (!hasA || depositsCount > 1));
         require(_deposits[payee] > 0);

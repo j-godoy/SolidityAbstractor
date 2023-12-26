@@ -613,7 +613,7 @@ contract ValidatorAuction_withdraw is Ownable {
         t();
     }
 
-        function withdrawNoA() public {
+        function withdrawOther() public {
         require(
         ((auctionState == AuctionState.Ended ||
                 auctionState == AuctionState.Failed) && bids[msg.sender] > 0),
@@ -747,11 +747,11 @@ contract ValidatorAuction_withdraw is Ownable {
         bool pre_closeAuction = ((biddersTotal < maximalNumberOfParticipants) && (time > (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
         bool pre_addToWhitelist = auctionState == AuctionState.Deployed;
         bool pre_withdrawA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && hasA);
-        bool pre_withdrawNoA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
+        bool pre_withdrawOther = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
         // require(pre_startAuction && pre_addToWhitelist);
 
 
-        assert(!(!pre_bid && !pre_startAuction && !pre_depositsBids && !pre_closeAuction && !pre_addToWhitelist && pre_withdrawA && !pre_withdrawNoA));
+        assert(!(!pre_bid && !pre_startAuction && !pre_depositsBids && !pre_closeAuction && !pre_addToWhitelist && pre_withdrawA && !pre_withdrawOther));
     }
 
 }

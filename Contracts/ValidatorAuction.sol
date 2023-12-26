@@ -192,7 +192,7 @@ contract ValidatorAuction is Ownable {
 
     AuctionState public auctionState;
     DepositLocker public depositLocker;
-    mapping(address => uint) public whitelist;
+    mapping(address => bool) public whitelist;
     uint countWhitelist = 0;
     mapping(address => uint) public bids;
     // address[] public bidders = new address[](0);
@@ -327,7 +327,7 @@ contract ValidatorAuction is Ownable {
             msg.value >= slotPrice,
             "Not enough ether was provided for bidding."
         );
-        require(whitelist[msg.sender] == 1, "The sender is not whitelisted.");
+        require(whitelist[msg.sender], "The sender is not whitelisted.");
         // require(!isSenderContract(), "The sender cannot be a contract.");
         require(
             biddersTotal < maximalNumberOfParticipants,
@@ -391,30 +391,33 @@ contract ValidatorAuction is Ownable {
         t();
     }
 
-    function addToWhitelist(address addressToWhitelist)
-        public
-        onlyOwner
-        stateIs(AuctionState.Deployed)
-    {
-            if (whitelist[addressToWhitelist] == 0) {
-                countWhitelist += 1;
-            }
-            whitelist[addressToWhitelist] = 1;
-            t();
-    }
-
-    // function addToWhitelist(address[] memory addressesToWhitelist)
+    // function addToWhitelist(address addressToWhitelist)
     //     public
     //     onlyOwner
     //     stateIs(AuctionState.Deployed)
     // {
-    //     for (uint32 i = 0; i < addressesToWhitelist.length; i++) {
-    //         whitelist[addressesToWhitelist[i]] = true;
-    //         //emit AddressWhitelisted(addressesToWhitelist[i]);
-    //     }
-    //     //whitelist[A] = true;
-    //     t();
+    //         if (whitelist[addressToWhitelist] == 0) {
+    //             countWhitelist += 1;
+    //         }
+    //         whitelist[addressToWhitelist] = 1;
+    //         t();
     // }
+
+    function addToWhitelist(address[] memory addressesToWhitelist)
+        public
+        onlyOwner
+        stateIs(AuctionState.Deployed)
+    {
+        for (uint32 i = 0; i < addressesToWhitelist.length; i++) {
+            if (whitelist[addressesToWhitelist[i]] == false) {
+                countWhitelist += 1;
+            }
+            whitelist[addressesToWhitelist[i]] = true;
+            //emit AddressWhitelisted(addressesToWhitelist[i]);
+        }
+        //whitelist[A] = true;
+        t();
+    }
 
     function withdraw() public {
         require(
@@ -546,7 +549,7 @@ contract ValidatorAuction is Ownable {
     //     bool pre_addToWhitelist = auctionState == AuctionState.Deployed;
     //     bool pre_withdraw = countBidders > 0 && (auctionState == AuctionState.Ended || auctionState == AuctionState.Failed);
     //     // bool pre_withdrawA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && hasA);
-    //     // bool pre_withdrawNoA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
+    //     // bool pre_withdrawOther = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
     //     // require(pre_startAuction && pre_addToWhitelist);
 
 

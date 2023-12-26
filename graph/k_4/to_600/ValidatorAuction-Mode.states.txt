@@ -1,0 +1,5 @@
+Subject: ValidatorAuction-Mode.states
+Total time: 184.15240788459778
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

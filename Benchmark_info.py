@@ -135,10 +135,13 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
     TXBOUND_END = txbound_end
     TIME_OUT = timeout
 
+    rerun_subjects = False
+
     table = [['Config', 'Mode' ,'Time', 'Inital pre count' , 'Pre count after true', 'Reduce Pr count', 'Functions count']]
     init = time.time()
 
     all_names_ok = True
+    configs_not_exist = []
     for config in configs:
         configName = config[0]
         if not os.path.exists(os.path.join("Configs", configName+".py")):
@@ -148,7 +151,18 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
     if not all_names_ok:
         exit(1)
 
-    for config in configs:
+    # solo ejecuto los que no se generaron
+    for config in subjects_config:
+        path = os.path.join("graph", "k_"+str(txbound_init), "to_"+str(timeout), config)
+        if not os.path.exists(path):
+            configs_not_exist.append(config)
+    
+    if not rerun_subjects:
+        configs_not_exist = rename_configs(configs_not_exist)
+    else:
+        configs_not_exist = configs
+
+    for config in configs_not_exist:
         configName = config[0]
         modes = config[1]
         print("Corriendo " + configName)

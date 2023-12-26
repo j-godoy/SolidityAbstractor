@@ -12,7 +12,7 @@ functions = [
 "addToWhitelist(addressToWhitelist);",
 
 "withdrawA();",
-"withdrawNoA();",
+"withdrawOther();",
 ]
 statePreconditions = [
 "(!dlocker_initialized && _releaseTimestamp > time)",

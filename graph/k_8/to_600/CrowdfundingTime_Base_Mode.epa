@@ -1,0 +1,108 @@
+// CrowdfundingT_Base.sol
+digraph {
+	"0-0-0-4-" [label="t(n);
+"]
+	"0-0-0-4-" [label="t(n);
+"]
+	"0-0-0-4-" -> "0-0-0-4-" [label="t(n);"]
+	"0-2-0-4-" [label="GetFunds();
+t(n);
+"]
+	"0-0-0-4-" [label="t(n);
+"]
+	"0-2-0-4-" -> "0-0-0-4-" [label="GetFunds();"]
+	"0-0-3-4-" [label="Claim();
+t(n);
+"]
+	"0-0-0-4-" [label="t(n);
+"]
+	"0-0-3-4-" -> "0-0-0-4-" [label="Claim();"]
+	"1-0-0-4-" [label="Donate();
+t(n);
+"]
+	"0-0-0-4-" [label="t(n);
+"]
+	"1-0-0-4-" -> "0-0-0-4-" [label="t(n);"]
+	"0-0-0-4-" [label="t(n);
+"]
+	"0-2-0-4-" [label="GetFunds();
+t(n);
+"]
+	"0-0-0-4-" -> "0-2-0-4-" [label="t(n);"]
+	"1-0-0-4-" [label="Donate();
+t(n);
+"]
+	"1-0-0-4-" [label="Donate();
+t(n);
+"]
+	"1-0-0-4-" -> "1-0-0-4-" [label="Donate();"]
+	"0-0-0-4-" [label="t(n);
+"]
+	"0-0-3-4-" [label="Claim();
+t(n);
+"]
+	"0-0-0-4-" -> "0-0-3-4-" [label="t(n);"]
+	"1-0-0-4-" [label="Donate();
+t(n);
+"]
+	"1-0-0-4-" [label="Donate();
+t(n);
+"]
+	"1-0-0-4-" -> "1-0-0-4-" [label="t(n);"]
+	"0-2-0-4-" [label="GetFunds();
+t(n);
+"]
+	"0-2-0-4-" [label="GetFunds();
+t(n);
+"]
+	"0-2-0-4-" -> "0-2-0-4-" [label="GetFunds();"]
+	"0-2-0-4-" [label="GetFunds();
+t(n);
+"]
+	"0-2-0-4-" [label="GetFunds();
+t(n);
+"]
+	"0-2-0-4-" -> "0-2-0-4-" [label="t(n);"]
+	"1-0-0-4-" [label="Donate();
+t(n);
+"]
+	"0-2-0-4-" [label="GetFunds();
+t(n);
+"]
+	"1-0-0-4-" -> "0-2-0-4-" [label="t(n);"]
+	"0-0-3-4-" [label="Claim();
+t(n);
+"]
+	"0-0-3-4-" [label="Claim();
+t(n);
+"]
+	"0-0-3-4-" -> "0-0-3-4-" [label="Claim();"]
+	"0-0-3-4-" [label="Claim();
+t(n);
+"]
+	"0-0-3-4-" [label="Claim();
+t(n);
+"]
+	"0-0-3-4-" -> "0-0-3-4-" [label="t(n);"]
+	"1-0-0-4-" [label="Donate();
+t(n);
+"]
+	"0-0-3-4-" [label="Claim();
+t(n);
+"]
+	"1-0-0-4-" -> "0-0-3-4-" [label="t(n);"]
+	init [label=init]
+	"0-0-0-4-" [label="t(n);
+"]
+	init -> "0-0-0-4-" [label=constructor]
+	init [label=init]
+	"1-0-0-4-" [label="Donate();
+t(n);
+"]
+	init -> "1-0-0-4-" [label=constructor]
+	init [label=init]
+	"0-2-0-4-" [label="GetFunds();
+t(n);
+"]
+	init -> "0-2-0-4-" [label=constructor]
+}

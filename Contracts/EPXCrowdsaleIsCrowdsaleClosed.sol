@@ -175,9 +175,9 @@ contract EPXCrowdsale is owned, safeMath {
     }
   }
 
-  function () external payable {
-    buy();
-  }
+  // function () external payable {
+  //   buy();
+  // }
   
   // default payable function when sending ether to this contract
   /* function () public payable { */

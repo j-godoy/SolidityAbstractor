@@ -6,7 +6,7 @@ functions = [
 "enableRefunds();",
 "beneficiaryWithdraw();",
 "withdrawA(payee);",
-"withdrawNoA(payee);",
+"withdrawOther(payee);",
 "transferPrimary(recipient);"
 ]
 statePreconditions = [

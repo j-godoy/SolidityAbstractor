@@ -5,9 +5,9 @@ functions = [
 "startAuction();",
 "depositBids();",
 "closeAuction();",
-"addToWhitelist(addressToWhitelist);",
+"addToWhitelist(addressesToWhitelist);",
 "withdrawA();",
-"withdrawNoA();",
+"withdrawOther();",
 ]
 statePreconditions = [
 "(countWhitelist > 0 && depositLocker.initialized() && !depositLocker.deposited() && (biddersTotal < maximalNumberOfParticipants) && ((time - startTime) < (100 * 365) && time > startTime && time <= (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started)",
@@ -27,7 +27,8 @@ functionPreconditions = [
 "msg.sender == A && bids[msg.sender] > 0",
 "msg.sender != A && bids[msg.sender] > 0", 
 ]
-functionVariables = "address addressToWhitelist"
+
+functionVariables = "address[] memory addressesToWhitelist"
 tool_output = "Found a counterexample"
 
 statesModeState = []

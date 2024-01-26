@@ -1,0 +1,43 @@
+Benchmark: B2
+time out: 600
+k: 8
+total diff: 7 de un total de 23
+subjects diferentes:
+['EPXCrowdsale_Mode.states', 'EPXCrowdsale_Mode.epa', 'EPXCrowdsaleIsCrowdsaleClosed_Mode.epa', 'ValidatorAuction_Mode.states', 'ValidatorAuction_Mode.epa', 'ValidatorAuction_withdraw_Mode.epa', 'SimpleAuctionTime_Mode.epa']
+
+k: 16
+total diff: 1 de un total de 7
+subjects diferentes:
+['ValidatorAuction_withdraw_Mode.epa']
+
+k: 32
+total diff: 0 de un total de 1
+subjects diferentes:
+[]
+
+Tiempo total: 7972.573729991913
+
+Con k=: 32
+Iguales: ['SimpleAuction_Mode.epa']
+Total diff con Alloy: 22
+subjects diferentes:
+['RefundEscrow_Mode.states', 'RefundEscrow_Mode.epa', 'RefundEscrowWithdraw_Mode.epa', 'EscrowVault_Mode.states', 'EscrowVault_Mode.epa', 'EPXCrowdsale_Mode.states', 'EPXCrowdsale_Mode.epa', 'EPXCrowdsaleIsCrowdsaleClosed_Mode.epa', 'CrowdfundingTime_Base_Mode.epa', 'CrowdfundingTime_BaseBalance_Mode.epa', 'CrowdfundingTime_BaseBalanceFix_Mode.epa', 'ValidatorAuction_Mode.states', 'ValidatorAuction_Mode.epa', 'ValidatorAuction_withdraw_Mode.epa', 'SimpleAuctionTime_Mode.epa', 'SimpleAuctionEnded_Mode.epa', 'SimpleAuctionHB_Mode.states', 'Auction_Mode.epa', 'AuctionEnded_Mode.epa', 'AuctionWithdraw_Mode.epa', 'RockPaperScissors_Mode.states', 'RockPaperScissors_Mode.epa']
+
+Con k=: 16
+Iguales: ['EPXCrowdsale_Mode.epa', 'ValidatorAuction_Mode.states', 'SimpleAuctionTime_Mode.epa']
+Total diff con Alloy: 19
+subjects diferentes:
+['RefundEscrow_Mode.states', 'RefundEscrow_Mode.epa', 'RefundEscrowWithdraw_Mode.epa', 'EscrowVault_Mode.states', 'EscrowVault_Mode.epa', 'EPXCrowdsale_Mode.states', 'EPXCrowdsaleIsCrowdsaleClosed_Mode.epa', 'CrowdfundingTime_Base_Mode.epa', 'CrowdfundingTime_BaseBalance_Mode.epa', 'CrowdfundingTime_BaseBalanceFix_Mode.epa', 'ValidatorAuction_Mode.epa', 'ValidatorAuction_withdraw_Mode.epa', 'SimpleAuctionEnded_Mode.epa', 'SimpleAuctionHB_Mode.states', 'Auction_Mode.epa', 'AuctionEnded_Mode.epa', 'AuctionWithdraw_Mode.epa', 'RockPaperScissors_Mode.states', 'RockPaperScissors_Mode.epa']
+
+Con k=: 8
+Iguales: ['RefundEscrow_Mode.states', 'RefundEscrowWithdraw_Mode.epa', 'EscrowVault_Mode.states', 'EscrowVault_Mode.epa', 'CrowdfundingTime_Base_Mode.epa', 'CrowdfundingTime_BaseBalance_Mode.epa', 'CrowdfundingTime_BaseBalanceFix_Mode.epa', 'SimpleAuctionEnded_Mode.epa', 'SimpleAuctionHB_Mode.states', 'AuctionEnded_Mode.epa', 'RockPaperScissors_Mode.states', 'RockPaperScissors_Mode.epa']
+Total diff con Alloy: 7
+subjects diferentes:
+['RefundEscrow_Mode.epa', 'EPXCrowdsale_Mode.states', 'EPXCrowdsaleIsCrowdsaleClosed_Mode.epa', 'ValidatorAuction_Mode.epa', 'ValidatorAuction_withdraw_Mode.epa', 'Auction_Mode.epa', 'AuctionWithdraw_Mode.epa']
+
+Con k=: 4
+Iguales: []
+Total diff con Alloy: 7
+subjects diferentes:
+['RefundEscrow_Mode.epa', 'EPXCrowdsale_Mode.states', 'EPXCrowdsaleIsCrowdsaleClosed_Mode.epa', 'ValidatorAuction_Mode.epa', 'ValidatorAuction_withdraw_Mode.epa', 'Auction_Mode.epa', 'AuctionWithdraw_Mode.epa']
+

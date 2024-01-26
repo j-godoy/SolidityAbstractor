@@ -1,0 +1,25 @@
+Config                                     Mode    Time       Inital pre count    Pre count after true    Reduce Pr count    Functions count
+-----------------------------------------  ------  -------  ------------------  ----------------------  -----------------  -----------------
+RefundEscrowConfig_k=4                     states  0:01:02                   3                       3                  3                  6
+RefundEscrowConfig_k=4                     epa     0:01:02                  64                       8                  4                  6
+RefundEscrowWithdrawConfig_k=4             epa     0:02:38                 128                      16                  6                  7
+EscrowVaultConfig_k=4                      states  0:02:05                   4                       4                  4                  8
+EscrowVaultConfig_k=4                      epa     0:01:39                 256                      16                  4                  8
+EPXCrowdsaleConfig_k=4                     states  0:05:47                   7                       7                  7                  5
+EPXCrowdsaleConfig_k=4                     epa     0:00:51                  32                      16                  3                  5
+EPXCrowdsaleIsCrowdsaleClosedConfig_k=4    epa     0:01:35                  64                      32                  4                  6
+CrowdfundingTime_BaseConfig_k=4            epa     0:00:40                  16                       8                  4                  4
+CrowdfundingTime_BaseBalanceConfig_k=4     epa     0:02:09                  64                      32                  7                  6
+CrowdfundingTime_BaseBalanceFixConfig_k=4  epa     0:01:41                  64                      32                  6                  6
+ValidatorAuctionConfig_k=4                 states  0:03:04                   5                       5                  5                  6
+ValidatorAuctionConfig_k=4                 epa     0:02:13                  64                      64                  5                  6
+ValidatorAuction_withdrawConfig_k=4        epa     0:04:15                 128                     128                  5                  7
+SimpleAuctionConfig_k=4                    epa     0:01:58                   8                       8                  8                  3
+SimpleAuctionTimeConfig_k=4                epa     0:02:20                  16                       8                  7                  4
+SimpleAuctionEndedConfig_k=4               epa     0:02:01                  16                      16                  8                  4
+SimpleAuctionHBConfig_k=4                  states  0:02:09                   6                       6                  6                  4
+AuctionConfig_k=4                          epa     0:00:36                   8                       8                  4                  3
+AuctionEndedConfig_k=4                     epa     0:00:40                  16                      16                  4                  4
+AuctionWithdrawConfig_k=4                  epa     0:01:03                  16                      16                  6                  4
+RockPaperScissorsConfig_k=4                states  0:01:38                   6                       6                  6                  3
+RockPaperScissorsConfig_k=4                epa     0:00:31                   8                       8                  4                  3

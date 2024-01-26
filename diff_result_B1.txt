@@ -1,0 +1,30 @@
+Benchmark: B1
+time out: 600
+k: 8
+total diff: 2 de un total de 16
+subjects diferentes:
+['AssetTransferFixed_Mode.states', 'AssetTransfer_Mode.states']
+
+k: 16
+total diff: 0 de un total de 2
+subjects diferentes:
+[]
+
+Tiempo total: 12558.304157018661
+
+Con k=: 16
+Iguales (2): {'AssetTransferFixed_Mode.states', 'AssetTransfer_Mode.states'}
+subjects diferentes (0):
+set()
+Faltan revisar: ['HelloBlockchainFixed_Mode.states', 'FrequentFlyerRewardsCalculator_Mode.states', 'SimpleMarketplace_Mode.states', 'BasicProvenanceFixed_Mode.states', 'RefrigeratedTransportation_Mode.states', 'DigitalLockerFixed_Mode.states', 'HelloBlockchain_Mode.states', 'SimpleMarketplaceFixed_Mode.states', 'DefectiveComponentCounter_Mode.states', 'RefrigeratedTransportationFixed_Mode.states', 'DefectiveComponentCounterFixed_Mode.states', 'DigitalLocker_Mode.states', 'BasicProvenance_Mode.states', 'RoomThermostat_Mode.states']
+
+Con k=: 8
+Iguales (11): {'HelloBlockchainFixed_Mode.states', 'FrequentFlyerRewardsCalculator_Mode.states', 'SimpleMarketplaceFixed_Mode.states', 'SimpleMarketplace_Mode.states', 'RefrigeratedTransportationFixed_Mode.states', 'BasicProvenanceFixed_Mode.states', 'RefrigeratedTransportation_Mode.states', 'DigitalLockerFixed_Mode.states', 'BasicProvenance_Mode.states', 'RoomThermostat_Mode.states', 'HelloBlockchain_Mode.states'}
+subjects diferentes (3):
+{'DigitalLocker_Mode.states', 'DefectiveComponentCounter_Mode.states', 'DefectiveComponentCounterFixed_Mode.states'}
+Faltan revisar: []
+
+Iguales(13): {'HelloBlockchainFixed_Mode.states', 'FrequentFlyerRewardsCalculator_Mode.states', 'SimpleMarketplaceFixed_Mode.states', 'SimpleMarketplace_Mode.states', 'RefrigeratedTransportationFixed_Mode.states', 'AssetTransferFixed_Mode.states', 'BasicProvenanceFixed_Mode.states', 'RefrigeratedTransportation_Mode.states', 'DigitalLockerFixed_Mode.states', 'BasicProvenance_Mode.states', 'AssetTransfer_Mode.states', 'RoomThermostat_Mode.states', 'HelloBlockchain_Mode.states'}
+subjects diferentes(3):
+{'DigitalLocker_Mode.states', 'DefectiveComponentCounter_Mode.states', 'DefectiveComponentCounterFixed_Mode.states'}
+

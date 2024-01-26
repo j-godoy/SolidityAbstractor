@@ -1,0 +1,18 @@
+Config                                     Mode    Time       Inital pre count    Pre count after true    Reduce Pr count    Functions count
+-----------------------------------------  ------  -------  ------------------  ----------------------  -----------------  -----------------
+AssetTransferConfig_k=4                    states  0:44:48                  10                      10                 10                 10
+BasicProvenanceConfig_k=4                  states  0:00:25                   3                       3                  3                  2
+DefectiveComponentCounterConfig_k=4        states  0:00:13                   2                       2                  2                  2
+DigitalLockerConfig_k=4                    states  0:07:44                   6                       6                  6                 10
+FrequentFlyerRewardsCalculatorConfig_k=4   states  0:00:09                   2                       2                  2                  1
+HelloBlockchainConfig_k=4                  states  0:00:12                   2                       2                  2                  2
+RefrigeratedTransportationConfig_k=4       states  0:00:52                   4                       4                  4                  3
+RoomThermostatConfig_k=4                   states  0:00:20                   2                       2                  2                  3
+SimpleMarketplaceConfig_k=4                states  0:00:39                   3                       3                  3                  3
+AssetTransferFixedConfig_k=4               states  0:44:30                  10                      10                 10                 10
+BasicProvenanceFixedConfig_k=4             states  0:00:26                   3                       3                  3                  2
+DefectiveComponentCounterFixedConfig_k=4   states  0:00:12                   2                       2                  2                  2
+DigitalLockerFixedConfig_k=4               states  0:08:08                   6                       6                  6                 10
+HelloBlockchainFixedConfig_k=4             states  0:00:12                   2                       2                  2                  2
+RefrigeratedTransportationFixedConfig_k=4  states  0:00:54                   4                       4                  4                  3
+SimpleMarketplaceFixedConfig_k=4           states  0:00:35                   3                       3                  3                  3

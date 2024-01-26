@@ -1,0 +1,18 @@
+Config                                     Mode    Time       Inital pre count    Pre count after true    Reduce Pr count    Functions count
+-----------------------------------------  ------  -------  ------------------  ----------------------  -----------------  -----------------
+AssetTransferFixedConfig_k=8               states  0:26:06                  10                      10                 10                 10
+AssetTransferConfig_k=8                    states  0:32:15                  10                      10                 10                 10
+BasicProvenanceFixedConfig_k=8             states  0:00:39                   3                       3                  3                  2
+BasicProvenanceConfig_k=8                  states  0:00:31                   3                       3                  3                  2
+DefectiveComponentCounterFixedConfig_k=8   states  0:00:20                   2                       2                  2                  2
+DefectiveComponentCounterConfig_k=8        states  0:00:23                   2                       2                  2                  2
+DigitalLockerFixedConfig_k=8               states  0:08:13                   6                       6                  6                 10
+DigitalLockerConfig_k=8                    states  0:07:23                   6                       6                  6                 10
+FrequentFlyerRewardsCalculatorConfig_k=8   states  0:00:13                   2                       2                  2                  2
+HelloBlockchainFixedConfig_k=8             states  0:00:12                   2                       2                  2                  2
+HelloBlockchainConfig_k=8                  states  0:00:12                   2                       2                  2                  2
+RefrigeratedTransportationFixedConfig_k=8  states  0:00:44                   4                       4                  4                  3
+RefrigeratedTransportationConfig_k=8       states  0:00:41                   4                       4                  4                  3
+RoomThermostatConfig_k=8                   states  0:00:13                   2                       2                  2                  3
+SimpleMarketplaceFixedConfig_k=8           states  0:00:23                   3                       3                  3                  3
+SimpleMarketplaceConfig_k=8                states  0:00:24                   3                       3                  3                  3

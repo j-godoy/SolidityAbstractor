@@ -1,0 +1,7 @@
+Config                                    Mode    Time       Inital pre count    Pre count after true    Reduce Pr count    Functions count
+----------------------------------------  ------  -------  ------------------  ----------------------  -----------------  -----------------
+AssetTransferConfig_k=8                   states  0:48:04                  10                      10                 10                 10
+DefectiveComponentCounterConfig_k=8       states  0:00:16                   2                       2                  2                  2
+DigitalLockerConfig_k=8                   states  0:11:06                   6                       6                  6                 10
+AssetTransferFixedConfig_k=8              states  0:48:11                  10                      10                 10                 10
+DefectiveComponentCounterFixedConfig_k=8  states  0:00:12                   2                       2                  2                  2

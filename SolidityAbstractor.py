@@ -10,7 +10,7 @@ from enum import Enum
 import sys
 import platform
 import psutil
-import concurrent.futures
+import remove_unknown_tx
 
 def getCombinations(funcionesNumeros):
     global statePreconditions
@@ -419,7 +419,7 @@ class Mode(Enum):
 
 def make_global_variables(config):
     global fileName, preconditions, dot, statesNames, functions, statePreconditions, contractName, functionVariables
-    global functionPreconditions, txBound, time_out, statePreconditionsModeState, statesModeState, SAVE_GRAPH_PATH
+    global functionPreconditions, txBound, time_out, statePreconditionsModeState, statesModeState, SAVE_GRAPH_PATH, NO_UNKNOWN_TX
     fileName = os.path.join("Contracts", config.fileName)
     print(config.fileName)
     functions = config.functions
@@ -443,6 +443,7 @@ def make_global_variables(config):
     statePreconditionsModeState = config.statePreconditionsModeState
     statesModeState = config.statesModeState
     SAVE_GRAPH_PATH = "graph/k_"+str(txBound)+"/to_"+str(int(time_out))+"/"
+    NO_UNKNOWN_TX = "_no_unknown_tx"
 
 def main():
     global config, dot, preconditionsThreads, statesThreads, states, preconditions, extraConditionsThreads, extraConditions, SAVE_GRAPH_PATH
@@ -570,7 +571,16 @@ def main():
         thread.join()
     print("ENDED")
     tempFileName = configFile.replace('Config','')
-    dot.render(SAVE_GRAPH_PATH + tempFileName + "_" + str(mode))
+    tempFileName = tempFileName + "_" + str(mode)
+    output_dot = SAVE_GRAPH_PATH + tempFileName
+    dot.render(output_dot)
+    output_with_no_unknown_tx = SAVE_GRAPH_PATH + tempFileName + NO_UNKNOWN_TX
+    ret,removed_tx = remove_unknown_tx.remove_transitions(os.path.join(os.getcwd(), output_dot))
+    ret = "// Total removed tx for timeouts : " + removed_tx + "\n" + ret
+    write_file = open(output_with_no_unknown_tx,'w')
+    write_file.write(ret)
+    write_file.close()
+    
 
 states = []
 preconditions = []

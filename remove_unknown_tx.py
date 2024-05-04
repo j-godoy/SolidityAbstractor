@@ -57,10 +57,10 @@ def remove_transitions(dot_file):
                 nodes_removed += 1            
     
 
-    print(ret_filtrado)
-    print(f"Removed {removed_txs} transitions marked with '?'")
-    print(f"Removed {nodes_removed} nodes without transitions")
+    # print(ret_filtrado)
+    # print(f"Removed {removed_txs} transitions marked with '?'")
+    # print(f"Removed {nodes_removed} nodes without transitions")
     return ret_filtrado, removed_txs
     
-path = r"D:\Documentos\Git\SolidityAbstractor\graph\k_16\to_600\EPXCrowdsaleIsCrowdsaleClosed_Mode.epa"
-remove_transitions(path)
+# path = r"D:\Documentos\Git\SolidityAbstractor\graph\k_16\to_600\EPXCrowdsaleIsCrowdsaleClosed_Mode.epa"
+# remove_transitions(path)

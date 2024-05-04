@@ -576,7 +576,7 @@ def main():
     dot.render(output_dot)
     output_with_no_unknown_tx = SAVE_GRAPH_PATH + tempFileName + NO_UNKNOWN_TX
     ret,removed_tx = remove_unknown_tx.remove_transitions(os.path.join(os.getcwd(), output_dot))
-    ret = "// Total removed tx for timeouts : " + removed_tx + "\n" + ret
+    ret = "// Total removed tx for timeouts : " + str(removed_tx) + "\n" + ret
     write_file = open(output_with_no_unknown_tx,'w')
     write_file.write(ret)
     write_file.close()

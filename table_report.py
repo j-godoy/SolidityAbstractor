@@ -17,8 +17,9 @@ def getListaSubjects(data):
     return subjects
 
 def getSubject(row):
-    sufix = "Config_k=n"
-    subject = row[SUBJ_I].strip()[:-len(sufix)] + "_Mode"
+    sufix = "Config_k"
+    sufix_idx = row[SUBJ_I].strip().index(sufix)
+    subject = row[SUBJ_I].strip()[:sufix_idx] + "_Mode"
     subject += ".epa" if row[MODE_I] == "epa" else ".states"
     return subject
     

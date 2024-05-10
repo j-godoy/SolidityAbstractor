@@ -5,6 +5,7 @@ import subprocess
 import platform
 from statistics import mean
 from tabulate import tabulate
+import pandas as pd
 
 def runCommand(command):
     st = time.time()
@@ -184,10 +185,22 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
         
             
     now = str(datetime.datetime.now()).replace(":","-")
-    with open('Tiempos-'+ now +'.txt', 'w') as outputfile:
+    file_name = 'Tiempos-'+ now +'.txt'
+    with open(file_name, 'w') as outputfile:
         print(tabulate(table, headers='firstrow', tablefmt='simple'), file=outputfile)
+
+    text_file=open(file_name.replace(".txt", ".csv"),"w")
+    ret = to_csv(table)
+    text_file.write(ret)
+    text_file.close()
                 
     end = time.time()
     print("Tiempo total: " + str(end - init) + "segs")
-
+    
+def to_csv(table):
+    ret = ""
+    for row in table:
+        print(row)
+        ret += ",".join(row).replace("\n","") + "\n"
+    return ret
 # main(config_B2(), REPETICIONES, 4, 4, 300)

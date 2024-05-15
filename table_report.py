@@ -41,9 +41,9 @@ def getRowWithSubjectMode(data, subject, mode):
     return []
 
 # Nombre del archivo CSV generado con tabulate
-nombre_archivo_k4 = 'k4.csv'
-nombre_archivo_k8 = 'k8.csv'
-nombre_archivo_k16 = 'k16.csv'
+nombre_archivo_k4 = 'B2_k4.csv'
+nombre_archivo_k8 = 'B2_k8.csv'
+nombre_archivo_k16 = 'B2_k16.csv'
 
 
 #header = ["Subject","mode",        "k=4",                   "k=8",                "k=16"]
@@ -73,6 +73,24 @@ for row in file_k4.values:
     k8_txs_to = -1 if not os.path.exists(path_subject_k8) else load_dot_file(path_subject_k8, True)[2]
     k16_txs = -1 if not os.path.exists(path_subject_k16) else load_dot_file(path_subject_k16, False)[2]
     k16_txs_to = -1 if not os.path.exists(path_subject_k16) else load_dot_file(path_subject_k16, True)[2]
+    
+    if k16_txs>0 and k16_txs<k8_txs:
+        print(f"Error en {subject}")
+        import pydot
+        graphk8 = pydot.graph_from_dot_file(path_subject_k8)[0]
+        graphk16 = pydot.graph_from_dot_file(path_subject_k16)[0]
+        edges_k8 = graphk8.get_edge_list()
+        
+        #Filtrar los edges que no tienen label con "?" en k=8
+        edgesk8 = len([edge for edge in graphk8.get_edge_list() if "?" not in edge.get('label')])
+        edgesk16 = len([edge for edge in graphk16.get_edge_list() if "?" not in edge.get('label')])
+        #Mostrar los edges que están en edgesk8 pero no están en edgesk16
+        missing_edges = [edge for edge in edges_k8 if edge not in graphk16.get_edge_list()]
+        print("Edges present in k=8 but not in k=16:")
+        for edge in missing_edges:
+            print(edge)
+            print("")
+        continue
     
     subject_info = [subject, mode, getTotalMethods(row), time, k4_txs, (k4_txs_to-k4_txs)]
     subject_info_aux = ["-", "-", "-"]

@@ -1,0 +1,16 @@
+AssetTransferFixedConfig_k=4,states,0:28:59,10,10,10,10
+AssetTransferConfig_k=4,states,0:29:11,10,10,10,10
+BasicProvenanceFixedConfig_k=4,states,0:00:18,3,3,3,2
+BasicProvenanceConfig_k=4,states,0:00:18,3,3,3,2
+DefectiveComponentCounterFixedConfig_k=4,states,0:00:10,2,2,2,2
+DefectiveComponentCounterConfig_k=4,states,0:00:10,2,2,2,2
+DigitalLockerFixedConfig_k=4,states,0:04:43,6,6,6,10
+DigitalLockerConfig_k=4,states,0:04:53,6,6,6,10
+FrequentFlyerRewardsCalculatorConfig_k=4,states,0:00:11,2,2,2,2
+HelloBlockchainFixedConfig_k=4,states,0:00:10,2,2,2,2
+HelloBlockchainConfig_k=4,states,0:00:11,2,2,2,2
+RefrigeratedTransportationFixedConfig_k=4,states,0:00:40,4,4,4,3
+RefrigeratedTransportationConfig_k=4,states,0:00:40,4,4,4,3
+RoomThermostatConfig_k=4,states,0:00:15,2,2,2,3
+SimpleMarketplaceFixedConfig_k=4,states,0:00:23,3,3,3,3
+SimpleMarketplaceConfig_k=4,states,0:00:24,3,3,3,3

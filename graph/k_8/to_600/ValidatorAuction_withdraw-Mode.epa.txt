@@ -1,5 +1,5 @@
 Subject: ValidatorAuction_withdraw-Mode.epa
-Total time: 471.71419763565063
+Total time: 573.3707704544067
 # Time Out: 0
 # Corral Fail without trackvars: 0
-# Corral Fail with trackvars: 0
+# Corral Fail with trackvars: 2

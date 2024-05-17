@@ -1,5 +1,5 @@
 Subject: RefrigeratedTransportationFixed-Mode.states
-Total time: 43.15017318725586
+Total time: 39.8637158870697
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

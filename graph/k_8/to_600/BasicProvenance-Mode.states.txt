@@ -1,5 +1,5 @@
 Subject: BasicProvenance-Mode.states
-Total time: 31.27103900909424
+Total time: 17.685970306396484
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

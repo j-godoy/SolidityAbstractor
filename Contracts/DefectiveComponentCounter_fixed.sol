@@ -44,7 +44,17 @@ contract DefectiveComponentCounter {
     }
 
     // add the required getter function for array DefectiveComponentsCount
-    function GetDefectiveComponentsCount() public view returns (int[12] memory) {
+    function GetDefectiveComponentsCount() internal view returns (int[12] memory) {
         return DefectiveComponentsCount;
     }
+
+    // function blue_query_constructor() public {
+    //     require(State == StateType.Create);
+    //     require(Manufacturer == msg.sender);
+
+    //     ComputeTotal();
+
+    //     bool Q = State == StateType.ComputeTotal;
+    //     assert(!Q);
+    // }
 }

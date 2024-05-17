@@ -38,7 +38,7 @@ contract DefectiveComponentCounter {
     }
 
     // add the required getter function for array DefectiveComponentsCount
-    function GetDefectiveComponentsCount() public view returns (int[12] memory) {
+    function GetDefectiveComponentsCount() internal view returns (int[12] memory) {
         return DefectiveComponentsCount;
     }
 }

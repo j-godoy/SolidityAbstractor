@@ -37,16 +37,6 @@ WithdrawOther();
 	"0-2-0-0-" [label="WithdrawA();
 "]
 	"1-0-0-0-" -> "0-2-0-0-" [label="Bid();"]
-	"0-2-0-0-" [label="WithdrawA();
-"]
-	"0-0-3-0-" [label="WithdrawOther();
-"]
-	"0-2-0-0-" -> "0-0-3-0-" [label="WithdrawA();"]
-	"0-0-3-0-" [label="WithdrawOther();
-"]
-	"0-0-3-0-" [label="WithdrawOther();
-"]
-	"0-0-3-0-" -> "0-0-3-0-" [label="WithdrawOther();"]
 	"1-0-0-0-" [label="Bid();
 "]
 	"0-0-3-0-" [label="WithdrawOther();
@@ -70,12 +60,16 @@ WithdrawOther();
 WithdrawA();
 "]
 	"1-0-0-0-" -> "1-2-0-0-" [label="Bid();"]
-	"1-0-3-0-" [label="Bid();
-WithdrawOther();
-"]
 	"0-2-0-0-" [label="WithdrawA();
 "]
-	"1-0-3-0-" -> "0-2-0-0-" [label="Bid();"]
+	"0-0-3-0-" [label="WithdrawOther();
+"]
+	"0-2-0-0-" -> "0-0-3-0-" [label="WithdrawA();"]
+	"0-0-3-0-" [label="WithdrawOther();
+"]
+	"0-0-3-0-" [label="WithdrawOther();
+"]
+	"0-0-3-0-" -> "0-0-3-0-" [label="WithdrawOther();"]
 	"1-2-0-0-" [label="Bid();
 WithdrawA();
 "]
@@ -88,6 +82,12 @@ WithdrawA();
 WithdrawOther();
 "]
 	"1-0-0-0-" -> "1-0-3-0-" [label="Bid();"]
+	"1-0-3-0-" [label="Bid();
+WithdrawOther();
+"]
+	"0-2-0-0-" [label="WithdrawA();
+"]
+	"1-0-3-0-" -> "0-2-0-0-" [label="Bid();"]
 	"1-0-3-0-" [label="Bid();
 WithdrawOther();
 "]

@@ -1,5 +1,5 @@
 Subject: SimpleMarketplaceFixed-Mode.states
-Total time: 23.287768363952637
+Total time: 23.163400888442993
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

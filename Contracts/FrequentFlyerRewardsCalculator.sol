@@ -53,7 +53,7 @@ contract FrequentFlyerRewardsCalculator {
         }
     }
 
-    function GetMiles() public view returns (uint[] memory) {
+    function GetMiles() internal view returns (uint[] memory) {
         return Miles;
     }
 }

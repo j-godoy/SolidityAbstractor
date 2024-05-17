@@ -1,5 +1,5 @@
 Subject: EPXCrowdsaleIsCrowdsaleClosed-Mode.epa
-Total time: 6409.030730247498
-# Time Out: 45
+Total time: 6354.703809499741
+# Time Out: 38
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

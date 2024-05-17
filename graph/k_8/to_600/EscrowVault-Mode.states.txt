@@ -1,5 +1,5 @@
 Subject: EscrowVault-Mode.states
-Total time: 129.0947709083557
+Total time: 101.9933066368103
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

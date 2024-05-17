@@ -11,18 +11,18 @@ transferPrimary(recipient);
 	"0-0-0-0-0-0-7-" [label="transferPrimary(recipient);
 "]
 	"0-0-0-4-0-0-7-" -> "0-0-0-0-0-0-7-" [label="beneficiaryWithdraw();"]
-	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
-transferPrimary(recipient);
-"]
-	"0-0-0-0-0-0-7-" [label="transferPrimary(recipient);
-"]
-	"0-0-0-0-0-6-7-" -> "0-0-0-0-0-0-7-" [label="withdrawOther(payee);"]
 	"0-0-0-0-5-0-7-" [label="withdrawA(payee);
 transferPrimary(recipient);
 "]
 	"0-0-0-0-0-0-7-" [label="transferPrimary(recipient);
 "]
 	"0-0-0-0-5-0-7-" -> "0-0-0-0-0-0-7-" [label="withdrawA(payee);"]
+	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
+transferPrimary(recipient);
+"]
+	"0-0-0-0-0-0-7-" [label="transferPrimary(recipient);
+"]
+	"0-0-0-0-0-6-7-" -> "0-0-0-0-0-0-7-" [label="withdrawOther(payee);"]
 	"1-2-3-0-0-0-7-" [label="deposit(refundee);
 close();
 enableRefunds();
@@ -53,13 +53,6 @@ transferPrimary(recipient);
 transferPrimary(recipient);
 "]
 	"0-0-0-0-5-0-7-" -> "0-0-0-0-5-0-7-" [label="transferPrimary(recipient);"]
-	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
-transferPrimary(recipient);
-"]
-	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
-transferPrimary(recipient);
-"]
-	"0-0-0-0-0-6-7-" -> "0-0-0-0-0-6-7-" [label="withdrawOther(payee);"]
 	"1-2-3-0-0-0-7-" [label="deposit(refundee);
 close();
 enableRefunds();
@@ -75,6 +68,13 @@ transferPrimary(recipient);
 	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
 transferPrimary(recipient);
 "]
+	"0-0-0-0-0-6-7-" -> "0-0-0-0-0-6-7-" [label="withdrawOther(payee);"]
+	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
+transferPrimary(recipient);
+"]
+	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
+transferPrimary(recipient);
+"]
 	"0-0-0-0-0-6-7-" -> "0-0-0-0-0-6-7-" [label="transferPrimary(recipient);"]
 	"0-0-0-0-5-6-7-" [label="withdrawA(payee);
 withdrawOther(payee);
@@ -84,14 +84,6 @@ transferPrimary(recipient);
 transferPrimary(recipient);
 "]
 	"0-0-0-0-5-6-7-" -> "0-0-0-0-5-0-7-" [label="withdrawOther(payee);"]
-	"0-0-0-0-5-6-7-" [label="withdrawA(payee);
-withdrawOther(payee);
-transferPrimary(recipient);
-"]
-	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
-transferPrimary(recipient);
-"]
-	"0-0-0-0-5-6-7-" -> "0-0-0-0-0-6-7-" [label="withdrawA(payee);"]
 	"1-2-3-0-0-0-7-" [label="deposit(refundee);
 close();
 enableRefunds();
@@ -105,11 +97,10 @@ transferPrimary(recipient);
 withdrawOther(payee);
 transferPrimary(recipient);
 "]
-	"0-0-0-0-5-6-7-" [label="withdrawA(payee);
-withdrawOther(payee);
+	"0-0-0-0-0-6-7-" [label="withdrawOther(payee);
 transferPrimary(recipient);
 "]
-	"0-0-0-0-5-6-7-" -> "0-0-0-0-5-6-7-" [label="transferPrimary(recipient);"]
+	"0-0-0-0-5-6-7-" -> "0-0-0-0-0-6-7-" [label="withdrawA(payee);"]
 	"1-2-3-0-0-0-7-" [label="deposit(refundee);
 close();
 enableRefunds();
@@ -129,6 +120,15 @@ withdrawOther(payee);
 transferPrimary(recipient);
 "]
 	"1-2-3-0-0-0-7-" -> "0-0-0-0-5-6-7-" [label="enableRefunds();"]
+	"0-0-0-0-5-6-7-" [label="withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+"]
+	"0-0-0-0-5-6-7-" [label="withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+"]
+	"0-0-0-0-5-6-7-" -> "0-0-0-0-5-6-7-" [label="transferPrimary(recipient);"]
 	"1-2-3-0-0-0-7-" [label="deposit(refundee);
 close();
 enableRefunds();

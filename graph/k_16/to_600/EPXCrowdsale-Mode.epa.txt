@@ -1,5 +1,5 @@
 Subject: EPXCrowdsale-Mode.epa
-Total time: 5505.586741685867
-# Time Out: 26
+Total time: 4659.304239988327
+# Time Out: 18
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

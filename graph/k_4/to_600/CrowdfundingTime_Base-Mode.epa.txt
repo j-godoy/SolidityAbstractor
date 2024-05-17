@@ -1,5 +1,5 @@
 Subject: CrowdfundingTime_Base-Mode.epa
-Total time: 40.2226939201355
+Total time: 35.37723755836487
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

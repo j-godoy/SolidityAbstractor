@@ -1,5 +1,5 @@
 Subject: EscrowVault-Mode.epa
-Total time: 91.62284636497498
+Total time: 81.56378769874573
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

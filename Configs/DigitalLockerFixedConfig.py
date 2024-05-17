@@ -3,7 +3,7 @@ contractName = "DigitalLocker"
 functions = [
 "BeginReviewProcess();", 
 "RejectApplication(rejectionReason);",
- "UploadDocuments( lockerIdentifier, image);", 
+"UploadDocuments( lockerIdentifier, image);", 
 "ShareWithThirdParty(thirdPartyRequestor, expirationDate);",
 "AcceptSharingRequest();",
 "RejectSharingRequest();",

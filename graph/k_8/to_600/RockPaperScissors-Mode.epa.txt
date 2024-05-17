@@ -1,5 +1,5 @@
 Subject: RockPaperScissors-Mode.epa
-Total time: 34.099125146865845
+Total time: 28.51669406890869
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

@@ -1,12 +1,9 @@
 fileName = "FrequentFlyerRewardsCalculator.sol"
 contractName = "FrequentFlyerRewardsCalculator"
-functions = ["AddMiles(miles);",
-             "GetMiles();"]
+functions = ["AddMiles(miles);"]
 
-statePreconditions = ["true",
-                      "true"]
-functionPreconditions = ["msg.sender == Flyer",
-                         "true"]
+statePreconditions = ["true"]
+functionPreconditions = ["msg.sender == Flyer"]
 
 functionVariables = "int[] memory miles"
 tool_output = "Found a counterexample"

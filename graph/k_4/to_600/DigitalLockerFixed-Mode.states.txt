@@ -1,5 +1,5 @@
 Subject: DigitalLockerFixed-Mode.states
-Total time: 404.2577154636383
+Total time: 283.19018268585205
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

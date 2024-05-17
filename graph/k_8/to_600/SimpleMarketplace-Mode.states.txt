@@ -1,5 +1,5 @@
 Subject: SimpleMarketplace-Mode.states
-Total time: 23.796576261520386
+Total time: 23.196653842926025
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

@@ -4,10 +4,11 @@ import pydot
 import Benchmark_info
 import time
 
-def load_dot_file(file_path, withTimeouts=False):
+def load_dot_file(file_path, considerTimeouts=False):
     graph = pydot.graph_from_dot_file(file_path)[0]
 
     # Remove all attributes from the graph object for all edges, except attribute "label"
+    
     for edge in graph.get_edge_list():
         label = edge.get('label')
         edge.obj_dict['attributes'].clear()
@@ -27,7 +28,7 @@ def load_dot_file(file_path, withTimeouts=False):
             from_node = parts[0].strip()
             to_node = parts[1].split('[')[0].strip()
             full_edge_name = "constructor" if "[label=constructor" in parts[1] else parts[1].split('label="')[1].split('"')[0]
-            if "?" in full_edge_name and not withTimeouts:
+            if "?" in full_edge_name and not considerTimeouts:
                 continue
             full_edge_name = full_edge_name.replace("?","") # remove ? para no contar de más
             for edge_name in full_edge_name.split(");"):
@@ -46,7 +47,7 @@ def load_dot_file(file_path, withTimeouts=False):
 
     nx_graph = nx.DiGraph()
     for edge in graph.get_edge_list():
-        if withTimeouts:
+        if considerTimeouts:
             edge_name = edge.get('label')
             if "?" in edge_name:
                 continue
@@ -58,28 +59,29 @@ def load_dot_file(file_path, withTimeouts=False):
 
 
 
-def are_dot_files_equivalent(file1, file2, withoutTimeout):
+def are_dot_files_equivalent(file1, file2, considerTimeout):
     try:
-        g1, es1, t1 = load_dot_file(file1, withoutTimeout)
-        g2, es2, t2 = load_dot_file(file2, withoutTimeout)
+        g1, es1, t1 = load_dot_file(file1, considerTimeout)
+        g2, es2, t2 = load_dot_file(file2, considerTimeout)
     except Exception as e:
         print(e)
         exit(1)
         # return False
     return sorted(es1) == sorted(es2) and nx.is_isomorphic(g1,g2)
 
-def discover_new_transitions(file1, file2, withoutTimeout):
+def discover_new_transitions(file1, file2, considerTimeout):
     try:
-        g1, es1, t1 = load_dot_file(file1, withoutTimeout)
-        g2, es2, t2 = load_dot_file(file2, withoutTimeout)
+        g1, es1, t1 = load_dot_file(file1, considerTimeout)
+        g2, es2, t2 = load_dot_file(file2, considerTimeout)
     except Exception as e:
         print(e)
-        return False
+        exit(1)
+        # return False
     return t2 > t1
 
 
-def diff(file1Name, file2Name, withoutTimeouts=False):
-    if not are_dot_files_equivalent(file1Name, file2Name, withoutTimeouts):
+def diff(file1Name, file2Name, considerTimeouts=False):
+    if not are_dot_files_equivalent(file1Name, file2Name, considerTimeouts):
         print(file1Name + " is different from " + file2Name)
         return True
         # differences(file1Name, file2Name)
@@ -130,7 +132,7 @@ def get_diff_prev(solidityabstractor_subjects, k_prev, k_curr, timeout):
         if not os.path.exists(solidityabstractor_dot_curr):
             print(f"NO EXISTE ARCHIVO VERISOL {solidityabstractor_dot_curr}")
             continue
-        ret = discover_new_transitions(solidityabstractor_dot_prev, solidityabstractor_dot_curr, True)
+        ret = discover_new_transitions(solidityabstractor_dot_prev, solidityabstractor_dot_curr, False)
         if ret:
             subjects_diff.append(solidityabstractor_subjects[i])
             cant_dif += 1
@@ -163,7 +165,7 @@ def get_diff(solidityabstractor_subjects, benchmark, k, timeout):
                 print(f"NO EXISTE ARCHIVO VERISOL {solidityabstractor_dot}")
                 # subjects_diff.add(solidityabstractor_subjects[i])
         else:
-            ret = diff(solidityabstractor_dot, alloy_dot, True)
+            ret = diff(solidityabstractor_dot, alloy_dot, False)
             if ret:
                 subjects_diff.add(solidityabstractor_subjects[i])
                 cant_dif += 1
@@ -178,9 +180,9 @@ def get_diff(solidityabstractor_subjects, benchmark, k, timeout):
 
 def main():
     # subjects_original = ["RefundEscrow_Mode.states", "RefundEscrow_Mode.epa", "RefundEscrowWithdraw_Mode.epa", "EscrowVault_Mode.states", "EscrowVault_Mode.epa", "EPXCrowdsale_Mode.states", "EPXCrowdsale_Mode.epa", "EPXCrowdsaleIsCrowdsaleClosed_Mode.epa", "CrowdfundingTime_Base_Mode.epa", "CrowdfundingTime_BaseBalance_Mode.epa", "CrowdfundingTime_BaseBalanceFix_Mode.epa", "ValidatorAuction_Mode.states", "ValidatorAuction_Mode.epa", "ValidatorAuction_withdraw_Mode.epa", "SimpleAuction_Mode.epa", "SimpleAuctionTime_Mode.epa", "SimpleAuctionEnded_Mode.epa", "SimpleAuctionHB_Mode.states", "Auction_Mode.epa", "AuctionEnded_Mode.epa", "AuctionWithdraw_Mode.epa", "RockPaperScissors_Mode.states", "RockPaperScissors_Mode.epa"]
-    # subjects_original = ["EPXCrowdsale_Mode.epa"]
-    subjects_original = ["AssetTransferFixed_Mode.states", "AssetTransfer_Mode.states", "BasicProvenanceFixed_Mode.states", "BasicProvenance_Mode.states", "DefectiveComponentCounterFixed_Mode.states", "DefectiveComponentCounter_Mode.states", "DigitalLockerFixed_Mode.states", "DigitalLocker_Mode.states", "FrequentFlyerRewardsCalculator_Mode.states", "HelloBlockchainFixed_Mode.states", "HelloBlockchain_Mode.states", "RefrigeratedTransportationFixed_Mode.states", "RefrigeratedTransportation_Mode.states", "RoomThermostat_Mode.states", "SimpleMarketplaceFixed_Mode.states", "SimpleMarketplace_Mode.states"]
-    # subjects_original = ["RefrigeratedTransportation_Mode.states"]
+    # subjects_original = ["EPXCrowdsale_Mode.states"]
+    # subjects_original = ["AssetTransferFixed_Mode.states", "AssetTransfer_Mode.states", "BasicProvenanceFixed_Mode.states", "BasicProvenance_Mode.states", "DefectiveComponentCounterFixed_Mode.states", "DefectiveComponentCounter_Mode.states", "DigitalLockerFixed_Mode.states", "DigitalLocker_Mode.states", "FrequentFlyerRewardsCalculator_Mode.states", "HelloBlockchainFixed_Mode.states", "HelloBlockchain_Mode.states", "RefrigeratedTransportationFixed_Mode.states", "RefrigeratedTransportation_Mode.states", "RoomThermostat_Mode.states", "SimpleMarketplaceFixed_Mode.states", "SimpleMarketplace_Mode.states"]
+    subjects_original = ["DigitalLockerFixed_Mode.states", "DigitalLocker_Mode.states"]
     subjects = subjects_original
     Benchmark = "B1"
     total_diff_antes = len(subjects)
@@ -246,3 +248,5 @@ def main():
         file.write(str(alleq)+"\n")
         file.write(f"subjects diferentes({len(alldiff)}):\n")
         file.write(str(alldiff)+"\n\n")
+        
+#main()

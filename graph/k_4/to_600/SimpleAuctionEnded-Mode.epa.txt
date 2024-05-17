@@ -1,5 +1,5 @@
 Subject: SimpleAuctionEnded-Mode.epa
-Total time: 121.4643566608429
+Total time: 130.71078181266785
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

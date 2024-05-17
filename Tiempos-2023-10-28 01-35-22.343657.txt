@@ -1,4 +1,0 @@
-Config                         Mode    Time       Inital pre count    Pre count after true    Reduce Pr count    Functions count
------------------------------  ------  -------  ------------------  ----------------------  -----------------  -----------------
-AssetTransferFixedConfig_k=16  states  0:25:38                  10                      10                 10                 10
-AssetTransferConfig_k=16       states  0:26:31                  10                      10                 10                 10

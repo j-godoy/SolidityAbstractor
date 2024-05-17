@@ -29,8 +29,8 @@ def getMode(row):
 def getTime(row):
     return get_segundos(row[TIME_I])
 
-def getTotalMethods(row):
-    return row[FN_I]
+# def getTotalMethods(row):
+#     return row[FN_I]
 
 
 
@@ -46,8 +46,7 @@ nombre_archivo_k8 = 'B2_k8.csv'
 nombre_archivo_k16 = 'B2_k16.csv'
 
 
-#header = ["Subject","mode",        "k=4",                   "k=8",                "k=16"]
-header = ["Subject","mode","#M", "time","new tx","to tx","time","new tx","to tx", "time","new tx","to tx"]
+header = ["Subject","mode", "time","new tx","to tx","time","new tx","to tx", "time","new tx","to tx"]
 
 file_k4 = pd.read_csv(nombre_archivo_k4, delimiter=",", header=None)
 file_k8 = pd.read_csv(nombre_archivo_k8, delimiter=",", header=None)
@@ -55,7 +54,7 @@ file_k16 = pd.read_csv(nombre_archivo_k16, delimiter=",", header=None)
 SUBJ_I = 0
 MODE_I = 1
 TIME_I = 2
-FN_I = 6
+# FN_I = 6
 _mode = ""
 repo_path = ""
 data = []
@@ -74,25 +73,32 @@ for row in file_k4.values:
     k16_txs = -1 if not os.path.exists(path_subject_k16) else load_dot_file(path_subject_k16, False)[2]
     k16_txs_to = -1 if not os.path.exists(path_subject_k16) else load_dot_file(path_subject_k16, True)[2]
     
-    if k16_txs>0 and k16_txs<k8_txs:
+    if k8_txs>0 and k8_txs<k4_txs or k16_txs>0 and k16_txs<k8_txs:
         print(f"Error en {subject}")
         import pydot
+        graphk4 = pydot.graph_from_dot_file(path_subject_k4)[0]
         graphk8 = pydot.graph_from_dot_file(path_subject_k8)[0]
         graphk16 = pydot.graph_from_dot_file(path_subject_k16)[0]
-        edges_k8 = graphk8.get_edge_list()
         
         #Filtrar los edges que no tienen label con "?" en k=8
-        edgesk8 = len([edge for edge in graphk8.get_edge_list() if "?" not in edge.get('label')])
-        edgesk16 = len([edge for edge in graphk16.get_edge_list() if "?" not in edge.get('label')])
+        edgesk4 = [edge for edge in graphk4.get_edge_list() if "?" not in edge.get('label')]
+        edgesk8 = [edge for edge in graphk8.get_edge_list() if "?" not in edge.get('label')]
+        edgesk16 = [edge for edge in graphk16.get_edge_list() if "?" not in edge.get('label')]
+        if k8_txs>0 and len(set(edgesk4)) > len(set(edgesk8)):
+            print("Ey! hay ejes de k=4 a k=8 que se perdieron!")
+        if k16_txs>0 and len(set(edgesk8)) > len(set(edgesk16)):
+            print("Ey! hay ejes de k=8 a k=16 que se perdieron!")
+        
         #Mostrar los edges que están en edgesk8 pero no están en edgesk16
-        missing_edges = [edge for edge in edges_k8 if edge not in graphk16.get_edge_list()]
+        missing_edges = [edge for edge in edgesk8 if edge not in graphk16.get_edge_list()]
         print("Edges present in k=8 but not in k=16:")
         for edge in missing_edges:
             print(edge)
             print("")
         continue
     
-    subject_info = [subject, mode, getTotalMethods(row), time, k4_txs, (k4_txs_to-k4_txs)]
+    subject_parsed = subject.replace("_Mode.states","").replace("_Mode.epa","")
+    subject_info = [subject_parsed, mode, time, k4_txs, (k4_txs_to-k4_txs)]
     subject_info_aux = ["-", "-", "-"]
     row = getRowWithSubjectMode(file_k8, subject, mode)
     if len(row)> 0:

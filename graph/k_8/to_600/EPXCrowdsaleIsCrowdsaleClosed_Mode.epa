@@ -7,13 +7,6 @@ t();
 t();
 "]
 	"1-0-0-0-5-0-" -> "1-0-0-0-5-0-" [label="t();"]
-	"0-0-3-0-5-0-" [label="checkGoalReached();
-t();
-"]
-	"0-0-3-0-5-0-" [label="checkGoalReached();
-t();
-"]
-	"0-0-3-0-5-0-" -> "0-0-3-0-5-0-" [label="checkGoalReached();"]
 	"1-0-0-0-5-0-" [label="SetupCrowdsale(_fundingStartBlock, _fundingEndBlock);
 t();
 "]
@@ -27,15 +20,14 @@ t();
 	"0-0-3-0-5-0-" [label="checkGoalReached();
 t();
 "]
-	"0-0-3-0-5-0-" -> "0-0-3-0-5-0-" [label="t();"]
-	"0-2-3-0-5-0-" [label="buy();
-checkGoalReached();
+	"0-0-3-0-5-0-" -> "0-0-3-0-5-0-" [label="checkGoalReached();"]
+	"0-0-3-0-5-0-" [label="checkGoalReached();
 t();
 "]
 	"0-0-3-0-5-0-" [label="checkGoalReached();
 t();
 "]
-	"0-2-3-0-5-0-" -> "0-0-3-0-5-0-" [label="buy();"]
+	"0-0-3-0-5-0-" -> "0-0-3-0-5-0-" [label="t();"]
 	"1-0-0-0-5-0-" [label="SetupCrowdsale(_fundingStartBlock, _fundingEndBlock);
 t();
 "]
@@ -44,6 +36,14 @@ checkGoalReached();
 t();
 "]
 	"1-0-0-0-5-0-" -> "0-2-3-0-5-0-" [label="SetupCrowdsale(_fundingStartBlock, _fundingEndBlock);"]
+	"0-2-3-0-5-0-" [label="buy();
+checkGoalReached();
+t();
+"]
+	"0-0-3-0-5-0-" [label="checkGoalReached();
+t();
+"]
+	"0-2-3-0-5-0-" -> "0-0-3-0-5-0-" [label="buy();"]
 	"0-0-3-0-5-0-" [label="checkGoalReached();
 t();
 "]

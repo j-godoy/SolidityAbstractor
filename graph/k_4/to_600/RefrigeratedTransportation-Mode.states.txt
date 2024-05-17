@@ -1,5 +1,5 @@
 Subject: RefrigeratedTransportation-Mode.states
-Total time: 42.28767490386963
+Total time: 40.473145961761475
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

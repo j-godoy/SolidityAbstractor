@@ -1,5 +1,5 @@
 Subject: AssetTransferFixed-Mode.states
-Total time: 1538.4429893493652
+Total time: 1734.8266990184784
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

@@ -200,7 +200,7 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
 def to_csv(table):
     ret = ""
     for row in table:
-        print(row)
-        ret += ",".join(row).replace("\n","") + "\n"
+        ret += ",".join(map(str, row))
+        ret = ret.replace("\n","") + "\n"
     return ret
 # main(config_B2(), REPETICIONES, 4, 4, 300)

@@ -12,6 +12,13 @@ contract EtherBank{
     uint senders_in_mapping = 0;
     address[] senders_reentrant = new address[](0);
 	uint balance = 0;
+	address A;
+	uint balance_A = 0;
+	uint balance_NotA = 0;
+	
+	constructor(address _A) public {
+        A = _A;
+    }
 
 
 	function getBalance(address user) public view returns(uint) {  
@@ -24,11 +31,15 @@ contract EtherBank{
 		if (msg.value > 0) {			
 			balance = balance + msg.value;
 			senders_in_mapping += 1;
+			if (msg.sender == A) {
+				balance_A += msg.value;
+			} else {
+				balance_NotA += msg.value;
+			}
 		}
 	}
 
 	function withdrawBalance_Init() public {
-		require (balance > 0);
 		uint amountToWithdraw = userBalances[msg.sender];
         // <yes> <report> REENTRANCY
 		//bool ret = msg.sender.call.value(amountToWithdraw)();
@@ -46,9 +57,18 @@ contract EtherBank{
 		if (userBalances[msg.sender] > 0) {
 			senders_in_mapping -= 1;
 			userBalances[msg.sender] = 0;
+			if (msg.sender == A) {
+				balance_A = 0;
+			} else {
+				balance_NotA = 0;
+			}
 		}
 	}
 
-    function dummy_balanceGTZero() public { }
-    function dummy_balanceIsZero() public { }
+    function dummy_balanceGTZero() public view { require(balance > 0); }
+    function dummy_balanceIsZero() public view { require(balance == 0); }
+	function dummy_balanceAGTZero() public view { require(balance_A > 0); }
+    function dummy_balanceAIsZero() public view { require(balance_A == 0); }
+	function dummy_balanceNotAGTZero() public view { require(balance_NotA > 0); }
+    function dummy_balanceNotAIsZero() public view { require(balance_NotA == 0); }
 }

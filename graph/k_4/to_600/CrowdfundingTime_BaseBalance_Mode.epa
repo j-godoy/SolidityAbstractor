@@ -42,14 +42,6 @@ t(n);
 t(n);
 "]
 	"0-2-0-4-0-6-" -> "0-0-0-0-5-6-" [label="GetFunds();"]
-	"0-0-3-4-0-6-" [label="Claim();
-dummy_balanceGTZero();
-t(n);
-"]
-	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
-t(n);
-"]
-	"0-0-3-4-0-6-" -> "0-0-0-0-5-6-" [label="Claim();"]
 	"1-0-0-0-5-6-" [label="Donate();
 dummy_balanceIsZero();
 t(n);
@@ -58,6 +50,14 @@ t(n);
 t(n);
 "]
 	"1-0-0-0-5-6-" -> "0-0-0-0-5-6-" [label="t(n);"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" -> "0-0-0-0-5-6-" [label="Claim();"]
 	"0-0-0-4-0-6-" [label="dummy_balanceGTZero();
 t(n);
 "]
@@ -75,6 +75,14 @@ dummy_balanceGTZero();
 t(n);
 "]
 	"1-0-0-0-5-6-" -> "1-0-0-4-0-6-" [label="Donate();"]
+	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-0-0-0-5-6-" -> "0-2-0-0-5-6-" [label="t(n);"]
 	"1-0-0-4-0-6-" [label="Donate();
 dummy_balanceGTZero();
 t(n);
@@ -92,14 +100,6 @@ t(n);
 dummy_balanceGTZero();
 t(n);
 "]
-	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
-t(n);
-"]
-	"0-2-0-0-5-6-" [label="GetFunds();
-dummy_balanceIsZero();
-t(n);
-"]
-	"0-0-0-0-5-6-" -> "0-2-0-0-5-6-" [label="t(n);"]
 	"1-0-0-4-0-6-" [label="Donate();
 dummy_balanceGTZero();
 t(n);
@@ -195,15 +195,6 @@ dummy_balanceIsZero();
 t(n);
 "]
 	"0-2-0-4-0-6-" -> "0-2-0-0-5-6-" [label="GetFunds();"]
-	"0-2-0-0-5-6-" [label="GetFunds();
-dummy_balanceIsZero();
-t(n);
-"]
-	"0-2-0-0-5-6-" [label="GetFunds();
-dummy_balanceIsZero();
-t(n);
-"]
-	"0-2-0-0-5-6-" -> "0-2-0-0-5-6-" [label="t(n);"]
 	"1-0-0-0-5-6-" [label="Donate();
 dummy_balanceIsZero();
 t(n);
@@ -213,6 +204,24 @@ dummy_balanceIsZero();
 t(n);
 "]
 	"1-0-0-0-5-6-" -> "0-2-0-0-5-6-" [label="t(n);"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" [label="GetFunds();
+dummy_balanceIsZero();
+t(n);
+"]
+	"0-2-0-0-5-6-" -> "0-2-0-0-5-6-" [label="t(n);"]
+	"1-0-0-4-0-6-" [label="Donate();
+dummy_balanceGTZero();
+t(n);
+"]
+	"0-0-3-4-0-6-" [label="Claim();
+dummy_balanceGTZero();
+t(n);
+"]
+	"1-0-0-4-0-6-" -> "0-0-3-4-0-6-" [label="t(n);"]
 	"0-0-3-4-0-6-" [label="Claim();
 dummy_balanceGTZero();
 t(n);
@@ -239,15 +248,6 @@ dummy_balanceGTZero();
 t(n);
 "]
 	"0-0-3-4-0-6-" -> "0-0-3-4-0-6-" [label="t(n);"]
-	"1-0-0-4-0-6-" [label="Donate();
-dummy_balanceGTZero();
-t(n);
-"]
-	"0-0-3-4-0-6-" [label="Claim();
-dummy_balanceGTZero();
-t(n);
-"]
-	"1-0-0-4-0-6-" -> "0-0-3-4-0-6-" [label="t(n);"]
 	init [label=init]
 	"0-0-0-0-5-6-" [label="dummy_balanceIsZero();
 t(n);

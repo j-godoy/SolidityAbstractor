@@ -43,7 +43,7 @@ contract DigitalLocker {
         State = StateType.DocumentReview;
     }
 
-    function RejectApplication(uint rejectionReason) public
+    function RejectApplication(uint rejectionReason) internal
     {
         if (BankAgent != msg.sender)
         {

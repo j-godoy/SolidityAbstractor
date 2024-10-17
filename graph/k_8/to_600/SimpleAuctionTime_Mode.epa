@@ -1,16 +1,16 @@
 // SimpleAuctionT.sol
 digraph {
-	"0-0-0-4-" [label="t();
-"]
-	"0-0-0-4-" [label="t();
-"]
-	"0-0-0-4-" -> "0-0-0-4-" [label="t();"]
 	"0-0-3-4-" [label="auctionEnd();
 t();
 "]
 	"0-0-0-4-" [label="t();
 "]
 	"0-0-3-4-" -> "0-0-0-4-" [label="auctionEnd();"]
+	"0-0-0-4-" [label="t();
+"]
+	"0-0-0-4-" [label="t();
+"]
+	"0-0-0-4-" -> "0-0-0-4-" [label="t();"]
 	"0-2-0-4-" [label="withdraw();
 t();
 "]
@@ -45,13 +45,6 @@ t();
 t();
 "]
 	"1-0-3-4-" -> "1-0-0-4-" [label="auctionEnd();"]
-	"0-2-0-4-" [label="withdraw();
-t();
-"]
-	"0-2-0-4-" [label="withdraw();
-t();
-"]
-	"0-2-0-4-" -> "0-2-0-4-" [label="withdraw();"]
 	"1-2-0-4-" [label="bid();
 withdraw();
 t();
@@ -60,13 +53,6 @@ t();
 t();
 "]
 	"1-2-0-4-" -> "1-0-0-4-" [label="withdraw();"]
-	"0-2-0-4-" [label="withdraw();
-t();
-"]
-	"0-2-0-4-" [label="withdraw();
-t();
-"]
-	"0-2-0-4-" -> "0-2-0-4-" [label="t();"]
 	"0-0-3-4-" [label="auctionEnd();
 t();
 "]
@@ -74,14 +60,20 @@ t();
 t();
 "]
 	"0-0-3-4-" -> "0-0-3-4-" [label="t();"]
-	"0-2-3-4-" [label="withdraw();
-auctionEnd();
+	"0-2-0-4-" [label="withdraw();
 t();
 "]
 	"0-2-0-4-" [label="withdraw();
 t();
 "]
-	"0-2-3-4-" -> "0-2-0-4-" [label="auctionEnd();"]
+	"0-2-0-4-" -> "0-2-0-4-" [label="withdraw();"]
+	"0-2-0-4-" [label="withdraw();
+t();
+"]
+	"0-2-0-4-" [label="withdraw();
+t();
+"]
+	"0-2-0-4-" -> "0-2-0-4-" [label="t();"]
 	"1-0-0-4-" [label="bid();
 t();
 "]
@@ -90,6 +82,14 @@ withdraw();
 t();
 "]
 	"1-0-0-4-" -> "1-2-0-4-" [label="bid();"]
+	"0-2-3-4-" [label="withdraw();
+auctionEnd();
+t();
+"]
+	"0-2-0-4-" [label="withdraw();
+t();
+"]
+	"0-2-3-4-" -> "0-2-0-4-" [label="auctionEnd();"]
 	"1-2-0-4-" [label="bid();
 withdraw();
 t();
@@ -98,14 +98,6 @@ t();
 t();
 "]
 	"1-2-0-4-" -> "0-2-0-4-" [label="t();"]
-	"0-2-3-4-" [label="withdraw();
-auctionEnd();
-t();
-"]
-	"0-0-3-4-" [label="auctionEnd();
-t();
-"]
-	"0-2-3-4-" -> "0-0-3-4-" [label="withdraw();"]
 	"1-0-0-4-" [label="bid();
 t();
 "]
@@ -122,6 +114,23 @@ t();
 t();
 "]
 	"1-0-3-4-" -> "0-0-3-4-" [label="t();"]
+	"0-2-3-4-" [label="withdraw();
+auctionEnd();
+t();
+"]
+	"0-0-3-4-" [label="auctionEnd();
+t();
+"]
+	"0-2-3-4-" -> "0-0-3-4-" [label="withdraw();"]
+	"1-0-3-4-" [label="bid();
+auctionEnd();
+t();
+"]
+	"1-0-3-4-" [label="bid();
+auctionEnd();
+t();
+"]
+	"1-0-3-4-" -> "1-0-3-4-" [label="bid();"]
 	"1-2-0-4-" [label="bid();
 withdraw();
 t();
@@ -153,11 +162,12 @@ t();
 auctionEnd();
 t();
 "]
-	"1-0-3-4-" [label="bid();
+	"1-2-3-4-" [label="bid();
+withdraw();
 auctionEnd();
 t();
 "]
-	"1-0-3-4-" -> "1-0-3-4-" [label="bid();"]
+	"1-0-3-4-" -> "1-2-3-4-" [label="bid();"]
 	"0-2-3-4-" [label="withdraw();
 auctionEnd();
 t();
@@ -186,16 +196,6 @@ auctionEnd();
 t();
 "]
 	"0-2-3-4-" -> "0-2-3-4-" [label="t();"]
-	"1-0-3-4-" [label="bid();
-auctionEnd();
-t();
-"]
-	"1-2-3-4-" [label="bid();
-withdraw();
-auctionEnd();
-t();
-"]
-	"1-0-3-4-" -> "1-2-3-4-" [label="bid();"]
 	"1-2-3-4-" [label="bid();
 withdraw();
 auctionEnd();

@@ -1,5 +1,5 @@
 Subject: FrequentFlyerRewardsCalculator-Mode.states
-Total time: 10.679624319076538
+Total time: 11.335208654403687
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

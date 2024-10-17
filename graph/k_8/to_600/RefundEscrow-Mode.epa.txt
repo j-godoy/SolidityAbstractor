@@ -1,5 +1,5 @@
 Subject: RefundEscrow-Mode.epa
-Total time: 58.15249681472778
+Total time: 57.1889066696167
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

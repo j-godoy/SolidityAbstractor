@@ -1,5 +1,5 @@
 Subject: RefundEscrow-Mode.states
-Total time: 60.849169969558716
+Total time: 51.213313817977905
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

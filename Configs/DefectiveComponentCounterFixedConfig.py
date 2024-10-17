@@ -1,11 +1,9 @@
 fileName = "DefectiveComponentCounter_fixed.sol"
 contractName = "DefectiveComponentCounter"
-functions = ["ComputeTotal();", "GetDefectiveComponentsCount();"]
+functions = ["ComputeTotal();"]
 
-statePreconditions = ["State != StateType.ComputeTotal", 
-"true"]
-functionPreconditions = ["Manufacturer == msg.sender",
-"true"]
+statePreconditions = ["State != StateType.ComputeTotal"]
+functionPreconditions = ["Manufacturer == msg.sender"]
 
 functionVariables = ""
 tool_output = "Found a counterexample"

@@ -1,5 +1,0 @@
-Config                                     Mode    Time       Inital pre count    Pre count after true    Reduce Pr count    Functions count
------------------------------------------  ------  -------  ------------------  ----------------------  -----------------  -----------------
-DefectiveComponentCounterConfig_k=16       states  0:00:38                   2                       2                  2                  2
-DefectiveComponentCounterFixedConfig_k=16  states  0:00:23                   2                       2                  2                  2
-DigitalLockerConfig_k=16                   states  0:13:09                   6                       6                  6                 10

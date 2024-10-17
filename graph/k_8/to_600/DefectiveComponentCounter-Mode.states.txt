@@ -1,5 +1,5 @@
 Subject: DefectiveComponentCounter-Mode.states
-Total time: 23.21219277381897
+Total time: 10.75473165512085
 # Time Out: 0
 # Corral Fail without trackvars: 0
 # Corral Fail with trackvars: 0

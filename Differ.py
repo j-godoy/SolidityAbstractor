@@ -111,8 +111,10 @@ def get_alloy_subjects(subjects, benchmark):
                 ret.append(to_find_alloy[j])
     return ret
 
-repo_path = "D:\\Documentos\\Git\\SolidityAbstractor"
-repo_alloy = "C:\\Users\\j_god\\Repos\\sosym23"
+from os.path import expanduser
+home = expanduser("~")
+repo_path = os.path.join(home, "Repos","SolidityAbstractor")
+repo_alloy = os.path.join(home, "Repos","sosym23")
 
 def get_diff_prev(solidityabstractor_subjects, k_prev, k_curr, timeout):
     path_solidityabstractor_prev = f"{repo_path}\\graph\\k_{k_prev}\\to_{timeout}"

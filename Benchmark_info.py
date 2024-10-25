@@ -47,6 +47,24 @@ def run(mode, params, extra=""):
     
     table.append([name+"_k="+str(TXBOUND_END), modeName, avgEpa, statesCount , initEpa, finiStates, functions]) 
 
+def config_B3():
+    configs = [
+    ###Benchmark3-original
+    ["EtherstoreOriginalReentrancy",["e"]],
+    ["ReentranceOriginalReentrancy",["e"]],
+    ["Reentrancy_daoOriginalReentrancy",["e"]],
+    ["Reentrancy_simpleOriginalReentrancy",["e"]],    
+    ["Simple_daoOriginalReentrancy",["e"]],
+
+    ###Benchmark3-claim-split
+    ["EtherstoreReentrancy",["e"]],
+    ["ReentranceReentrancy",["e"]],
+    ["Reentrancy_daoReentrancy",["e"]],
+    ["Reentrancy_simpleReentrancy",["e"]],    
+    ["Simple_daoReentrancy",["e"]],
+    ]
+    return configs
+
 def config_B1():
     configs = [
     ###Benchmark1-original

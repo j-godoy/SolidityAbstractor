@@ -9,9 +9,8 @@ contract EtherBank{
     mapping (address => uint) userBalances;
 	// Re-entrancy analysis
 	address _last;
-	address[] senders_reentrant = new address[](0);
-
     uint senders_in_mapping = 0;
+    address[] senders_reentrant = new address[](0);
 	uint balance = 0;
 	address A;
 	
@@ -30,38 +29,16 @@ contract EtherBank{
 		if (msg.value > 0) {			
 			balance = balance + msg.value;
 			senders_in_mapping += 1;
-			// if (msg.sender == A) {
-			// 	balance_A += msg.value;
-			// } else {
-			// 	balance_NotA += msg.value;
-			// }
 		}
 	}
 
-	function withdrawBalance_Init() public {
+	function withdrawBalance() public {
 		uint amountToWithdraw = userBalances[msg.sender];
         // <yes> <report> REENTRANCY
 		//bool ret = msg.sender.call.value(amountToWithdraw)();
 		// if (!ret) { throw; }
-		// userBalances[msg.sender] = 0;
+		userBalances[msg.sender] = 0;
 		balance -= amountToWithdraw;
-		senders_reentrant.push(msg.sender);
-	}
-
-	function withdrawBalance_End() public {
-		require (senders_reentrant.length > 0);
-        require (senders_reentrant[senders_reentrant.length-1] == msg.sender);
-		senders_reentrant.length -= 1;
-
-		if (userBalances[msg.sender] > 0) {
-			senders_in_mapping -= 1;
-			userBalances[msg.sender] = 0;
-			// if (msg.sender == A) {
-			// 	balance_A = 0;
-			// } else {
-			// 	balance_NotA = 0;
-			// }
-		}
 	}
 
     function dummy_balanceGTZero() public view { require(balance > 0); }

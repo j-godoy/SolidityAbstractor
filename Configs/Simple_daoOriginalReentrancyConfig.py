@@ -1,33 +1,32 @@
-fileName = "EtherbankReentrancy.sol"
-contractName = "EtherBank"
+fileName = "Simple_daoOriginalReentrancy.sol"
+contractName = "SimpleDAO"
 functions = [
-"addToBalance();",
-"withdrawBalance_Init();",
-"withdrawBalance_End();",
+"donate(to);",
+"withdraw(amount);",
 "dummy_balanceGTZero();",
 "dummy_balanceIsZero();",
 "dummy_balanceAGTZero();",
-"dummy_balanceAIsZero();",
+"dummy_balanceAIsZero();"
 ]
 statePreconditions = [
 "true",
-"true",
-"senders_reentrant.length > 0",
+"senders_in_mapping > 0",
 "balance > 0",
 "balance == 0",
-"userBalances[A] > 0",
-"userBalances[A] == 0"
+"credit[A] > 0",
+"credit[A] == 0"
 ]
 functionPreconditions = [
 "true",
 "true",
-"senders_reentrant[senders_reentrant.length-1] == msg.sender",
 "true",
 "true",
 "true",
 "true"
+# "true",
+# "true"
 ]
-functionVariables = "address A"
+functionVariables = "address to, uint amount, address A"
 # functionVariables = "uint n"
 tool_output = "Found a counterexample"
 
@@ -36,4 +35,4 @@ statesNamesModeState = []
 statePreconditionsModeState = []
 
 # epaExtraConditions = "address(this).balance == 0"
-txBound = 10
+txBound = 8

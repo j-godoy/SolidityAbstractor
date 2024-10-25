@@ -42,8 +42,8 @@ contract ReentrancyDAO {
         require (senders_reentrant[senders_reentrant.length-1] == msg.sender);
 		senders_reentrant.length -= 1;        
 
-        credit[msg.sender] = 0;
         if (credit[msg.sender] > 0) {            
+            credit[msg.sender] = 0;
             senders_in_mapping -= 1;
         }
     }

@@ -6,9 +6,9 @@ functions = [
 "withdraw_End();",
 # "t(_time);",
 "dummy_balanceGTZero();",
-"dummy_balanceIsZero();",
+# "dummy_balanceIsZero();",
 "dummy_balanceAGTZero();",
-"dummy_balanceAIsZero();"
+# "dummy_balanceAIsZero();"
 ]
 
 statePreconditions = [
@@ -17,19 +17,19 @@ statePreconditions = [
 "senders_reentrant.length > 0",
 # "true",
 "balance > 0",
-"balance == 0",
+# "balance == 0",
 "balances[A] > 0",
-"balances[A] == 0"
+# "balances[A] == 0"
 ]
 functionPreconditions = [
 "true",
-"balances[msg.sender] >= _amount",
+"true",
 "senders_reentrant[senders_reentrant.length-1].sender == msg.sender",
 # "_time > 0",
 "true",
+# "true",
 "true",
-"true",
-"true"
+# "true"
 # "true",
 # "true"
 ]
@@ -42,4 +42,4 @@ statesNamesModeState = []
 statePreconditionsModeState = []
 
 # epaExtraConditions = "address(this).balance == 0"
-txBound = 8
+txBound = 10

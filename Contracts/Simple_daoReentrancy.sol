@@ -52,12 +52,11 @@ contract SimpleDAO {
   function withdraw_End() public  {
     require (senders_reentrant.length > 0);
     require (senders_reentrant[senders_reentrant.length-1].sender == msg.sender);
-		senders_reentrant.length -= 1;
-    
-    uint256 value = senders_reentrant[senders_reentrant.length-1].value;
+		uint256 value = senders_reentrant[senders_reentrant.length-1].value;
+    senders_reentrant.length -= 1;
 
-    credit[msg.sender]-=value;
-    if (credit[msg.sender]>= value) {  
+    if (credit[msg.sender]>= value) {
+      credit[msg.sender]-=value;
       if (value >0 && credit[msg.sender] == 0) {
         senders_in_mapping -= 1;
       }
@@ -69,7 +68,7 @@ contract SimpleDAO {
   }
 
   function dummy_balanceGTZero() public view { require(balance > 0); }
-  function dummy_balanceIsZero() public view { require(balance == 0); }
+  // function dummy_balanceIsZero() public view { require(balance == 0); }
   function dummy_balanceAGTZero() public view { require(credit[A] > 0); }
-  function dummy_balanceAIsZero() public view { require(credit[A] == 0); }
+  // function dummy_balanceAIsZero() public view { require(credit[A] == 0); }
 }

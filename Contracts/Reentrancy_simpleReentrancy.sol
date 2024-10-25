@@ -56,8 +56,8 @@
         require (senders_reentrant[senders_reentrant.length-1] == msg.sender);
         senders_reentrant.length -= 1;
 
-        userBalance[msg.sender] = 0;
         if (userBalance[msg.sender] > 0) {            
+            userBalance[msg.sender] = 0;
             senders_in_mapping -= 1;
         }
     }

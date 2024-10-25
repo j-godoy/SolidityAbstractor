@@ -30,3 +30,6 @@ It requires that the corresponding Solidity contract is in the /contract folder 
         - cd verisol/
         -  dotnet build Sources\VeriSol.sln
         - dotnet tool install VeriSol --version 0.1.5-alpha --global --add-source path/to/repo/verisol/nupkg/
+
+Ejemplo para correr en el carpeta donde está el archivo .sol:
+- Verisol .\EtherstoreReentrancy.sol EtherStore /txBound:12 /noPrf

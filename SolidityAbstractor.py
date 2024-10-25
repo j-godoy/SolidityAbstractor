@@ -254,7 +254,10 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
         if query_result[1] == TRACK_VARS:
             query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, True)
         success = query_result[0]
-        if success:
+        # TODO: si alguno de estos estados tira time out, guardarlo en algun lado.
+        # Luego, saltear todas las queries que tengan como estado inicial/final ese estado.
+        # Temporalmente, si tiró timeout, no lo agrego a la lista de precondiciones.
+        if success and query_result[1] != "?" and query_result[1] != "fail?":
             # print_combination(indexPreconditionRequire, statesTemp)
             preconditionsTemp2.append(preconditionsTemp[indexPreconditionRequire])
             statesTemp2.append(statesTemp[indexPreconditionRequire])
@@ -299,7 +302,7 @@ def try_init(tool, tempFunctionNames, final_directory, states):
 def try_command(tool, temp_function_name, tempFunctionNames, final_directory, statesTemp, txBound, time_out, trackAllVars):
     global tool_output, verbose, number_to, number_corral_fail, number_corral_fail_with_tackvars
 
-    trackAllVars = True #
+    # trackAllVars = True #
     
     #Evito chequear funciones "dummy"
     if len(statesTemp) > 0:
@@ -352,7 +355,7 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
             return False,TRACK_VARS
         else:
             number_corral_fail_with_tackvars += 1
-            return True,"fail?"
+            return False,"fail?" # if corral fails with trackvars, we don't know if it's a real counterexample or not
     return tool_output in output_verisol, ""
 
 def get_temp_function_name(indexPrecondtion, indexAssert, indexFunction):

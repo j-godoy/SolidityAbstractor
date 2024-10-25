@@ -50,18 +50,19 @@ def run(mode, params, extra=""):
 def config_B3():
     configs = [
     ###Benchmark3-original
-    ["EtherstoreOriginalReentrancy",["e"]],
-    ["ReentranceOriginalReentrancy",["e"]],
-    ["Reentrancy_daoOriginalReentrancy",["e"]],
-    ["Reentrancy_simpleOriginalReentrancy",["e"]],    
-    ["Simple_daoOriginalReentrancy",["e"]],
+    # ["EtherstoreOriginalReentrancyConfig",["e"]],
+    # ["ReentranceOriginalReentrancyConfig",["e"]],
+    # ["Reentrancy_daoOriginalReentrancyConfig",["e"]],
+    # ["Reentrancy_simpleOriginalReentrancyConfig",["e"]],    
+    # ["Simple_daoOriginalReentrancyConfig",["e"]],
 
     ###Benchmark3-claim-split
-    ["EtherstoreReentrancy",["e"]],
-    ["ReentranceReentrancy",["e"]],
-    ["Reentrancy_daoReentrancy",["e"]],
-    ["Reentrancy_simpleReentrancy",["e"]],    
-    ["Simple_daoReentrancy",["e"]],
+    # ["EtherbankReentrancyConfig",["e"]],
+    # ["EtherstoreReentrancyConfig",["e"]],
+    ["ReentranceReentrancyConfig",["e"]],
+    ["Reentrancy_daoReentrancyConfig",["e"]],
+    ["Reentrancy_simpleReentrancyConfig",["e"]],    
+    ["Simple_daoReentrancyConfig",["e"]],
     ]
     return configs
 
@@ -133,8 +134,8 @@ def config_B2():
 def rename_configs(config):
     configs = []
     for c in config:
-        mode = "e" if c.endswith("epa") else "s"
-        configs.append([c.replace("_Mode.epa", "Config").replace("_Mode.states", "Config"), mode])
+        mode = "e" if c[0].endswith("epa") else "s"
+        configs.append([c[0].replace("_Mode.epa", "Config").replace("_Mode.states", "Config"), mode])
     return configs
 
 table = [[]]
@@ -148,13 +149,14 @@ TIME_OUT = 300
 
 def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout=300):
     global table, command, configName, REPETICIONES, TXBOUND_END, TIME_OUT
-    configs = rename_configs(subjects_config)
+    # configs = rename_configs(subjects_config)
+    configs = subjects_config
     REPETICIONES = repeticiones
     TXBOUND_INIT = txbound_init
     TXBOUND_END = txbound_end
     TIME_OUT = timeout
 
-    rerun_subjects = False
+    rerun_subjects = True
 
     table = [['Config', 'Mode' ,'Time', 'Inital pre count' , 'Pre count after true', 'Reduce Pr count', 'Functions count']]
     init = time.time()
@@ -172,7 +174,7 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
 
     # solo ejecuto los que no se generaron
     for config in subjects_config:
-        path = os.path.join("graph", "k_"+str(txbound_init), "to_"+str(timeout), config)
+        path = os.path.join("graph", "k_"+str(txbound_init), "to_"+str(timeout), config[0])
         if not os.path.exists(path):
             configs_not_exist.append(config)
     
@@ -221,4 +223,4 @@ def to_csv(table):
         ret += ",".join(map(str, row))
         ret = ret.replace("\n","") + "\n"
     return ret
-# main(config_B2(), REPETICIONES, 4, 4, 300)
+main(config_B3(), REPETICIONES, 8, 8, 600)

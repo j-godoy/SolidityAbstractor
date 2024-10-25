@@ -331,12 +331,15 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
         number_to += 1
         print("---EXCEPTION por time out de {} segs ".format(time_out))
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
+        i_state = output_combination(indexPreconditionRequire, statesTemp)
+        f_state = output_combination(indexPreconditionAssert, states)
+        print(f"TimeOut desde state \n{i_state}\n al state \n{f_state}\n con la función '{functions[indexFunction]}'")
         process = psutil.Process(proc.pid)
         for proc in process.children(recursive=True):
             proc.kill()
         process.kill()
         process.wait(2) # wait for killing subprocess
-        return True,"?"
+        return False,"?"
 
     output_verisol = str(result[0].decode('utf-8'))
     output_successful = "Formal Verification successful"

@@ -6,9 +6,9 @@ functions = [
 "withdrawAll_End();",
 # "t(_time);",
 "dummy_balanceGTZero();",
-"dummy_balanceIsZero();",
-"dummy_balanceAGTZero();",
-"dummy_balanceAIsZero();"
+# "dummy_balanceIsZero();",
+"dummy_balanceAGTZero();"
+# "dummy_balanceAIsZero();"
 ]
 
 statePreconditions = [
@@ -17,9 +17,9 @@ statePreconditions = [
 "senders_reentrant.length > 0",
 # "true",
 "balance > 0",
-"balance == 0",
-"credit[A] > 0",
-"credit[A] == 0"
+# "balance == 0",
+"credit[A] > 0"
+# "credit[A] == 0"
 ]
 functionPreconditions = [
 "true",
@@ -27,8 +27,8 @@ functionPreconditions = [
 "senders_reentrant[senders_reentrant.length-1] == msg.sender",
 # "_time > 0",
 "true",
-"true",
-"true",
+# "true",
+# "true",
 "true"
 # "true",
 # "true"

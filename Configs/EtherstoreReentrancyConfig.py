@@ -6,9 +6,9 @@ functions = [
 "withdrawFunds_End();",
 "t(_time);",
 "dummy_balanceGTZero();",
-"dummy_balanceIsZero();",
-"dummy_balanceAGTZero();",
-"dummy_balanceAIsZero();"
+# "dummy_balanceIsZero();",
+"dummy_balanceAGTZero();"
+# "dummy_balanceAIsZero();"
 ]
 
 statePreconditions = [
@@ -17,9 +17,9 @@ statePreconditions = [
 "senders_reentrant.length > 0",
 "senders_reentrant.length == 0",
 "balance > 0",
-"balance == 0",
-"balances[A] > 0",
-"balances[A] == 0"
+# "balance == 0",
+"balances[A] > 0"
+# "balances[A] == 0"
 ]
 functionPreconditions = [
 "true",
@@ -27,8 +27,8 @@ functionPreconditions = [
 "senders_reentrant[senders_reentrant.length-1].sender == msg.sender",
 "_time > 0",
 "true",
-"true",
-"true",
+# "true",
+# "true",
 "true"
 ]
 functionVariables = "uint _weiToWithdraw, address A, uint _time"

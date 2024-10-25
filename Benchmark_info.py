@@ -50,15 +50,14 @@ def run(mode, params, extra=""):
 def config_B3():
     configs = [
     ###Benchmark3-original
-    # ["EtherstoreOriginalReentrancyConfig",["e"]],
-    # ["ReentranceOriginalReentrancyConfig",["e"]],
-    # ["Reentrancy_daoOriginalReentrancyConfig",["e"]],
-    # ["Reentrancy_simpleOriginalReentrancyConfig",["e"]],    
-    # ["Simple_daoOriginalReentrancyConfig",["e"]],
+    ["EtherstoreOriginalReentrancyConfig",["e"]],
+    ["ReentranceOriginalReentrancyConfig",["e"]],
+    ["Reentrancy_daoOriginalReentrancyConfig",["e"]],
+    ["Reentrancy_simpleOriginalReentrancyConfig",["e"]],    
+    ["Simple_daoOriginalReentrancyConfig",["e"]],
 
     ###Benchmark3-claim-split
-    # ["EtherbankReentrancyConfig",["e"]],
-    # ["EtherstoreReentrancyConfig",["e"]],
+    ["EtherstoreReentrancyConfig",["e"]],
     ["ReentranceReentrancyConfig",["e"]],
     ["Reentrancy_daoReentrancyConfig",["e"]],
     ["Reentrancy_simpleReentrancyConfig",["e"]],    

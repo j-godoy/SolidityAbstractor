@@ -5,26 +5,26 @@ functions = [
 "withdrawBalance_Init();",
 "withdrawBalance_End();",
 "dummy_balanceGTZero();",
-"dummy_balanceIsZero();",
-"dummy_balanceAGTZero();",
-"dummy_balanceAIsZero();"
+# "dummy_balanceIsZero();",
+"dummy_balanceAGTZero();"
+# "dummy_balanceAIsZero();"
 ]
 statePreconditions = [
 "true",
 "senders_in_mapping > 0",
 "senders_reentrant.length > 0",
 "balance > 0",
-"balance == 0",
-"userBalance[A] > 0",
-"userBalance[A] == 0"
+# "balance == 0",
+"userBalance[A] > 0"
+# "userBalance[A] == 0"
 ]
 functionPreconditions = [
 "true",
 "true",
 "senders_reentrant[senders_reentrant.length-1] == msg.sender",
 "true",
-"true",
-"true",
+# "true",
+# "true",
 "true"
 # "true",
 # "true"

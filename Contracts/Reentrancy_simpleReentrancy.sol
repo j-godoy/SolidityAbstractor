@@ -35,7 +35,7 @@
         userBalance[msg.sender] += msg.value;
     }
 
-    function withdrawBalance() public {
+    function withdrawBalance_Init() public {
         require(senders_in_mapping > 0);
         // send userBalance[msg.sender] ethers to msg.sender
         // if mgs.sender is a contract, it will call its fallback function
@@ -45,9 +45,21 @@
         // }
         if (userBalance[msg.sender] > 0) {
             balance -= userBalance[msg.sender];
+            senders_reentrant.push(msg.sender);
+            // senders_in_mapping -= 1;
+        }
+        // userBalance[msg.sender] = 0;
+    }
+
+    function withdrawBalance_End() public {
+        require(senders_in_mapping > 0);require (senders_reentrant.length > 0);
+        require (senders_reentrant[senders_reentrant.length-1] == msg.sender);
+        senders_reentrant.length -= 1;
+
+        userBalance[msg.sender] = 0;
+        if (userBalance[msg.sender] > 0) {            
             senders_in_mapping -= 1;
         }
-        userBalance[msg.sender] = 0;
     }
 
     function dummy_balanceGTZero() public view { require(balance > 0); }

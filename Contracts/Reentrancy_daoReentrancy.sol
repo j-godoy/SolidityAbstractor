@@ -21,7 +21,7 @@ contract ReentrancyDAO {
         A = _A;
     }
 
-    function withdrawAll() public {
+    function withdrawAll_Init() public {
         require(senders_in_mapping > 0);
         uint oCredit = credit[msg.sender];
         if (oCredit > 0) {
@@ -29,10 +29,22 @@ contract ReentrancyDAO {
             // <yes> <report> REENTRANCY
             // bool callResult = msg.sender.call.value(oCredit)();
             // require (callResult);
-            credit[msg.sender] = 0;
-            if (credit[msg.sender] == 0) {
-                senders_in_mapping -= 1;
-            }
+            senders_reentrant.push(msg.sender);
+            // credit[msg.sender] = 0;
+            // if (credit[msg.sender] == 0) {
+            //     senders_in_mapping -= 1;
+            // }
+        }
+    }
+
+    function withdrawAll_End() public {
+        require (senders_reentrant.length > 0);
+        require (senders_reentrant[senders_reentrant.length-1] == msg.sender);
+		senders_reentrant.length -= 1;        
+
+        credit[msg.sender] = 0;
+        if (credit[msg.sender] > 0) {            
+            senders_in_mapping -= 1;
         }
     }
 

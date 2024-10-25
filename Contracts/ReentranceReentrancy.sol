@@ -16,7 +16,11 @@ contract Reentrance {
 
   // Re-entrancy analysis
 	address _last;
-	address[] senders_reentrant = new address[](0);
+  struct ReentrantSender {
+      address sender;
+      uint value;
+  }
+  ReentrantSender[] senders_reentrant;
 
   constructor(address _A) public {
         A = _A;
@@ -36,7 +40,7 @@ contract Reentrance {
   //   return balances[_who];
   // }
 
-  function withdraw(uint _amount) public {
+  function withdraw_Init(uint _amount) public {
     require(senders_in_mapping > 0);
     if(balances[msg.sender] >= _amount) {
       // <yes> <report> REENTRANCY
@@ -44,8 +48,23 @@ contract Reentrance {
       //   _amount;
       // }
       balance -= _amount;
-      balances[msg.sender] -= _amount;
-      if (_amount>0 && balances[msg.sender] == 0) {
+      senders_reentrant.push(ReentrantSender(msg.sender, _amount));
+      // balances[msg.sender] -= _amount;
+      // if (_amount>0 && balances[msg.sender] == 0) {
+      //   senders_in_mapping -= 1;
+      // }
+    }
+  }
+
+  function withdraw_End() public {
+    require (senders_reentrant.length > 0);
+    require (senders_reentrant[senders_reentrant.length-1].sender == msg.sender);
+		senders_reentrant.length -= 1;
+    
+    uint256 value = senders_reentrant[senders_reentrant.length-1].value;
+    balances[msg.sender] -= value;
+    if (balances[msg.sender] > 0) {
+      if (value>0 && balances[msg.sender] == 0) {
         senders_in_mapping -= 1;
       }
     }

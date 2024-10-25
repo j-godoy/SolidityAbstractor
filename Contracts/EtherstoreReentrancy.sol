@@ -71,10 +71,11 @@ contract EtherStore {
         uint256 value = senders_reentrant[senders_reentrant.length-1].value;
         balances[msg.sender] -= value;
         lastWithdrawTime[msg.sender] = time;
-        if (value > 0 && balances[msg.sender] == 0) {
-            senders_in_mapping -= 1;
+        if (balances[msg.sender] > 0) {
+            if (value > 0 && balances[msg.sender] == 0) {
+                senders_in_mapping -= 1;
+            }
         }
-        
     }
 
     function t(uint256 _time) public {

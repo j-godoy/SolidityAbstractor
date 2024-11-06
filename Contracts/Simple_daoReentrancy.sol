@@ -53,11 +53,11 @@ contract SimpleDAO {
     require (senders_reentrant.length > 0);
     require (senders_reentrant[senders_reentrant.length-1].sender == msg.sender);
 		uint256 value = senders_reentrant[senders_reentrant.length-1].value;
-    senders_reentrant.length -= 1;
+    senders_reentrant.length --;
 
-    if (credit[msg.sender]>= value) {
-      credit[msg.sender]-=value;
-      if (value >0 && credit[msg.sender] == 0) {
+    if (credit[msg.sender]> 0) {
+      credit[msg.sender] -= value;
+      if (value > 0 && credit[msg.sender] == 0) {
         senders_in_mapping -= 1;
       }
     }

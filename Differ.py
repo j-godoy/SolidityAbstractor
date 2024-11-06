@@ -115,7 +115,9 @@ def get_alloy_subjects(subjects, benchmark):
 
 from os.path import expanduser
 home = expanduser("~")
-repo_path = os.path.join(home, "Repos","SolidityAbstractor")
+#repo_path = os.path.join(home, "Repos","SolidityAbstractor")
+# D:\Documentos\Git\SolidityAbstractor
+repo_path = "D:\\Documentos\\Git\\SolidityAbstractor"
 repo_alloy = os.path.join(home, "Repos","sosym23")
 
 def get_diff_prev(solidityabstractor_subjects, k_prev, k_curr, timeout):
@@ -181,74 +183,80 @@ def get_diff(solidityabstractor_subjects, benchmark, k, timeout):
 
 
 def main():
-    # subjects_original = ["RefundEscrow_Mode.states", "RefundEscrow_Mode.epa", "RefundEscrowWithdraw_Mode.epa", "EscrowVault_Mode.states", "EscrowVault_Mode.epa", "EPXCrowdsale_Mode.states", "EPXCrowdsale_Mode.epa", "EPXCrowdsaleIsCrowdsaleClosed_Mode.epa", "CrowdfundingTime_Base_Mode.epa", "CrowdfundingTime_BaseBalance_Mode.epa", "CrowdfundingTime_BaseBalanceFix_Mode.epa", "ValidatorAuction_Mode.states", "ValidatorAuction_Mode.epa", "ValidatorAuction_withdraw_Mode.epa", "SimpleAuction_Mode.epa", "SimpleAuctionTime_Mode.epa", "SimpleAuctionEnded_Mode.epa", "SimpleAuctionHB_Mode.states", "Auction_Mode.epa", "AuctionEnded_Mode.epa", "AuctionWithdraw_Mode.epa", "RockPaperScissors_Mode.states", "RockPaperScissors_Mode.epa"]
-    # subjects_original = ["EPXCrowdsale_Mode.states"]
-    # subjects_original = ["AssetTransferFixed_Mode.states", "AssetTransfer_Mode.states", "BasicProvenanceFixed_Mode.states", "BasicProvenance_Mode.states", "DefectiveComponentCounterFixed_Mode.states", "DefectiveComponentCounter_Mode.states", "DigitalLockerFixed_Mode.states", "DigitalLocker_Mode.states", "FrequentFlyerRewardsCalculator_Mode.states", "HelloBlockchainFixed_Mode.states", "HelloBlockchain_Mode.states", "RefrigeratedTransportationFixed_Mode.states", "RefrigeratedTransportation_Mode.states", "RoomThermostat_Mode.states", "SimpleMarketplaceFixed_Mode.states", "SimpleMarketplace_Mode.states"]
-    subjects_original = ["DigitalLockerFixed_Mode.states", "DigitalLocker_Mode.states"]
-    subjects = subjects_original
-    Benchmark = "B1"
-    total_diff_antes = len(subjects)
-    total_diff_despues = len(subjects)
-    k_parameter = 4
-    k_prev = k_parameter
-    time_out = 600
-    first = True
-    tempFileName = "diff_result_"+Benchmark+".txt"
-    init = time.time()
-    while (len(subjects)>0) or first:
-        if not first:
-            k_parameter *= 2
-        print(f"Con k={k_parameter}...")
-        total_diff_antes = total_diff_despues
-        total_subjects = len(subjects)
-        Benchmark_info.main(subjects, 1, k_parameter, k_parameter, time_out)
-        if not first:
-            subjects = get_diff_prev(subjects, k_prev, k_parameter, time_out)
+    for Benchmark in ["B1", "B2"]:
+        if Benchmark == "B1":
+            subjects_original = ["AssetTransferFixed_Mode.states", "AssetTransfer_Mode.states", "BasicProvenanceFixed_Mode.states", "BasicProvenance_Mode.states", "DefectiveComponentCounterFixed_Mode.states", "DefectiveComponentCounter_Mode.states", "DigitalLockerFixed_Mode.states", "DigitalLocker_Mode.states", "FrequentFlyerRewardsCalculator_Mode.states", "HelloBlockchainFixed_Mode.states", "HelloBlockchain_Mode.states", "RefrigeratedTransportationFixed_Mode.states", "RefrigeratedTransportation_Mode.states", "RoomThermostat_Mode.states", "SimpleMarketplaceFixed_Mode.states", "SimpleMarketplace_Mode.states"]
+            # subjects_original = ["DigitalLockerFixed_Mode.states"]
+        elif Benchmark == "B2":
+            subjects_original = ["RefundEscrow_Mode.states", "RefundEscrow_Mode.epa", "RefundEscrowWithdraw_Mode.epa", "EscrowVault_Mode.states", "EscrowVault_Mode.epa", "EPXCrowdsale_Mode.states", "EPXCrowdsale_Mode.epa", "EPXCrowdsaleIsCrowdsaleClosed_Mode.epa", "CrowdfundingTime_Base_Mode.epa", "CrowdfundingTime_BaseBalance_Mode.epa", "CrowdfundingTime_BaseBalanceFix_Mode.epa", "ValidatorAuction_Mode.states", "ValidatorAuction_Mode.epa", "ValidatorAuction_withdraw_Mode.epa", "SimpleAuction_Mode.epa", "SimpleAuctionTime_Mode.epa", "SimpleAuctionEnded_Mode.epa", "SimpleAuctionHB_Mode.states", "Auction_Mode.epa", "AuctionEnded_Mode.epa", "AuctionWithdraw_Mode.epa", "RockPaperScissors_Mode.states", "RockPaperScissors_Mode.epa"]
+            # subjects_original = ["EPXCrowdsale_Mode.states"]
+    
+        subjects = subjects_original
+        total_diff_antes = len(subjects)
         total_diff_despues = len(subjects)
-        with open(os.path.join(tempFileName), 'a+') as file:
-            if first:
-                file.write(f"Benchmark: {Benchmark}\n")
-                file.write(f"time out: {time_out}\n")
-            else:
-                file.write(f"k: {k_parameter}\n")
-                file.write(f"total diff: {total_diff_despues} de un total de {total_subjects}\n")
-                file.write("subjects diferentes:\n")
-                file.write(str(subjects)+"\n\n")
-            file.close()
-        first = False
+        k_parameter = 4
         k_prev = k_parameter
-    end = time.time()
-    total_time = end-init
-    print(f"Tiempo total: {total_time}")
-    with open(os.path.join(tempFileName), 'a+') as file:
-        file.write(f"Tiempo total: {total_time}\n\n")
-        file.close()
-
-    subjects = subjects_original
-    alldiff = set()
-    alleq = set()
-    while k_parameter >= 4 and len(subjects)>0:
-        subjects_diff, subjects_eq = get_diff(subjects, Benchmark, k_parameter, time_out)
-        alldiff.update(subjects_diff)
-        alleq.update(subjects_eq)
-        subjects = set(subjects) - subjects_diff - subjects_eq
-        subjects = list(subjects)
+        time_out = 600
+        first = True
         tempFileName = "diff_result_"+Benchmark+".txt"
+        init = time.time()
+        while (len(subjects)>0) or first:
+            if not first:
+                k_parameter *= 2
+            print(f"Con k={k_parameter}...")
+            total_diff_antes = total_diff_despues
+            total_subjects = len(subjects)
+            Benchmark_info.main(subjects, 1, k_parameter, k_parameter, time_out)
+            if not first:
+                subjects = get_diff_prev(subjects, k_prev, k_parameter, time_out)
+            total_diff_despues = len(subjects)
+            with open(os.path.join(tempFileName), 'a+') as file:
+                if first:
+                    file.write(f"Benchmark: {Benchmark}\n")
+                    file.write(f"time out: {time_out}\n")
+                else:
+                    file.write(f"k: {k_parameter}\n")
+                    file.write(f"total diff: {total_diff_despues} de un total de {total_subjects}\n")
+                    file.write("subjects diferentes:\n")
+                    file.write(str(subjects)+"\n\n")
+                file.close()
+            first = False
+            k_prev = k_parameter
+        end = time.time()
+        total_time = end-init
+        print(f"Tiempo total: {total_time}")
         with open(os.path.join(tempFileName), 'a+') as file:
-            file.write(f"Con k=: {k_parameter}\n")
-            file.write(f"Iguales ({len(subjects_eq)}): ")
-            file.write(str(subjects_eq)+"\n")
-            file.write(f"subjects diferentes ({len(subjects_diff)}):\n")
-            file.write(str(subjects_diff)+"\n")
-            file.write("Faltan revisar: ")
-            file.write(str(subjects)+"\n\n")
+            file.write(f"Tiempo total: {total_time}\n\n")
             file.close()
-        k_parameter = int(k_parameter/2)
 
-    with open(os.path.join(tempFileName), 'a+') as file:
-        file.write(f"Iguales({len(alleq)}): ")
-        file.write(str(alleq)+"\n")
-        file.write(f"subjects diferentes({len(alldiff)}):\n")
-        file.write(str(alldiff)+"\n\n")
+        subjects = subjects_original
+        alldiff = set()
+        alleq = set()
+        while k_parameter >= 4 and len(subjects)>0:
+            subjects_diff, subjects_eq = get_diff(subjects, Benchmark, k_parameter, time_out)
+            alldiff.update(subjects_diff)
+            alleq.update(subjects_eq)
+            subjects = set(subjects) - subjects_diff - subjects_eq
+            subjects = list(subjects)
+            tempFileName = "diff_result_"+Benchmark+".txt"
+            with open(os.path.join(tempFileName), 'a+') as file:
+                file.write(f"Con k=: {k_parameter}\n")
+                file.write(f"Iguales ({len(subjects_eq)}): ")
+                file.write(str(subjects_eq)+"\n")
+                file.write(f"subjects diferentes ({len(subjects_diff)}):\n")
+                file.write(str(subjects_diff)+"\n")
+                file.write("Faltan revisar: ")
+                file.write(str(subjects)+"\n\n")
+                file.close()
+            k_parameter = int(k_parameter/2)
+
+        with open(os.path.join(tempFileName), 'a+') as file:
+            file.write(f"Iguales({len(alleq)}): ")
+            file.write(str(alleq)+"\n")
+            file.write(f"subjects diferentes({len(alldiff)}):\n")
+            file.write(str(alldiff)+"\n\n")
         
-#main()
+file_name = "Simple_daoReentrancy_Mode.epa"
+file1 = f"D:\\Documentos\\Git\\SolidityAbstractor\\graph\\k_8_queries_sep\\to_600\\{file_name}"
+file2 = f"D:\\Documentos\\Git\\SolidityAbstractor\\graph\\k_8\\to_600\\{file_name}"
+print(are_dot_files_equivalent(file1, file2, False))

@@ -24,7 +24,7 @@ statePreconditions = [
 functionPreconditions = [
 "true",
 "true",
-"senders_reentrant[senders_reentrant.length-1].sender == msg.sender",
+"true",
 # "_time > 0",
 "true",
 # "true",
@@ -33,7 +33,7 @@ functionPreconditions = [
 # "true",
 # "true"
 ]
-functionVariables = "address A, uint _amount, address _to"
+functionVariables = "uint _amount, address _to"
 # functionVariables = "uint n"
 tool_output = "Found a counterexample"
 
@@ -42,4 +42,4 @@ statesNamesModeState = []
 statePreconditionsModeState = []
 
 # epaExtraConditions = "address(this).balance == 0"
-txBound = 10
+txBound = 8

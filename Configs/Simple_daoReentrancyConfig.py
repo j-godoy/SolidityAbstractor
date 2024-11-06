@@ -21,7 +21,7 @@ statePreconditions = [
 functionPreconditions = [
 "true",
 "true",
-"senders_reentrant[senders_reentrant.length-1].sender == msg.sender",
+"true",
 "true",
 # "true",
 "true"

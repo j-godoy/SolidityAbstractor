@@ -21,7 +21,8 @@ def runCommand(command):
 
 def run(mode, params, extra=""):
     global table, command, configName, REPETICIONES, TXBOUND_END, TIME_OUT
-    commandEpa = command + " " + params + " txbound="+str(TXBOUND_END) + " time_out="+str(TIME_OUT)
+    file_salida = f"salida{configName}_{mode}_k{TXBOUND_END}_to{TIME_OUT}.txt"
+    commandEpa = command + " " + params + " txbound="+str(TXBOUND_END) + " time_out="+str(TIME_OUT) + " > " + file_salida
     modeName = mode + ("-" + extra if extra != "" else "")
     print("Modo " + modeName)
     print("Command " + commandEpa)
@@ -133,8 +134,8 @@ def config_B2():
 def rename_configs(config):
     configs = []
     for c in config:
-        mode = "e" if c[0].endswith("epa") else "s"
-        configs.append([c[0].replace("_Mode.epa", "Config").replace("_Mode.states", "Config"), mode])
+        mode = "e" if c.endswith("epa") else "s"
+        configs.append([c.replace("_Mode.epa", "Config").replace("_Mode.states", "Config"), mode])
     return configs
 
 table = [[]]
@@ -148,8 +149,11 @@ TIME_OUT = 300
 
 def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout=300):
     global table, command, configName, REPETICIONES, TXBOUND_END, TIME_OUT
-    # configs = rename_configs(subjects_config)
-    configs = subjects_config
+    if len(subjects_config[0]) == 2: # es algo del estilo ["AssetTransferConfig",["s"]],
+        configs = subjects_config
+    else:
+        configs = rename_configs(subjects_config)
+    
     REPETICIONES = repeticiones
     TXBOUND_INIT = txbound_init
     TXBOUND_END = txbound_end
@@ -173,7 +177,10 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
 
     # solo ejecuto los que no se generaron
     for config in subjects_config:
-        path = os.path.join("graph", "k_"+str(txbound_init), "to_"+str(timeout), config[0])
+        # print(config)
+        if len(config) == 2:
+            config = config[0]
+        path = os.path.join("graph", "k_"+str(txbound_init), "to_"+str(timeout), config)
         if not os.path.exists(path):
             configs_not_exist.append(config)
     
@@ -186,7 +193,7 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
         configName = config[0]
         modes = config[1]
         print("Corriendo " + configName)
-        command = "python .\SolidityAbstractor.py " + configName + " -b"
+        command = "python .\SolidityAbstractor.py " + configName + ""
 
         upper_bound = TXBOUND_END
         for curr_txBound in range(TXBOUND_INIT, upper_bound+1):
@@ -222,4 +229,6 @@ def to_csv(table):
         ret += ",".join(map(str, row))
         ret = ret.replace("\n","") + "\n"
     return ret
-main(config_B3(), REPETICIONES, 8, 8, 600)
+# main(config_B1(), REPETICIONES, 8, 8, 600)
+# main(config_B2(), REPETICIONES, 8, 8, 600)
+# main(config_B3(), REPETICIONES, 8, 8, 600)

@@ -60,7 +60,7 @@ contract Reentrance {
     require (senders_reentrant.length > 0);
     require (senders_reentrant[senders_reentrant.length-1].sender == msg.sender);
 		uint256 value = senders_reentrant[senders_reentrant.length-1].value;
-    senders_reentrant.length -= 1;
+    senders_reentrant.length--;
 
     if (balances[msg.sender] > 0) {
       balances[msg.sender] -= value;
@@ -70,11 +70,18 @@ contract Reentrance {
     }
   }
 
-  function() external payable {}
+  // function() external payable {}
+  // function test(address A, uint _amount, address _to) payable public {
+  //   // require (senders_in_mapping > 0 && !(senders_reentrant.length > 0) && !(balance > 0) && balances[A] > 0);
+  //   // assert(false);
+  //   require(true && senders_in_mapping > 0 && !(senders_reentrant.length > 0) && !(balance > 0) && balances[A] > 0);
+  //   require(true);
+  //   assert(false);
+  // }
 
-  // function test() public view {
-  //   require(true && senders_in_mapping > 0 && senders_reentrant.length > 0 && balance > 0 && !(balance == 0) && !(balances[A] > 0) && !(balances[A] == 0));
-  //   require (senders_in_mapping > 0 && senders_reentrant.length == 0 && !(balance > 0) && balance == 0 && !(balances[A] == 0) && balances[A] > 0);
+  // function vc1x0x0(address A, uint _amount, address _to) payable public {
+  //   require(true && senders_in_mapping > 0 && !(senders_reentrant.length > 0) && !(balance > 0) && balances[A] > 0);
+  //   require(true);
   //   assert(false);
   // }
 

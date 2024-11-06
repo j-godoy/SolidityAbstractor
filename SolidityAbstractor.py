@@ -11,23 +11,24 @@ import sys
 import platform
 import psutil
 import remove_unknown_tx
+import concurrent.futures
 
 def getCombinations(funcionesNumeros):
     global statePreconditions
-    truePreconditions = []
+    indices_con_truePreconditions = []
     results = []
     statesTemp = []
-    count = len(funcionesNumeros)
+    cantidad_funciones = len(funcionesNumeros)
     for index, statePrecondition in enumerate(statePreconditions):
         if statePrecondition == "true":
-            truePreconditions.append(index + 1)
+            indices_con_truePreconditions.append(index + 1)#se suma 1 porque funcionesNumeros empieza en 1
 
     # Combinations
     for L in range(len(funcionesNumeros) + 1):
         for subset in itertools.combinations(funcionesNumeros, L):
             if reducedTrue:
                 isTrue = True
-                for truePre in truePreconditions:
+                for truePre in indices_con_truePreconditions:
                     if truePre not in subset:
                         isTrue = False
                 if isTrue == True:
@@ -37,8 +38,8 @@ def getCombinations(funcionesNumeros):
 
     for partialResult in results:
         paddingResult = []
-        paddingResult = [0 for i in range(count)] 
-        for i in range(count):
+        paddingResult = [0 for _ in range(cantidad_funciones)] 
+        for i in range(cantidad_funciones):
             if len(partialResult) > i and partialResult[i] >=0:
                 indice = partialResult[i]
                 paddingResult[indice-1] = indice
@@ -113,12 +114,12 @@ def output_transitions_function(preconditionRequire, function, preconditionAsser
         precondictionFunction = "true"
     extraConditionOutputPre = get_extra_condition_output(extraConditionPre)
     extraConditionOutputPost = get_extra_condition_output(extraConditionPost)
-    verisolFucntionOutput = "require("+preconditionRequire+");\nrequire("+precondictionFunction+");\n" + extraConditionOutputPre + function + "\n"  + "assert(!(" + preconditionAssert + "&& " + extraConditionPost + "));"
+    verisolFucntionOutput = "require("+preconditionRequire+");//requiere para estado inicial\nrequire("+precondictionFunction+");//require para precondición de parámetros\n" + extraConditionOutputPre + function + "\n"  + "assert(!(" + preconditionAssert + "&& " + extraConditionPost + "));//Llego a estado final\n"
     return verisolFucntionOutput
 
 def output_init_function(preconditionAssert, extraCondition):
     extraConditionOutput = get_extra_condition_output(extraCondition)
-    verisolFucntionOutput =  extraConditionOutput + "assert(!(" + preconditionAssert + "));"
+    verisolFucntionOutput =  extraConditionOutput + "assert(!(" + preconditionAssert + "));\n"
     return verisolFucntionOutput
 
 def output_valid_state(preconditionRequire, extraCondition):
@@ -206,39 +207,58 @@ def get_valid_preconditions_output(preconditions, extraConditions):
         temp_output += temp_function + "}\n"
     return temp_output, tempFunctionNames
 
-def get_valid_transitions_output(preconditionsThread, preconditions, extraConditionsTemp, extraConditions, functions, statesThread): 
+def get_valid_transitions_output(arg, preconditionsThread, preconditions, extraConditionsTemp, extraConditions, functions, statesThread): 
     global mode
     temp_output = ""
     tempFunctionNames = []
     for indexPreconditionRequire, preconditionRequire in enumerate(preconditionsThread):
+        #TODO refactorizar esto, no tiene sentido que se pase el indexPreconditionRequire
+        #busco el índice real de la precondición, preconditionsThread va a tener solo un elemento, por lo que indexPreconditionRequire siempre es 0
+        for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
+            if str(preconditionRequire) == str(preconditionAssert):
+                indexPreconditionRequireReal = indexPreconditionRequire
+                break
         for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
             for indexFunction, function in enumerate(functions):
                 extraConditionPre = extraConditionsTemp[indexPreconditionRequire]
                 extraConditionPost = extraConditions[indexPreconditionAssert]
-                if (indexFunction + 1) in statesThread[indexPreconditionRequire] and mode == Mode.epa:
-                    functionName = get_temp_function_name(indexPreconditionRequire, indexPreconditionAssert, indexFunction)
+                if ((indexFunction + 1) in statesThread[indexPreconditionRequire] and mode == Mode.epa) or (mode == Mode.states):
+                    functionName = get_temp_function_name(indexPreconditionRequireReal, indexPreconditionAssert, indexFunction)
                     tempFunctionNames.append(functionName)
                     temp_function = functionOutput(functionName) + "\n"
                     temp_function += output_transitions_function(preconditionRequire, function, preconditionAssert, indexFunction, extraConditionPre, extraConditionPost)
                     temp_output += temp_function + "}\n"
-                elif mode == Mode.states:
-                    functionName = get_temp_function_name(indexPreconditionRequire, indexPreconditionAssert, indexFunction)
-                    tempFunctionNames.append(functionName)
-                    temp_function = functionOutput(functionName) + "\n"
-                    temp_function += output_transitions_function(preconditionRequire, function, preconditionAssert, indexFunction, extraConditionPre, extraConditionPost)
-                    temp_output += temp_function + "}\n"
+                    # TODO ejecutar aca Verisol para cada fn?
+                    dirname = str(arg)+"_"+functionName
+                    final_directory = create_directory(dirname)
+                    fileNameTemp = create_file(dirname, final_directory)
+                    write_file(fileNameTemp, temp_output)
+                    tool = "VeriSol " + fileNameTemp + " " + contractName
+                    try_transaction(tool, tempFunctionNames, final_directory, statesThread, states, arg)
+                    if not verbose:
+                        delete_directory(final_directory)
+                    tempFunctionNames = []
+                    temp_output = ""
     return temp_output, tempFunctionNames
 
-def get_init_output(preconditions, extraConditions): 
+# def get_init_output(preconditions, extraConditions): 
+#     temp_output = ""
+#     tempFunctionNames = []
+#     for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
+#         functionName = get_temp_function_name(indexPreconditionAssert, "0" , "0")
+#         tempFunctionNames.append(functionName)
+#         temp_function = functionOutput(functionName) + "\n"
+#         temp_function += output_init_function(preconditionAssert, extraConditions[indexPreconditionAssert])
+#         temp_output += temp_function + "}\n"
+#     return temp_output, tempFunctionNames
+
+def get_init_output(indexPreconditionAssert, preconditionAssert, extraConditions): 
     temp_output = ""
-    tempFunctionNames = []
-    for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
-        functionName = get_temp_function_name(indexPreconditionAssert, "0" , "0")
-        tempFunctionNames.append(functionName)
-        temp_function = functionOutput(functionName) + "\n"
-        temp_function += output_init_function(preconditionAssert, extraConditions[indexPreconditionAssert])
-        temp_output += temp_function + "}\n"
-    return temp_output, tempFunctionNames
+    functionName = get_temp_function_name(indexPreconditionAssert, "0" , "0")
+    temp_function = functionOutput(functionName) + "\n"
+    temp_function += output_init_function(preconditionAssert, extraConditions[indexPreconditionAssert])
+    temp_output += temp_function + "}\n"
+    return functionName, temp_output
 
 def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, preconditionsTemp, extraConditionsTemp, arg): 
     global txBound, time_out
@@ -254,10 +274,7 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
         if query_result[1] == TRACK_VARS:
             query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, True)
         success = query_result[0]
-        # TODO: si alguno de estos estados tira time out, guardarlo en algun lado.
-        # Luego, saltear todas las queries que tengan como estado inicial/final ese estado.
-        # Temporalmente, si tiró timeout, no lo agrego a la lista de precondiciones.
-        if success and query_result[1] != "?" and query_result[1] != "fail?":
+        if success:
             # print_combination(indexPreconditionRequire, statesTemp)
             preconditionsTemp2.append(preconditionsTemp[indexPreconditionRequire])
             statesTemp2.append(statesTemp[indexPreconditionRequire])
@@ -284,24 +301,37 @@ def try_transaction(tool, tempFunctionNames, final_directory, statesTemp, states
             add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_timeout)
             print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTemp, states, succes_by_timeout)
 
-def try_init(tool, tempFunctionNames, final_directory, states):
+def try_init(states, preconditionAssertTuple):
     global dot, time_out
-    for functionName in tempFunctionNames:
-        indexPreconditionAssert, _, _ = get_params_from_function_name(functionName)
-        txBound_constructor = 1
-        query_result = try_command(tool, functionName, tempFunctionNames, final_directory, [], txBound_constructor, time_out, False)
-        if query_result[1] == TRACK_VARS:
-            query_result = try_command(tool, functionName, tempFunctionNames, final_directory, [], txBound_constructor, time_out, True)
-        success = query_result[0]
-        succes_by_to = query_result[1]
-        if success:
-            dot.node("init", "init")
-            dot.node(combinationToString(states[indexPreconditionAssert]), output_combination(indexPreconditionAssert, states))
-            dot.edge("init",combinationToString(states[indexPreconditionAssert]) , "constructor"+succes_by_to)
+    
+    indexPreconditionAssert = preconditionAssertTuple[0]
+    preconditionAssert = preconditionAssertTuple[1]
+    functionName, body = get_init_output(indexPreconditionAssert, preconditionAssert, extraConditions)
+    dirname = f"_init_{indexPreconditionAssert}_{functionName}"
+    final_directory = create_directory(dirname)
+    fileNameTemp = create_file(dirname, final_directory)
+    write_file(fileNameTemp, body)
+    tool = "VeriSol " + fileNameTemp + " " + contractName
+    txBound_constructor = 1
+    tempFunctionNames = [] # Esto se usa para ignorar metodos que no sean functionName, pero ahora tengo una función tipo query por archivo
+    query_result = try_command(tool, functionName, tempFunctionNames, final_directory, [], txBound_constructor, time_out, False)
+    if query_result[1] == TRACK_VARS:
+        query_result = try_command(tool, functionName, tempFunctionNames, final_directory, [], txBound_constructor, time_out, True)
+    success = query_result[0]
+    succes_by_to = query_result[1]
+    if success:
+        dot.node("init", "init")
+        dot.node(combinationToString(states[indexPreconditionAssert]), output_combination(indexPreconditionAssert, states))
+        dot.edge("init",combinationToString(states[indexPreconditionAssert]) , "constructor"+succes_by_to)
+        
+    if not verbose:
+        delete_directory(final_directory)
+
 
 def try_command(tool, temp_function_name, tempFunctionNames, final_directory, statesTemp, txBound, time_out, trackAllVars):
     global tool_output, verbose, number_to, number_corral_fail, number_corral_fail_with_tackvars
-
+    ADD_TX_IF_TIMEOUT = False
+    ADD_TX_IF_FAIL = False
     # trackAllVars = True #
     
     #Evito chequear funciones "dummy"
@@ -329,23 +359,23 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
             result = subprocess.run([command, ""], shell = True, cwd=final_directory, stdout=subprocess.PIPE)
     except Exception as e:
         number_to += 1
-        print("---EXCEPTION por time out de {} segs ".format(time_out))
+        print(f"---EXCEPTION por time out de {time_out} segs al ejecutar '{command}' desde folder '{final_directory}'")
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
         i_state = output_combination(indexPreconditionRequire, statesTemp)
         f_state = output_combination(indexPreconditionAssert, states)
-        print(f"TimeOut desde state \n{i_state}\n al state \n{f_state}\n con la función '{functions[indexFunction]}'")
+        print(f"TimeOut ([indexPre,indexAssert,indxFn][{indexPreconditionRequire},{indexPreconditionAssert},{indexFunction}]) desde state \n{i_state}\n al state \n{f_state}\n con la función '{functions[indexFunction]}'")
         process = psutil.Process(proc.pid)
         for proc in process.children(recursive=True):
             proc.kill()
         process.kill()
         process.wait(2) # wait for killing subprocess
-        return False,"?"
+        return ADD_TX_IF_TIMEOUT,"?" # Si tiró timeout, retorno False.
 
     output_verisol = str(result[0].decode('utf-8'))
     output_successful = "Formal Verification successful"
 
-    if verbose:
-        print(output_verisol)
+    # if verbose:
+    #     print(output_verisol)
 
     if not tool_output in output_verisol and not output_successful in output_verisol:
         print(output_verisol)
@@ -358,7 +388,7 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
             return False,TRACK_VARS
         else:
             number_corral_fail_with_tackvars += 1
-            return False,"fail?" # if corral fails with trackvars, we don't know if it's a real counterexample or not
+            return ADD_TX_IF_FAIL,"fail?" # if corral fails with trackvars, we don't know if it's a real counterexample or not
     return tool_output in output_verisol, ""
 
 def get_temp_function_name(indexPrecondtion, indexAssert, indexFunction):
@@ -398,26 +428,29 @@ def validCombinations(arg):
     preconditionsTemp = preconditionsThreads[arg]
     statesTemp = statesThreads[arg]
     extraConditionsTemp = extraConditionsThreads[arg]
-    final_directory = create_directory(arg)
-    fileNameTemp = create_file(arg, final_directory)
-    body, fuctionCombinations = get_valid_transitions_output(preconditionsTemp, preconditions, extraConditionsTemp, extraConditions, functions, statesTemp)
-    write_file(fileNameTemp, body)
-    tool = "VeriSol " + fileNameTemp + " " + contractName
-    try_transaction(tool, fuctionCombinations, final_directory, statesTemp, states, arg)
-    if not verbose:
-        delete_directory(final_directory)
+    # final_directory = create_directory(arg)
+    # fileNameTemp = create_file(arg, final_directory)
+    #TODO refactorizar esto, simplificar ahora que se guarda un archivo por query
+    body, fuctionCombinations = get_valid_transitions_output(arg, preconditionsTemp, preconditions, extraConditionsTemp, extraConditions, functions, statesTemp)
+    # write_file(fileNameTemp, body)
+    # tool = "VeriSol " + fileNameTemp + " " + contractName
+    # try_transaction(tool, fuctionCombinations, final_directory, statesTemp, states, arg)
+    # if not verbose:
+    #     delete_directory(final_directory)
 
 def validInit(arg):
     global preconditionsThreads, extraConditions, preconditions, states, contractName, fileName, dot
-    final_directory = create_directory(arg)
-    fileNameTemp = create_file(arg, final_directory)
+    # final_directory = create_directory(arg)
+    # fileNameTemp = create_file(arg, final_directory)
 
-    body, fuctionCombinations = get_init_output(preconditions, extraConditions)
-    write_file(fileNameTemp, body)
+    # body, fuctionCombinations = get_init_output(preconditions, extraConditions)
+    # write_file(fileNameTemp, body)
     
-    tool = "VeriSol " + fileNameTemp + " " + contractName
-    try_init(tool, fuctionCombinations, final_directory, states)
-    delete_directory(final_directory)
+    # tool = "VeriSol " + fileNameTemp + " " + contractName
+    # try_init(tool, fuctionCombinations, final_directory, states)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
+            executor.submit(try_init, states, (indexPreconditionAssert, preconditionAssert))
 
 class Mode(Enum):
     epa = "epa"
@@ -431,7 +464,6 @@ def make_global_variables(config):
     functions = config.functions
     statePreconditions = config.statePreconditions
     statesNames = config.statesNamesModeState
-    statePreconditions = config.statePreconditions
     contractName = config.contractName
     functionVariables = config.functionVariables
     functionPreconditions = config.functionPreconditions
@@ -456,9 +488,13 @@ def main():
     make_global_variables(config)
 
     count = len(functions)
+    #lista de numeros de 1 a N, donde N es la cantidad de funciones
     funcionesNumeros = list(range(1, count + 1))
 
-    threadCount = 8
+    #TODO hilos para correr en paralelo. Pasar esto a un parámetro
+    thread_workers = 8
+    
+    
     threads = []
 
     dot = graphviz.Digraph(comment=config.fileName)
@@ -468,7 +504,9 @@ def main():
     countPreFinal = 0
 
     if mode == Mode.epa :
+        #states tiene todos los posibles estados de acuerdo a las funciones habilitadas/no habilitadas
         states = getCombinations(funcionesNumeros)
+        #preconditions tiene las precondiciones de cada estado, donde el indice i de preconditions es el estado i de states
         preconditions = getPreconditions(funcionesNumeros)
         try:
             extraConditions = [config.epaExtraConditions for i in range(len(states))]
@@ -486,13 +524,17 @@ def main():
 
     countPreInitial = len(preconditions)
 
+    # Quiero que haya 1 metodo tipo query por archivo
+    # si hay muchas queries en un archivo, por más que se use ignoreMethod, puede llegar a tardar mucho
+    # para no cambiar la implementación, vamos a tener un archivo por cada query
+    cant_preconditions = len(preconditions)
     preconditionsThreads = preconditions
-    preconditionsThreads = np.array_split(preconditionsThreads, threadCount)
+    preconditionsThreads = np.array_split(preconditionsThreads, cant_preconditions)
     statesThreads = states
-    statesThreads = np.array_split(statesThreads, threadCount)
+    statesThreads = np.array_split(statesThreads, cant_preconditions)
     extraConditionsThreads = extraConditions
     if len(extraConditionsThreads) != 0:
-        extraConditionsThreads = np.array_split(extraConditions, threadCount)
+        extraConditionsThreads = np.array_split(extraConditions, cant_preconditions)
 
     if basic_mode == False:
         print("Length")
@@ -500,15 +542,21 @@ def main():
 
     if mode == Mode.epa and not(reduced):
         print("Reducing combinations...")
-        for i in range(threadCount):
-            thread = Thread(target = reduceCombinations, args = [i])
-            thread.start()
-            threads.append(thread)
+        # Otra alternativa
+        with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
+            for i in range(cant_preconditions):
+                executor.submit(reduceCombinations, i)
+        
+        # for i in range(threadCount):
+        #     thread = Thread(target = reduceCombinations, args = [i])
+        #     thread.start()
+        #     threads.append(thread)
 
-        for thread in threads:
-            thread.join()
+        # for thread in threads:
+        #     thread.join()
 
     print("Reducing combinations Ended.")
+
     preconditionsThreads = [x for x in preconditionsThreads if len(x)]
     statesThreads = [x for x in statesThreads if len(x)]
     extraConditionsThreads = [x for x in extraConditionsThreads if len(x)]
@@ -520,7 +568,7 @@ def main():
     states = statesThreads
     preconditions = preconditionsThreads
     extraConditions = extraConditionsThreads
-    realThreadCount = threadCount if len(preconditionsThreads) > threadCount else len(preconditionsThreads)
+    realThreadCount = len(preconditionsThreads)
 
     countPreFinal = len(preconditions)
     temp_dir = os.path.join(tempDir, configFile + "-" + str(mode) + ".txt")
@@ -535,26 +583,86 @@ def main():
     if basic_mode == False:
         print("Length")
         print(len(preconditionsThreads))
-    if len(preconditionsThreads) > 30:
-        if basic_mode == False:
-            print("MAYOR A 200")
-        divideCount = len(preconditionsThreads)
-        divideThreads = int(divideCount/threadCount)
-        moduleThreadsConut = divideCount % threadCount
+    # if len(preconditionsThreads) > 30:
+    #     if basic_mode == False:
+    #         print("MAYOR A 200")
+    #     divideCount = len(preconditionsThreads)
+    #     divideThreads = int(divideCount/threadCount)
+    #     moduleThreadsConut = divideCount % threadCount
 
-    preconditionsThreads = np.array_split(preconditionsThreads, divideCount)
-    statesThreads = np.array_split(statesThreads, divideCount)
-    extraConditionsThreads = np.array_split(extraConditionsThreads, divideCount)
+    # preconditionsThreads = np.array_split(preconditionsThreads, divideCount)
+    # statesThreads = np.array_split(statesThreads, divideCount)
+    # extraConditionsThreads = np.array_split(extraConditionsThreads, divideCount)
+    cant_valid_states = len(preconditionsThreads)
+    preconditionsThreads = np.array_split(preconditionsThreads, cant_valid_states)
+    statesThreads = np.array_split(statesThreads, cant_valid_states)
+    extraConditionsThreads = np.array_split(extraConditionsThreads, cant_valid_states)
 
-    for y in range(divideThreads):
-        threads = []
-        for i in range(realThreadCount):
-            thread = Thread(target = validCombinations, args = [i + y * threadCount])
-            thread.start()
-            threads.append(thread)
+    # for y in range(divideThreads):
+    #     threads = []
+    #     for i in range(realThreadCount):
+    #         thread = Thread(target = validCombinations, args = [i + y * threadCount])
+    #         thread.start()
+    #         threads.append(thread)
 
-        for thread in threads:
-            thread.join()
+    #     for thread in threads:
+    #         thread.join()
+            
+    
+    # Otra alternativa
+    with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
+        for i in range(cant_valid_states):
+            executor.submit(validCombinations, i)
+
+    threads = []
+    
+    # for index in range(moduleThreadsConut):
+    #     thread = Thread(target = validCombinations, args = [threadCount * divideThreads + index])
+    #     thread.start()
+    #     threads.append(thread)
+    
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
+    #     for index in range(moduleThreadsConut):
+    #         executor.submit(validCombinations, threadCount * divideThreads + index)
+                
+    # thread = Thread(target = validInit, args = [len(preconditionsThreads)])
+    # thread.start()
+    # threads.append(thread)
+    # for thread in threads:
+    #     thread.join()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
+        for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
+            executor.submit(try_init, states, (indexPreconditionAssert, preconditionAssert))
+    print("ENDED")
+    
+    # threads = []
+    # threadCount = thread_workers # TODO fix temporal para mantener código anterior
+    # divideThreads = 1
+    # moduleThreadsConut = 0
+    # divideCount = realThreadCount
+    # if basic_mode == False:
+    #     print("Length")
+    #     print(len(preconditionsThreads))
+    # if len(preconditionsThreads) > 30:
+    #     if basic_mode == False:
+    #         print("MAYOR A 200")
+    #     divideCount = len(preconditionsThreads)
+    #     divideThreads = int(divideCount/threadCount)
+    #     moduleThreadsConut = divideCount % threadCount
+
+    # preconditionsThreads = np.array_split(preconditionsThreads, divideCount)
+    # statesThreads = np.array_split(statesThreads, divideCount)
+    # extraConditionsThreads = np.array_split(extraConditionsThreads, divideCount)
+
+    # for y in range(divideThreads):
+    #     threads = []
+    #     for i in range(realThreadCount):
+    #         thread = Thread(target = validCombinations, args = [i + y * threadCount])
+    #         thread.start()
+    #         threads.append(thread)
+
+    #     for thread in threads:
+    #         thread.join()
             
     
     # Otra alternativa
@@ -563,19 +671,21 @@ def main():
     #         for i in range(realThreadCount):
     #             executor.submit(validCombinations, i + y * threadCount)
 
-    threads = []
+    # threads = []
     
-    for index in range(moduleThreadsConut):
-        thread = Thread(target = validCombinations, args = [threadCount * divideThreads + index])
-        thread.start()
-        threads.append(thread)
+    # for index in range(moduleThreadsConut):
+    #     thread = Thread(target = validCombinations, args = [threadCount * divideThreads + index])
+    #     thread.start()
+    #     threads.append(thread)
     
-    thread = Thread(target = validInit, args = [len(preconditionsThreads)])
-    thread.start()
-    threads.append(thread)
-    for thread in threads:
-        thread.join()
-    print("ENDED")
+    # thread = Thread(target = validInit, args = [len(preconditionsThreads)])
+    # thread.start()
+    # threads.append(thread)
+    # for thread in threads:
+    #     thread.join()
+    # print("ENDED")
+    
+    
     tempFileName = configFile.replace('Config','')
     tempFileName = tempFileName + "_" + str(mode)
     output_dot = SAVE_GRAPH_PATH + tempFileName

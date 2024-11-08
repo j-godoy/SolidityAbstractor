@@ -22,6 +22,9 @@ def runCommand(command):
 def run(mode, params, extra=""):
     global table, command, configName, REPETICIONES, TXBOUND_END, TIME_OUT
     file_salida = f"salida{configName}_{mode}_k{TXBOUND_END}_to{TIME_OUT}.txt"
+    file_salida  = os.path.join("graph",f"k_{TXBOUND_END}", f"to_{TIME_OUT}",file_salida)
+    if not os.path.exists(os.path.dirname(file_salida)):
+        os.makedirs(os.path.dirname(file_salida))
     commandEpa = command + " " + params + " txbound="+str(TXBOUND_END) + " time_out="+str(TIME_OUT) + " > " + file_salida
     modeName = mode + ("-" + extra if extra != "" else "")
     print("Modo " + modeName)
@@ -63,6 +66,13 @@ def config_B3():
     ["Reentrancy_daoReentrancyConfig",["e"]],
     ["Reentrancy_simpleReentrancyConfig",["e"]],    
     ["Simple_daoReentrancyConfig",["e"]],
+    
+    ###Benchmark3-claim-split-fixed
+    ["EtherstoreReentrancyFixedConfig",["e"]],
+    ["ReentranceReentrancyFixedConfig",["e"]],
+    ["Reentrancy_daoReentrancyFixedConfig",["e"]],
+    ["Reentrancy_simpleReentrancyFixedConfig",["e"]],    
+    ["Simple_daoReentrancyFixedConfig",["e"]],
     ]
     return configs
 
@@ -231,4 +241,4 @@ def to_csv(table):
     return ret
 # main(config_B1(), REPETICIONES, 8, 8, 600)
 # main(config_B2(), REPETICIONES, 8, 8, 600)
-# main(config_B3(), REPETICIONES, 8, 8, 600)
+main(config_B3(), REPETICIONES, 8, 8, 600)

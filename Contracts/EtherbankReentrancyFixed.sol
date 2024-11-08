@@ -50,5 +50,5 @@ contract EtherBank{
 	}
 
     function dummy_balanceGTZero() public { }
-    function dummy_balanceIsZero() public { }
+    // function dummy_balanceIsZero() public { }
 }

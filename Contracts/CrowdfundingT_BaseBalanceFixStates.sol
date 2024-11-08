@@ -65,7 +65,7 @@ contract CrowdfundingBase {
     // }
 
     function dummy_balanceGTZero() public { }
-    function dummy_balanceIsZero() public { }
+    // function dummy_balanceIsZero() public { }
 
     function t() public {
         blockNumber = blockNumber + 1;

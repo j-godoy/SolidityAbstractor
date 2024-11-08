@@ -5,7 +5,7 @@ functions = [
 "GetFunds();",
 "Claim();",
 "dummy_balanceGTZero();",
-"dummy_balanceIsZero();",
+# "dummy_balanceIsZero();",
 "t();",
 ]
 statePreconditions = [
@@ -13,7 +13,7 @@ statePreconditions = [
 "(max_block < blockNumber && goal <= balance)",
 "(max_block < blockNumber && !funded && goal > balance && countBackers > 0)",
 "balance > 0",
-"balance == 0",
+# "balance == 0",
 "true",
 ]
 functionPreconditions = [
@@ -21,7 +21,7 @@ functionPreconditions = [
 "msg.sender == owner",
 "backers[msg.sender] != 0",
 "true",
-"true",
+# "true",
 "true"
 ]
 functionVariables = ""

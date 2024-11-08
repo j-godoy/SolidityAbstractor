@@ -68,7 +68,7 @@ contract CrowdfundingR {
     }
 
     function dummy_balanceGTZero() public { }
-    function dummy_balanceIsZero() public { }
+    // function dummy_balanceIsZero() public { }
 
     function t() public {
         require(donadores_reentrada.length == 0);

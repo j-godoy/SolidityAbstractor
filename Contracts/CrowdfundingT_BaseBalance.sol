@@ -68,9 +68,9 @@ contract CrowdfundingBase {
         require(balance > 0);
     }
 
-    function dummy_balanceIsZero() public {
-        require(balance == 0);
-    }
+    // function dummy_balanceIsZero() public {
+    //     require(balance == 0);
+    // }
 
     function t(uint n) public {
         require(n >= 0);

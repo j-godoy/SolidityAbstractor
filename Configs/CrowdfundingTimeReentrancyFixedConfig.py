@@ -6,7 +6,7 @@ functions = [
 "Claim_Init();",
 "Claim_End();",
 "dummy_balanceGTZero();",
-"dummy_balanceIsZero();",
+# "dummy_balanceIsZero();",
 "t();"
 ]
 statePreconditions = [
@@ -15,7 +15,7 @@ statePreconditions = [
 "(blockNumber > max_block && !funded && goal > balance && countBackers > 0)",
 "donadores_reentrada.length > 0",
 "balance > 0",
-"balance == 0",
+# "balance == 0",
 "donadores_reentrada.length == 0"
 ]
 functionPreconditions = [
@@ -24,7 +24,7 @@ functionPreconditions = [
 "backers[msg.sender] > 0",
 "donadores_reentrada[donadores_reentrada.length-1] == msg.sender",
 "true",
-"true",
+# "true",
 "true"
 ]
 functionVariables = ""

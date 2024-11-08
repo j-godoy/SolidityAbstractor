@@ -4,24 +4,24 @@ functions = [
 "addToBalance();",
 "withdrawBalance();",
 "dummy_balanceGTZero();",
-"dummy_balanceIsZero();",
+# "dummy_balanceIsZero();",
 "dummy_balanceAGTZero();",
-"dummy_balanceAIsZero();"
+# "dummy_balanceAIsZero();"
 ]
 statePreconditions = [
 "true",
 "true",
 "balance > 0",
-"balance == 0",
-"userBalances[A] > 0",
-"userBalances[A] == 0"
+# "balance == 0",
+"userBalances[A] > 0"
+# "userBalances[A] == 0"
 ]
 functionPreconditions = [
 "true",
 "true",
 "true",
-"true",
-"true",
+# "true",
+# "true",
 "true"
 # "true",
 # "true"

@@ -92,7 +92,7 @@ contract CrowdfundingR {
     }
 
     function dummy_balanceGTZero() public { }
-    function dummy_balanceIsZero() public { }
+    // function dummy_balanceIsZero() public { }
 
     // function vc1x0x0() payable public {
 

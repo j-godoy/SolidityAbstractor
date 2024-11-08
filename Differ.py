@@ -115,9 +115,9 @@ def get_alloy_subjects(subjects, benchmark):
 
 from os.path import expanduser
 home = expanduser("~")
-#repo_path = os.path.join(home, "Repos","SolidityAbstractor")
+repo_path = os.path.join(home, "Repos","SolidityAbstractor")
 # D:\Documentos\Git\SolidityAbstractor
-repo_path = "D:\\Documentos\\Git\\SolidityAbstractor"
+# repo_path = "D:\\Documentos\\Git\\SolidityAbstractor"
 repo_alloy = os.path.join(home, "Repos","sosym23")
 
 def get_diff_prev(solidityabstractor_subjects, k_prev, k_curr, timeout):
@@ -256,7 +256,12 @@ def main():
             file.write(f"subjects diferentes({len(alldiff)}):\n")
             file.write(str(alldiff)+"\n\n")
         
-file_name = "Simple_daoReentrancy_Mode.epa"
-file1 = f"D:\\Documentos\\Git\\SolidityAbstractor\\graph\\k_8_queries_sep\\to_600\\{file_name}"
-file2 = f"D:\\Documentos\\Git\\SolidityAbstractor\\graph\\k_8\\to_600\\{file_name}"
-print(are_dot_files_equivalent(file1, file2, False))
+# para comparar dos abstracciones
+# file_name = "Simple_daoReentrancy_Mode.epa"
+# file1 = f"D:\\Documentos\\Git\\SolidityAbstractor\\graph\\k_8_queries_sep\\to_600\\{file_name}"
+# file2 = f"D:\\Documentos\\Git\\SolidityAbstractor\\graph\\k_8\\to_600\\{file_name}"
+# print(are_dot_files_equivalent(file1, file2, False))
+
+
+# Para ejecutar Differ para todos los subjects de B1 y B2
+# main()

@@ -48,13 +48,4 @@ contract DefectiveComponentCounter {
         return DefectiveComponentsCount;
     }
 
-    // function blue_query_constructor() public {
-    //     require(State == StateType.Create);
-    //     require(Manufacturer == msg.sender);
-
-    //     ComputeTotal();
-
-    //     bool Q = State == StateType.ComputeTotal;
-    //     assert(!Q);
-    // }
 }

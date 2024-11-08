@@ -740,18 +740,4 @@ contract ValidatorAuction_withdraw is Ownable {
         time = time + 1;
     }
 
-    function vc0x3x2() payable public {
-        bool pre_bid = (countWhitelist > 0 && dlocker_initialized && !dlocker_deposited && (biddersTotal < maximalNumberOfParticipants) && ((time - startTime) < (100 * 365) && time > startTime && time <= (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
-        bool pre_startAuction = dlocker_initialized && auctionState == AuctionState.Deployed;
-        bool pre_depositsBids = auctionState == AuctionState.DepositPending;
-        bool pre_closeAuction = ((biddersTotal < maximalNumberOfParticipants) && (time > (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
-        bool pre_addToWhitelist = auctionState == AuctionState.Deployed;
-        bool pre_withdrawA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && hasA);
-        bool pre_withdrawOther = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
-        // require(pre_startAuction && pre_addToWhitelist);
-
-
-        assert(!(!pre_bid && !pre_startAuction && !pre_depositsBids && !pre_closeAuction && !pre_addToWhitelist && pre_withdrawA && !pre_withdrawOther));
-    }
-
 }

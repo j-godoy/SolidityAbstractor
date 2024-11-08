@@ -13,10 +13,6 @@ contract Crowdfunding {
     bool funded = false;
     uint balance = 0;
 
-    // function a() public {
-    //     assert(!(!(max_block > blockNumber) && !(max_block < blockNumber && goal <= balance) && !(blockNumber > max_block && !funded && goal > balance && backersArray.length != 0) && balance > 0));
-    //     assert(!(!(max_block > blockNumber) && !(max_block < blockNumber && goal <= balance) && !(blockNumber > max_block && !funded && goal > balance && backersArray.length != 0) && balance > 0 )) ;
-    // }
 
     constructor(address payable _owner, uint _max_block, uint _goal, uint _blockNumber) public {
         owner = _owner;

@@ -41,7 +41,6 @@ contract RefrigeratedTransportation {
         MaxTemperature = maxTemperature;
         State = StateType.Created;
         ComplianceDetail = 'N/A';
-        // ContractCreated();
     }
 
     function IngestTelemetry(int humidity, int temperature, int timestamp) public
@@ -85,8 +84,6 @@ contract RefrigeratedTransportation {
         {
             State = StateType.OutOfCompliance;
         }
-
-        // ContractUpdated('IngestTelemetry');
     }
 
     function TransferResponsibility(address newCounterparty) public
@@ -120,7 +117,6 @@ contract RefrigeratedTransportation {
 
         PreviousCounterparty = Counterparty;
         Counterparty = newCounterparty;
-        // ContractUpdated('TransferResponsibility');
     }
 
     function Complete() public
@@ -145,6 +141,5 @@ contract RefrigeratedTransportation {
         State = StateType.Completed;
         PreviousCounterparty = Counterparty;
         Counterparty = address(0x0);
-        // ContractUpdated('Complete');
     }
 }

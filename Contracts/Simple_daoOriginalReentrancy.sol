@@ -46,7 +46,5 @@ contract SimpleDAO {
   }
 
   function dummy_balanceGTZero() public view { require(balance > 0); }
-  // function dummy_balanceIsZero() public view { require(balance == 0); }
   function dummy_balanceAGTZero() public view { require(credit[A] > 0); }
-  // function dummy_balanceAIsZero() public view { require(credit[A] == 0); }
 }

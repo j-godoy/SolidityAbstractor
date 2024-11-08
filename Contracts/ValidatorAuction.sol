@@ -195,14 +195,9 @@ contract ValidatorAuction is Ownable {
     mapping(address => bool) public whitelist;
     uint countWhitelist = 0;
     mapping(address => uint) public bids;
-    // address[] public bidders = new address[](0);
-    // address[] public biddersArray = new address[](0);
     uint countBidders = 0;
     uint biddersTotal = 0;
     uint count = 0;
-    // address[] auxArray;
-    // address A;
-    // bool hasA = false;
     uint public startTime;
     uint public closeTime;
     uint public lowestSlotPrice;
@@ -336,9 +331,7 @@ contract ValidatorAuction is Ownable {
         require(bids[msg.sender] == 0, "The sender has already bid.");
 
         bids[msg.sender] = msg.value;
-        // bidders.push(msg.sender);
         biddersTotal += 1;
-        // biddersArray.push(msg.sender);
         countBidders += 1;
 
         if (slotPrice < lowestSlotPrice) {
@@ -390,18 +383,6 @@ contract ValidatorAuction is Ownable {
         }
         t();
     }
-
-    // function addToWhitelist(address addressToWhitelist)
-    //     public
-    //     onlyOwner
-    //     stateIs(AuctionState.Deployed)
-    // {
-    //         if (whitelist[addressToWhitelist] == 0) {
-    //             countWhitelist += 1;
-    //         }
-    //         whitelist[addressToWhitelist] = 1;
-    //         t();
-    // }
 
     function addToWhitelist(address[] memory addressesToWhitelist)
         public
@@ -506,18 +487,6 @@ contract ValidatorAuction is Ownable {
         //emit AuctionDepositPending(closeTime, lowestSlotPrice, bidders.length);
     }
 
-    // function remove(address _valueToFindAndRemove, address[] memory _array) private  returns(address[] memory) {
-
-    //     auxArray = new address[](0); 
-
-    //     for (uint i = 0; i < _array.length; i++){
-    //         if(_array[i] != _valueToFindAndRemove)
-    //             auxArray.push(_array[i]);
-    //     }
-
-    //     return auxArray;
-    // }
-
     function transitionToAuctionFailed()
         internal
         stateIs(AuctionState.Started)
@@ -540,22 +509,5 @@ contract ValidatorAuction is Ownable {
     function t() public {
         time = time + 1;
     }
-
-    // function vc0x3x2() payable public {
-    //     bool pre_bid = (countWhitelist > 0 && depositLocker.initialized() && !depositLocker.deposited() && (biddersTotal < maximalNumberOfParticipants) && ((time - startTime) < (100 * 365) && time > startTime && time <= (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
-    //     bool pre_startAuction = depositLocker.initialized() && auctionState == AuctionState.Deployed;
-    //     bool pre_depositsBids = auctionState == AuctionState.DepositPending;
-    //     bool pre_closeAuction = ((biddersTotal < maximalNumberOfParticipants) && (time > (startTime + auctionDurationInDays * 1)) && auctionState == AuctionState.Started);
-    //     bool pre_addToWhitelist = auctionState == AuctionState.Deployed;
-    //     bool pre_withdraw = countBidders > 0 && (auctionState == AuctionState.Ended || auctionState == AuctionState.Failed);
-    //     // bool pre_withdrawA = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && hasA);
-    //     // bool pre_withdrawOther = ((auctionState == AuctionState.Ended || auctionState == AuctionState.Failed) && countBidders > 0 && (!hasA || countBidders > 1));
-    //     // require(pre_startAuction && pre_addToWhitelist);
-
-
-
-    //     // addToWhitelist(addressToWhitelist);
-    //     assert(!(!pre_bid && !pre_startAuction && !pre_depositsBids && !pre_closeAuction && !pre_addToWhitelist && pre_withdraw));
-    // }
 
 }

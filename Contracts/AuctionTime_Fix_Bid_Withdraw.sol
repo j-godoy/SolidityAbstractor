@@ -123,25 +123,5 @@ contract Auction {
     function t() public {
         blockNumber = blockNumber + 1;
     }
-
-    // function query_auctionEnd() public {
-    //     bool pre_BidA = (!ended && (auctionStart + biddingTime) >= blockNumber);
-    //     bool pre_BidNotA = (!ended && (auctionStart + biddingTime) >= blockNumber);
-    //     bool pre_WithdrawA = !ended && pendingReturnsCount > 0 && hasA && blockNumber > (auctionStart + biddingTime);
-    //     bool pre_WithdrawNotA = !ended && pendingReturnsCount > 0 && (!hasA || pendingReturnsCount > 1) && blockNumber > (auctionStart + biddingTime);
-    //     bool pre_AuctionEnd = (!ended && blockNumber > (auctionStart + biddingTime));
-    //     bool pre_t = true;
-    //     require(!pre_BidA && !pre_BidNotA && !pre_WithdrawA  && pre_WithdrawNotA && pre_AuctionEnd && pre_t);
-
-    //     WithdrawNotA();
-
-    //     bool pre_BidA2 = (!ended && (auctionStart + biddingTime) >= blockNumber);
-    //     bool pre_BidNotA2 = (!ended && (auctionStart + biddingTime) >= blockNumber);
-    //     bool pre_WithdrawA2 = !ended && pendingReturnsCount > 0 && hasA && blockNumber > (auctionStart + biddingTime);
-    //     bool pre_WithdrawNotA2 = !ended && pendingReturnsCount > 0 && (!hasA || pendingReturnsCount > 1) && blockNumber > (auctionStart + biddingTime);
-    //     bool pre_AuctionEnd2 = (!ended && blockNumber > (auctionStart + biddingTime));
-    //     bool pre_t2 = true;
-        
-    //     assert((!pre_BidA2 && !pre_BidNotA2 && !pre_WithdrawA2  && pre_WithdrawNotA2 && pre_AuctionEnd2 && pre_t2));
-    // }
+    
 }

@@ -7,8 +7,6 @@ contract CrowdfundingBase {
     uint blockNumber;
     
     mapping ( address => uint ) backers;
-    // address[] backersArray = new address[](0);
-    // address[] auxArray;
     uint countBackers = 0;
     bool funded = false;
     uint balance = 0;
@@ -26,7 +24,6 @@ contract CrowdfundingBase {
         require ( backers [msg.sender] == 0);
         backers [msg.sender] = msg.value;
         if (msg.value > 0) {
-            // backersArray.push(msg.sender);
             countBackers += 1;
             balance = balance + msg.value;
         }
@@ -45,32 +42,19 @@ contract CrowdfundingBase {
         require (max_block < blockNumber);
         require (backers[msg.sender] > 0 && !funded);
         require (goal > balance);
-        // require (backersArray.length > 0);
         require (countBackers > 0);
         uint val = backers[msg.sender];
         // msg.sender.call.value(val)("");
         backers[msg.sender] = 0;
         countBackers -= 1;
-        // backersArray = remove(msg.sender, backersArray);
         balance = balance - val;
     }
 
-    // function remove(address _valueToFindAndRemove, address[] memory _array) public  returns(address[] memory) {
-    //     auxArray = new address[](0); 
-    //     for (uint i = 0; i < _array.length; i++){
-    //         if(_array[i] != _valueToFindAndRemove)
-    //             auxArray.push(_array[i]);
-    //     }
-    //     return auxArray;
-    // }
 
     function dummy_balanceGTZero() public {
         require(balance > 0);
     }
 
-    // function dummy_balanceIsZero() public {
-    //     require(balance == 0);
-    // }
 
     function t(uint n) public {
         require(n >= 0);

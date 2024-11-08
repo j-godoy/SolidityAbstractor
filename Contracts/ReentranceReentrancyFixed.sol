@@ -52,10 +52,6 @@ contract Reentrance {
       // }
       balance -= _amount;
       senders_reentrant.push(ReentrantSender(msg.sender, _amount));
-      // balances[msg.sender] -= _amount;
-      // if (_amount>0 && balances[msg.sender] == 0) {
-      //   senders_in_mapping -= 1;
-      // }
     }
   }
 
@@ -73,24 +69,7 @@ contract Reentrance {
     }
   }
 
-  // function() external payable {}
-  // function test(address A, uint _amount, address _to) payable public {
-  //   // require (senders_in_mapping > 0 && !(senders_reentrant.length > 0) && !(balance > 0) && balances[A] > 0);
-  //   // assert(false);
-  //   require(true && senders_in_mapping > 0 && !(senders_reentrant.length > 0) && !(balance > 0) && balances[A] > 0);
-  //   require(true);
-  //   assert(false);
-  // }
-
-  // function vc1x0x0(address A, uint _amount, address _to) payable public {
-  //   require(true && senders_in_mapping > 0 && !(senders_reentrant.length > 0) && !(balance > 0) && balances[A] > 0);
-  //   require(true);
-  //   assert(false);
-  // }
-
   function dummy_balanceGTZero() public view { require(balance > 0); }
-  // function dummy_balanceIsZero() public view { require(balance == 0); }
   function dummy_balanceAGTZero() public view { require(balances[A] > 0); }
-  // function dummy_balanceAIsZero() public view { require(balances[A] == 0); }
   
 }

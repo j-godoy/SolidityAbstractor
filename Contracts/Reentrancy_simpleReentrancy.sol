@@ -46,9 +46,7 @@
         if (userBalance[msg.sender] > 0) {
             balance -= userBalance[msg.sender];
             senders_reentrant.push(msg.sender);
-            // senders_in_mapping -= 1;
         }
-        // userBalance[msg.sender] = 0;
     }
 
     function withdrawBalance_End() public {
@@ -63,7 +61,5 @@
     }
 
     function dummy_balanceGTZero() public view { require(balance > 0); }
-    // function dummy_balanceIsZero() public view { require(balance == 0); }
     function dummy_balanceAGTZero() public view { require(userBalance[A] > 0); }
-    // function dummy_balanceAIsZero() public view { require(userBalance[A] == 0); }
  }

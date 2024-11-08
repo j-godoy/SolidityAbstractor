@@ -54,7 +54,5 @@ contract HelloBlockchain {
         // call ContractUpdated() to record this action
         ResponseMessageCode = responseMessageCode;
         State = StateType.Respond;
-
-       //Verification.Assert(State == StateType.Respond);
     }
 }

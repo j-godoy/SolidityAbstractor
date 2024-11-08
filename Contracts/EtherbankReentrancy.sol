@@ -30,11 +30,6 @@ contract EtherBank{
 		if (msg.value > 0) {			
 			balance = balance + msg.value;
 			senders_in_mapping += 1;
-			// if (msg.sender == A) {
-			// 	balance_A += msg.value;
-			// } else {
-			// 	balance_NotA += msg.value;
-			// }
 		}
 	}
 
@@ -56,16 +51,9 @@ contract EtherBank{
 		if (userBalances[msg.sender] > 0) {
 			senders_in_mapping -= 1;
 			userBalances[msg.sender] = 0;
-			// if (msg.sender == A) {
-			// 	balance_A = 0;
-			// } else {
-			// 	balance_NotA = 0;
-			// }
 		}
 	}
 
     function dummy_balanceGTZero() public view { require(balance > 0); }
-    // function dummy_balanceIsZero() public view { require(balance == 0); }
 	function dummy_balanceAGTZero() public view { require(userBalances[A] > 0); }
-    // function dummy_balanceAIsZero() public view { require(userBalances[A] == 0); }
 }

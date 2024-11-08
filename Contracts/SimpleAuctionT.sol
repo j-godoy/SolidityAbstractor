@@ -31,8 +31,6 @@ contract SimpleAuction {
     // Allowed withdrawals of previous bids
     mapping(address => uint) pendingReturns;
     uint pendingReturnsCount = 0;
-    // address[] pendingReturnsArray = new address[](0);
-    // address[] auxArray;
 
     // Set to true at the end, disallows any change
     bool ended;
@@ -93,8 +91,6 @@ contract SimpleAuction {
                 pendingReturnsCount += 1;
             }
             pendingReturns[highestBidder] += highestBid;
-            
-            // pendingReturnsArray.push(msg.sender);
         }
         highestBidder = msg.sender;
         highestBid = msg.value;
@@ -104,8 +100,6 @@ contract SimpleAuction {
 
     /// Withdraw a bid that was overbid.
     function withdraw() public returns (bool) {
-        //time = time + 1;
-        // require(pendingReturnsArray.length != 0);
         require(pendingReturnsCount > 0);
         uint amount = pendingReturns[msg.sender];
         if (amount > 0) {
@@ -122,7 +116,6 @@ contract SimpleAuction {
             //     return false;
             // }
         }
-        //t();
         return true;
     }
     // Users want to know when the auction ends, seconds from 1970-01-01
@@ -154,7 +147,6 @@ contract SimpleAuction {
 
         // 3. Interaction
         // beneficiary.transfer(highestBid);
-        //t();
     }
 
     function t() public {

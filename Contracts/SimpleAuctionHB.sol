@@ -129,7 +129,6 @@ contract SimpleAuction {
 
     /// Withdraw a bid that was overbid.
     function withdrawOther() public returns (bool) {
-        //time = time + 1;
         require(pendingReturnsCount > 0 && (!_hasA || pendingReturnsCount > 1));
         require(msg.sender != _A);
         uint amount = pendingReturns[msg.sender];
@@ -178,7 +177,6 @@ contract SimpleAuction {
 
         // 3. Interaction
         // beneficiary.transfer(highestBid);
-        t();
     }
 
     function t() public {

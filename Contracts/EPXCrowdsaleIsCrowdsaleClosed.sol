@@ -276,23 +276,4 @@ contract EPXCrowdsale is owned, safeMath {
     require(isCrowdSaleClosed);
   }
 
-  // function test() public {
-  //   bool pre_SetupCrowdsale = (!isCrowdSaleSetup && !(beneficiaryWallet != address(0x0)));
-  //   bool pre_buy = (tokensRemaining > 0 && (blockNumber <= fundingEndBlock) && (blockNumber >= fundingStartBlock));
-  //   bool pre_checkGoalReached = isCrowdSaleSetup;
-  //   bool pre_refund = ((amountRaisedInWei < fundingMinCapInWei) && (isCrowdSaleClosed) && (blockNumber > fundingEndBlock) && (usersEPXfundValueCount > 0));
-  //   bool pre_t = true;
-  //   bool pre_IsCrowdsaleClose = isCrowdSaleClosed;
-
-  //   require(!pre_SetupCrowdsale && !pre_buy && pre_checkGoalReached && pre_refund && pre_t && pre_IsCrowdsaleClose);
-
-  //   bool pre_SetupCrowdsale2 = (!isCrowdSaleSetup && !(beneficiaryWallet != address(0x0)));
-  //   bool pre_buy2 = (tokensRemaining > 0 && (blockNumber <= fundingEndBlock) && (blockNumber >= fundingStartBlock));
-  //   bool pre_checkGoalReached2 = isCrowdSaleSetup;
-  //   bool pre_refund2 = ((amountRaisedInWei < fundingMinCapInWei) && (isCrowdSaleClosed) && (blockNumber > fundingEndBlock) && (usersEPXfundValueCount > 0));
-  //   bool pre_t2 = true;
-  //   bool pre_IsCrowdsaleClose2 = isCrowdSaleClosed;
-  //   assert(!(!pre_SetupCrowdsale && !pre_buy && pre_checkGoalReached && !pre_refund && pre_t && pre_IsCrowdsaleClose));
-  // }
-
 }

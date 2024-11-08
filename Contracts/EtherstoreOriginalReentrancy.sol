@@ -42,8 +42,6 @@ contract EtherStore {
         require(_weiToWithdraw <= withdrawalLimit);
         // limit the time allowed to withdraw
         require(time >= lastWithdrawTime[msg.sender] + 1 weeks);
-        // uint256 one_week = 2;
-        // require(time >= lastWithdrawTime[msg.sender] + one_week);
         // <yes> <report> REENTRANCY
         //require(msg.sender.call.value(_weiToWithdraw)());
         balance -= _weiToWithdraw;
@@ -60,13 +58,8 @@ contract EtherStore {
         time = time + _time;
     }
 
-    // function t() public {
-    //     time = time + 1;
-    // }
 
     function dummy_balanceGTZero() public view { require(balance > 0); }
-    // function dummy_balanceIsZero() public view { require(balance == 0); }
 	function dummy_balanceAGTZero() public view { require(balances[A] > 0); }
-    // function dummy_balanceAIsZero() public view { require(balances[A] == 0); }
 
  }

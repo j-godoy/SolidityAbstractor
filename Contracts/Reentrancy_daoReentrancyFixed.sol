@@ -33,10 +33,6 @@ contract ReentrancyDAO {
             // bool callResult = msg.sender.call.value(oCredit)();
             // require (callResult);
             senders_reentrant.push(msg.sender);
-            // credit[msg.sender] = 0;
-            // if (credit[msg.sender] == 0) {
-            //     senders_in_mapping -= 1;
-            // }
         }
     }
 
@@ -62,7 +58,5 @@ contract ReentrancyDAO {
     }
 
     function dummy_balanceGTZero() public view { require(balance > 0); }
-    // function dummy_balanceIsZero() public view { require(balance == 0); }
     function dummy_balanceAGTZero() public view { require(credit[A] > 0); }
-    // function dummy_balanceAIsZero() public view { require(credit[A] == 0); }
 }

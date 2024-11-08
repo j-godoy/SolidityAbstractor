@@ -54,11 +54,6 @@ contract EtherStore {
         //require(msg.sender.call.value(_weiToWithdraw)());
         balance -= _weiToWithdraw;
         senders_reentrant.push(ReentrantSender(msg.sender, _weiToWithdraw));
-        // balances[msg.sender] -= _weiToWithdraw;    
-        // lastWithdrawTime[msg.sender] = time;
-        // if (_weiToWithdraw > 0 && balances[msg.sender] == 0) {
-        //     senders_in_mapping -= 1;
-        // }
     }
 
     function withdrawFunds_End () public {
@@ -82,13 +77,7 @@ contract EtherStore {
         time = time + _time;
     }
 
-    // function t() public {
-    //     time = time + 1;
-    // }
-
     function dummy_balanceGTZero() public view { require(balance > 0); }
-    // function dummy_balanceIsZero() public view { require(balance == 0); }
 	function dummy_balanceAGTZero() public view { require(balances[A] > 0); }
-    // function dummy_balanceAIsZero() public view { require(balances[A] == 0); }
 
  }

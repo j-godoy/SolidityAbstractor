@@ -19,7 +19,6 @@ contract AssetTransfer {
         AskingPrice = price;
         Description = description;
         State = StateType.Active;
-        // ContractCreated();
     }
 
     function Terminate() public
@@ -30,7 +29,6 @@ contract AssetTransfer {
         }
 
         State = StateType.Terminated;
-        // ContractUpdated('Terminate');
     }
 
     function Modify(uint256 price) public
@@ -46,7 +44,6 @@ contract AssetTransfer {
 
         // Description = description;
         AskingPrice = price;
-        // ContractUpdated('Modify');
     }
 
     function MakeOffer(address inspector, address appraiser, uint256 offerPrice) public
@@ -70,7 +67,6 @@ contract AssetTransfer {
         InstanceAppraiser = appraiser;
         OfferPrice = offerPrice;
         State = StateType.OfferPlaced;
-        // ContractUpdated('MakeOffer');
     }
 
     function AcceptOffer() public
@@ -85,7 +81,6 @@ contract AssetTransfer {
         }
 
         State = StateType.PendingInspection;
-        // ContractUpdated('AcceptOffer');
     }
 
     function Reject() public
@@ -101,7 +96,6 @@ contract AssetTransfer {
 
         InstanceBuyer = address(0x0);
         State = StateType.Active;
-        // ContractUpdated('Reject');
     }
 
     function Accept() public
@@ -147,7 +141,6 @@ contract AssetTransfer {
                 State = StateType.Accepted;
             }
         }
-        // ContractUpdated('Accept');
     }
 
     function ModifyOffer(uint256 offerPrice) public
@@ -162,7 +155,6 @@ contract AssetTransfer {
         }
 
         OfferPrice = offerPrice;
-        // ContractUpdated('ModifyOffer');
     }
 
     function RescindOffer() public
@@ -179,7 +171,6 @@ contract AssetTransfer {
         InstanceBuyer = address(0x0);
         OfferPrice = 0;
         State = StateType.Active;
-        // ContractUpdated('RescindOffer');
     }
 
     function MarkAppraised() public
@@ -201,7 +192,6 @@ contract AssetTransfer {
         {
             revert();
         }
-        // ContractUpdated('MarkAppraised');
     }
 
     function MarkInspected() public
@@ -223,6 +213,5 @@ contract AssetTransfer {
         {
             revert();
         }
-        // ContractUpdated('MarkInspected');
     }
 }

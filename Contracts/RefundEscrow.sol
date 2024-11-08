@@ -205,8 +205,6 @@ contract RefundEscrow {
             depositsCount += 1;
         }
         _deposits[payee] = _deposits[payee].add(amount);
-
-
         //emit Deposited(payee, amount);
     }
 
@@ -216,19 +214,11 @@ contract RefundEscrow {
      */
     function withdrawInternal(address payable payee) internal  {
         uint256 payment = _deposits[payee];
-
         _deposits[payee] = 0;
-
         payee.transfer(payment);
-
         depositsCount -= 1;
-
        // emit Withdrawn(payee, payment);
     }
-
-    // function length() public returns(uint) {
-    //     return depositsArray.length; 
-    // }
 
 
     function withdraw(address payable payee) public onlyPrimary {

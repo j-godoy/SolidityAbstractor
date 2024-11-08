@@ -7,8 +7,6 @@ contract CrowdfundingR {
     uint blockNumber;
     
     mapping ( address => uint ) backers;
-    // address[] backersArray = new address[](0);
-    // address[] auxArray;
     uint countBackers = 0;
     bool funded = false;
     uint balance = 0;
@@ -28,7 +26,6 @@ contract CrowdfundingR {
         require ( backers [msg.sender] == 0);
         backers [msg.sender] = msg.value;
         if (msg.value > 0) {
-            // backersArray.push(msg.sender);
             balance = balance + msg.value;
             countBackers += 1;
         }
@@ -66,123 +63,11 @@ contract CrowdfundingR {
         _func_cont ++;
     }
 
-    // function remove(address _valueToFindAndRemove, address[] memory _array) public  returns(address[] memory) {
-    //     auxArray = new address[](0); 
-    //     for (uint i = 0; i < _array.length; i++){
-    //         if(_array[i] != _valueToFindAndRemove)
-    //             auxArray.push(_array[i]);
-    //     }
-    //     return auxArray;
-    // }
-
     function dummy_balanceGTZero() public { }
-    // function dummy_balanceIsZero() public { }
 
     function t() public {
         require(donadores_reentrada.length == 0);
         blockNumber = blockNumber + 1;
     }
 
-    // function vc1x0x0() payable public {
-    //     require(_func_cont == 2);
-    //     // Claim_End();
-    //     // Donate
-    //     bool pre_donate = (max_block > blockNumber);
-
-    //     // Funds
-    //     bool pre_funds = (max_block < blockNumber) && (goal <= balance);
-
-    //     // Claim init
-    //     // bool pre_claiminit = (max_block < blockNumber) && (!funded) && (goal > balance);// && balance >= VeriSol.SumMapping(backers);
-    //     bool pre_claiminit = (max_block < blockNumber) && (!funded) && (goal > balance) && countBackers > 0;
-
-    //     // Claim end
-    //     // bool pre_claimend = (_cont > 0);
-    //     bool pre_claimend = (donadores_reentrada.length > 0);
-
-    //     // tau
-    //     bool pre_tau = (donadores_reentrada.length == 0);
-
-    //     bool balance_positivo = balance > 0;
-
-        
-
-    //     assert(!(!pre_donate && !pre_funds && pre_claiminit && !pre_claimend && pre_tau && balance_positivo && countBackers>1));
-
-        
-    //     // Claim_Init();
-
-        
-
-    //     // bool pre_donate1 = (max_block > blockNumber);
-    //     // // Funds
-    //     // bool pre_funds1 = (max_block < blockNumber) && (goal <= balance);
-
-    //     // // Claim init
-    //     // // bool pre_claiminit1 = (max_block < blockNumber) && (!funded) && (goal > balance) /*&& balance >= VeriSol.SumMapping(backers)*/;
-    //     // bool pre_claiminit1 = (max_block < blockNumber) && (!funded) && (goal > balance) && countBackers > 0;
-    //     // // Claim end
-    //     // bool pre_claimend1 = (donadores_reentrada.length > 0);
-    //     // // tau
-    //     // bool pre_tau1 = (donadores_reentrada.length == 0);
-
-    //     // bool balance_positivo1 = balance > 0;
-
-    //     // // assert(!(!pre_donate1 && !pre_funds1 && pre_claiminit1 && pre_claimend1 && !pre_tau1 && balance_positivo1));
-    //     // require(!pre_donate1 && !pre_funds1 && pre_claiminit1 && pre_claimend1 && !pre_tau1 && balance_positivo1);
-
-
-    //     // Claim_Init();
-
-    //     // bool pre_donate2 = (max_block > blockNumber);
-    //     // // Funds
-    //     // bool pre_funds2 = (max_block < blockNumber) && (goal <= balance);
-
-    //     // // Claim init
-    //     // bool pre_claiminit2 = (max_block < blockNumber) && (!funded) && (goal > balance) && (countBackers > 0);
-    //     // // Claim end
-    //     // bool pre_claimend2 = (donadores_reentrada.length > 0);
-    //     // // tau
-    //     // bool pre_tau2 = (donadores_reentrada.length == 0);
-
-    //     // bool balance_positivo2 = balance > 0;
-
-    //     // require((!pre_donate2 && !pre_funds2 && pre_claiminit2 && pre_claimend2 && !pre_tau2 && balance_positivo2));
-
-    //     // Claim_End();
-
-
-    //     // bool pre_donate3 = (max_block > blockNumber);
-    //     // // Funds
-    //     // bool pre_funds3 = (max_block < blockNumber) && (goal <= balance);
-
-    //     // // Claim init
-    //     // bool pre_claiminit3 = (max_block < blockNumber) && (!funded) && (goal > balance) && (countBackers > 0);
-    //     // // Claim end
-    //     // bool pre_claimend3 = (donadores_reentrada.length > 0);
-    //     // // tau
-    //     // bool pre_tau3 = (donadores_reentrada.length == 0);
-
-    //     // bool balance_positivo3 = balance > 0;
-
-    //     // require((!pre_donate3 && !pre_funds3 && pre_claiminit3 && pre_claimend3 && !pre_tau3 && balance_positivo3));
-
-    //     // Claim_End();
-
-
-    //     // bool pre_donate4 = (max_block > blockNumber);
-    //     // // Funds
-    //     // bool pre_funds4 = (max_block < blockNumber) && (goal <= balance);
-
-    //     // // Claim init
-    //     // bool pre_claiminit4 = (max_block < blockNumber) && (!funded) && (goal > balance) && (countBackers > 0);
-    //     // // Claim end
-    //     // bool pre_claimend4 = (donadores_reentrada.length > 0);
-    //     // // tau
-    //     // bool pre_tau4 = (donadores_reentrada.length == 0);
-
-    //     // bool balance_positivo4 = balance > 0;
-
-    //     // assert(!(!pre_donate4 && !pre_funds4 && pre_claiminit4 && !pre_claimend4 && pre_tau4 && balance_positivo4));
-    // }
  }

@@ -236,9 +236,9 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
 def to_csv(table):
     ret = ""
     for row in table:
-        ret += ",".join(map(str, row))
-        ret = ret.replace("\n","") + "\n"
+        tmp = ",".join(map(str, row))
+        ret += tmp.replace("\n","") + "\n"
     return ret
 # main(config_B1(), REPETICIONES, 8, 8, 600)
 # main(config_B2(), REPETICIONES, 8, 8, 600)
-main(config_B3(), REPETICIONES, 8, 8, 600)
+# main(config_B3(), REPETICIONES, 8, 8, 600)

@@ -57,7 +57,7 @@ contract Reentrance {
 
   function withdraw_End() public {
     require (senders_reentrant.length > 0);
-    require (senders_reentrant[senders_reentrant.length-1].sender == msg.sender);
+    require (true);
 		uint256 value = senders_reentrant[senders_reentrant.length-1].value;
     senders_reentrant.length--;
 
@@ -67,6 +67,7 @@ contract Reentrance {
         senders_in_mapping -= 1;
       }
     }
+    lock = false;
   }
 
   function dummy_balanceGTZero() public view { require(balance > 0); }

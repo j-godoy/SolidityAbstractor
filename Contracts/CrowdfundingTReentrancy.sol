@@ -70,6 +70,6 @@ contract CrowdfundingR {
         blockNumber = blockNumber + 1;
     }
 
-    function dummy_balanceGTZero() public { }
+    function dummy_balanceGTZero() public { balance > 0; }
 
  }

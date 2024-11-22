@@ -40,4 +40,4 @@ statePreconditionsModeState = ["state == State.Active",
 "state == State.GoalReached", 
 "state == State.Closed",
 ]
-txBound = 6
+txBound = 8

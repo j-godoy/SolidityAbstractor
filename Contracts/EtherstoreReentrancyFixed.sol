@@ -61,7 +61,7 @@ contract EtherStore {
 
     function withdrawFunds_End () public {
         require (senders_reentrant.length > 0);
-        require (senders_reentrant[senders_reentrant.length-1].sender == msg.sender);        
+        require (true);        
         uint256 value = senders_reentrant[senders_reentrant.length-1].value;
         senders_reentrant.length--;
 
@@ -72,6 +72,7 @@ contract EtherStore {
                 senders_in_mapping -= 1;
             }
         }
+        lock = false;
     }
 
     function t(uint256 _time) public {

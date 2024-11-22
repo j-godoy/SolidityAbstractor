@@ -47,7 +47,7 @@ contract SimpleDAO {
 
   function withdraw_End() public  {
     require (senders_reentrant.length > 0);
-    require (senders_reentrant[senders_reentrant.length-1].sender == msg.sender);
+    require (true);
 		uint256 value = senders_reentrant[senders_reentrant.length-1].value;
     senders_reentrant.length --;
 

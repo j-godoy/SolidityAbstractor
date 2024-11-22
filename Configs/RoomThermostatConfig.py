@@ -9,4 +9,4 @@ tool_output = "Found a counterexample"
 statesModeState = [[1,0], [0,2]]
 statesNamesModeState = ["Created", "InUse"]
 statePreconditionsModeState = ["State == StateType.Created", "State == StateType.InUse"]
-txBound = 4
+txBound = 8

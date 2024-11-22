@@ -6,7 +6,7 @@ functions = [
 "Claim();",
 "dummy_balanceGTZero();",
 # "dummy_balanceIsZero();",
-"t(n);",
+"t();",
 ]
 statePreconditions = [
 "(max_block >= blockNumber)",
@@ -24,7 +24,7 @@ functionPreconditions = [
 # "true",
 "true"
 ]
-functionVariables = "uint n"
+functionVariables = ""
 tool_output = "Found a counterexample"
 
 statesModeState = []
@@ -32,4 +32,4 @@ statesNamesModeState = []
 statePreconditionsModeState = []
 
 # epaExtraConditions = "address(this).balance == 0"
-txBound = 10
+txBound = 8

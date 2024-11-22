@@ -34,4 +34,4 @@ tool_output = "Found a counterexample"
 statesModeState = []
 statesNamesModeState = []
 statePreconditionsModeState = []
-txBound = 6
+txBound = 8

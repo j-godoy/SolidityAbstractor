@@ -3,8 +3,9 @@ import networkx as nx
 import pydot
 import Benchmark_info
 import time
+from os.path import expanduser
 
-def load_dot_file(file_path, considerTimeouts=False):
+def load_dot_file(file_path, considerTimeouts=False, considerConstructor=True):
     graph = pydot.graph_from_dot_file(file_path)[0]
 
     # Remove all attributes from the graph object for all edges, except attribute "label"
@@ -34,6 +35,8 @@ def load_dot_file(file_path, considerTimeouts=False):
             for edge_name in full_edge_name.split(");"):
                 if not edge_name:
                     continue
+                if not considerConstructor and "constructor" in edge_name:
+                    continue
                 total_edges += 1
                 edge_name = edge_name.split("(")[0].strip().lower()
                 key = str(from_node)+str(to_node)
@@ -55,7 +58,7 @@ def load_dot_file(file_path, considerTimeouts=False):
         target = edge.get_destination()
         nx_graph.add_edge(u_of_edge=source, v_of_edge=target)
 
-    return nx_graph, edge_sets, total_edges
+    return nx_graph, edge_sets, total_edges, nx_graph.number_of_nodes()
 
 
 
@@ -67,6 +70,11 @@ def are_dot_files_equivalent(file1, file2, considerTimeout):
         print(e)
         exit(1)
         # return False
+    print(sorted(es1))
+    print()
+    print(sorted(es2))
+    print(sorted(es1) == sorted(es2))
+    print("size: "+str(t1)+" "+str(t2))
     return sorted(es1) == sorted(es2) and nx.is_isomorphic(g1,g2)
 
 def discover_new_transitions(file1, file2, considerTimeout):
@@ -113,7 +121,7 @@ def get_alloy_subjects(subjects, benchmark):
                 ret.append(to_find_alloy[j])
     return ret
 
-from os.path import expanduser
+
 home = expanduser("~")
 repo_path = os.path.join(home, "Repos","SolidityAbstractor")
 # D:\Documentos\Git\SolidityAbstractor
@@ -128,8 +136,12 @@ def get_diff_prev(solidityabstractor_subjects, k_prev, k_curr, timeout):
     subjects_diff = []
 
     for i in range(len(solidityabstractor_subjects)):
-        solidityabstractor_dot_prev = os.path.join(path_solidityabstractor_prev, solidityabstractor_subjects[i])
-        solidityabstractor_dot_curr = os.path.join(path_solidityabstractor_curr, solidityabstractor_subjects[i])
+        solidityabstractor_subject = solidityabstractor_subjects[i]
+        if len(solidityabstractor_subject) == 2: # es una lista de configs [subject,mode]
+            mode = "_Mode.epa" if solidityabstractor_subject[1][0] == 'e' else "_Mode.states"
+            solidityabstractor_subject = solidityabstractor_subject[0].replace("Config",mode)
+        solidityabstractor_dot_prev = os.path.join(path_solidityabstractor_prev, solidityabstractor_subject)
+        solidityabstractor_dot_curr = os.path.join(path_solidityabstractor_curr, solidityabstractor_subject)
         if not os.path.exists(solidityabstractor_dot_prev):
             print(f"NO EXISTE ARCHIVO VERISOL {solidityabstractor_dot_prev}")
             continue
@@ -183,13 +195,17 @@ def get_diff(solidityabstractor_subjects, benchmark, k, timeout):
 
 
 def main():
-    for Benchmark in ["B1", "B2"]:
+    #Benchmark_to_run = ["B1", "B2", "B3"]
+    benchmarks_to_run = ["B3"]
+    for Benchmark in benchmarks_to_run:
         if Benchmark == "B1":
             subjects_original = ["AssetTransferFixed_Mode.states", "AssetTransfer_Mode.states", "BasicProvenanceFixed_Mode.states", "BasicProvenance_Mode.states", "DefectiveComponentCounterFixed_Mode.states", "DefectiveComponentCounter_Mode.states", "DigitalLockerFixed_Mode.states", "DigitalLocker_Mode.states", "FrequentFlyerRewardsCalculator_Mode.states", "HelloBlockchainFixed_Mode.states", "HelloBlockchain_Mode.states", "RefrigeratedTransportationFixed_Mode.states", "RefrigeratedTransportation_Mode.states", "RoomThermostat_Mode.states", "SimpleMarketplaceFixed_Mode.states", "SimpleMarketplace_Mode.states"]
             # subjects_original = ["DigitalLockerFixed_Mode.states"]
         elif Benchmark == "B2":
             subjects_original = ["RefundEscrow_Mode.states", "RefundEscrow_Mode.epa", "RefundEscrowWithdraw_Mode.epa", "EscrowVault_Mode.states", "EscrowVault_Mode.epa", "EPXCrowdsale_Mode.states", "EPXCrowdsale_Mode.epa", "EPXCrowdsaleIsCrowdsaleClosed_Mode.epa", "CrowdfundingTime_Base_Mode.epa", "CrowdfundingTime_BaseBalance_Mode.epa", "CrowdfundingTime_BaseBalanceFix_Mode.epa", "ValidatorAuction_Mode.states", "ValidatorAuction_Mode.epa", "ValidatorAuction_withdraw_Mode.epa", "SimpleAuction_Mode.epa", "SimpleAuctionTime_Mode.epa", "SimpleAuctionEnded_Mode.epa", "SimpleAuctionHB_Mode.states", "Auction_Mode.epa", "AuctionEnded_Mode.epa", "AuctionWithdraw_Mode.epa", "RockPaperScissors_Mode.states", "RockPaperScissors_Mode.epa"]
             # subjects_original = ["EPXCrowdsale_Mode.states"]
+        elif Benchmark == "B3":
+            subjects_original = Benchmark_info.config_B3()
     
         subjects = subjects_original
         total_diff_antes = len(subjects)
@@ -257,9 +273,10 @@ def main():
             file.write(str(alldiff)+"\n\n")
         
 # para comparar dos abstracciones
-# file_name = "Simple_daoReentrancy_Mode.epa"
-# file1 = f"D:\\Documentos\\Git\\SolidityAbstractor\\graph\\k_8_queries_sep\\to_600\\{file_name}"
-# file2 = f"D:\\Documentos\\Git\\SolidityAbstractor\\graph\\k_8\\to_600\\{file_name}"
+# file_name = "EtherstoreReentrancy_Mode.epa"
+# repo_path = os.path.join(home, "Repos","SolidityAbstractor")
+# file1 = os.path.join(repo_path, "graph", "k_8", "to_600", file_name)
+# file2 = os.path.join(repo_path, "graph", "k_16", "to_600", file_name)
 # print(are_dot_files_equivalent(file1, file2, False))
 
 

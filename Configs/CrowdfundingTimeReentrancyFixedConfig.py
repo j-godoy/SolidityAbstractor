@@ -22,7 +22,7 @@ functionPreconditions = [
 "backers[msg.sender] == 0",
 "msg.sender == owner",
 "backers[msg.sender] > 0",
-"donadores_reentrada[donadores_reentrada.length-1] == msg.sender",
+"true",
 "true",
 # "true",
 "true"
@@ -36,4 +36,4 @@ statesNamesModeState = []
 statePreconditionsModeState = []
 
 # epaExtraConditions = "address(this).balance == 0"
-txBound = 10
+txBound = 12

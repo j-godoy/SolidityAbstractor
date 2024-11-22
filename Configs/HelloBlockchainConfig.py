@@ -13,7 +13,7 @@ tool_output = "Found a counterexample"
 statesModeState = [[1,0], [0,2]]
 statesNamesModeState = ["Request", "Respond"]
 statePreconditionsModeState = ["State == StateType.Request", "State == StateType.Respond"]
-txBound = 4
+txBound = 8
 
 epaExtraConditions = "true"
 statesExtraConditions = ["true", "true"]

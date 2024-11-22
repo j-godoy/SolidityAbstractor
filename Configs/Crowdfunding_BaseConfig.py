@@ -23,4 +23,4 @@ statesNamesModeState = []
 statePreconditionsModeState = []
 
 # epaExtraConditions = "address(this).balance == 0"
-txBound = 10
+txBound = 8

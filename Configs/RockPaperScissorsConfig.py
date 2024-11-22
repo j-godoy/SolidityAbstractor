@@ -28,4 +28,4 @@ statePreconditionsModeState = [
 "p1Choice != -1 && p2Choice != -1 && payoffMatrix[uint(p1Choice)][uint(p2Choice)] == 2",
 "p1Choice != -1 && p2Choice != -1 && payoffMatrix[uint(p1Choice)][uint(p2Choice)] == 0",
 ]
-txBound = 6
+txBound = 8

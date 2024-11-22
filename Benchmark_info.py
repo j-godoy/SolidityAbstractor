@@ -54,18 +54,18 @@ def run(mode, params, extra=""):
 def config_B3():
     configs = [
     ###Benchmark3-original
-    ["EtherstoreOriginalReentrancyConfig",["e"]],
-    ["ReentranceOriginalReentrancyConfig",["e"]],
-    ["Reentrancy_daoOriginalReentrancyConfig",["e"]],
-    ["Reentrancy_simpleOriginalReentrancyConfig",["e"]],    
-    ["Simple_daoOriginalReentrancyConfig",["e"]],
+    # ["EtherstoreOriginalReentrancyConfig",["e"]],
+    # ["ReentranceOriginalReentrancyConfig",["e"]],
+    # ["Reentrancy_daoOriginalReentrancyConfig",["e"]],
+    # ["Reentrancy_simpleOriginalReentrancyConfig",["e"]],    
+    # ["Simple_daoOriginalReentrancyConfig",["e"]],
 
-    ###Benchmark3-claim-split
-    ["EtherstoreReentrancyConfig",["e"]],
-    ["ReentranceReentrancyConfig",["e"]],
-    ["Reentrancy_daoReentrancyConfig",["e"]],
-    ["Reentrancy_simpleReentrancyConfig",["e"]],    
-    ["Simple_daoReentrancyConfig",["e"]],
+    # ###Benchmark3-claim-split
+    # ["EtherstoreReentrancyConfig",["e"]],
+    # ["ReentranceReentrancyConfig",["e"]],
+    # ["Reentrancy_daoReentrancyConfig",["e"]],
+    # ["Reentrancy_simpleReentrancyConfig",["e"]],    
+    # ["Simple_daoReentrancyConfig",["e"]],
     
     ###Benchmark3-claim-split-fixed
     ["EtherstoreReentrancyFixedConfig",["e"]],
@@ -129,21 +129,26 @@ def config_B2():
     # ["Crowdfunding_BaseConfig", ["e"]],    
     
     # # Benchmark2-PA
-    # ["Crowdfunding_BaseConfig_models", ["s", "e"]],    
-    # ["CrowdfundingTime_BaseBalanceConfigFix_states", ["s"]],
+    ["Crowdfunding_BaseConfig", ["e"]],
+    ["CrowdfundingTime_BaseConfig", ["e"]],
+    ["CrowdfundingTime_BaseBalanceConfig", ["e"]],
+    ["CrowdfundingTime_BaseBalanceFixConfig", ["e"]],
+    ["CrowdfundingTimeDonateRefinementConfig", ["e"]],
+    ["CrowdfundingTimeClaimRefinementConfig", ["e"]],
+    ["CrowdfundingTime_BaseBalanceFixStatesConfig", ["e"]],
+    ["CrowdfundingTimeReentrancyConfig", ["e"]],
+    ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
+    ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],    
     # ["CrowdfundingTimeClaimBakersRefinementConfig", ["e"]],
-    # ["CrowdfundingTimeClaimRefinementConfig", ["e"]],
     # ["CrowdfundingTimeConfig", ["e"]],
-    # ["CrowdfundingTimeDonateRefinementConfig", ["e"]],
-    # ["CrowdfundingTimeReentrancyConfig", ["e"]],
-    # ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
-    # ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],
     ]
     return configs
 
 def rename_configs(config):
     configs = []
     for c in config:
+        if len(c) == 2: # es algo del estilo ["AssetTransferConfig",["s"]],
+            break
         mode = "e" if c.endswith("epa") else "s"
         configs.append([c.replace("_Mode.epa", "Config").replace("_Mode.states", "Config"), mode])
     return configs
@@ -169,7 +174,7 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
     TXBOUND_END = txbound_end
     TIME_OUT = timeout
 
-    rerun_subjects = True
+    rerun_subjects = False
 
     table = [['Config', 'Mode' ,'Time', 'Inital pre count' , 'Pre count after true', 'Reduce Pr count', 'Functions count']]
     init = time.time()
@@ -186,10 +191,11 @@ def main(subjects_config, repeticiones=1, txbound_init=4, txbound_end=4, timeout
         exit(1)
 
     # solo ejecuto los que no se generaron
-    for config in subjects_config:
+    for config in configs:
         # print(config)
         if len(config) == 2:
-            config = config[0]
+            mode = "_Mode.epa" if config[1][0] == 'e' else "_Mode.states"
+            config = config[0].replace("Config", mode)
         path = os.path.join("graph", "k_"+str(txbound_init), "to_"+str(timeout), config)
         if not os.path.exists(path):
             configs_not_exist.append(config)
@@ -241,4 +247,4 @@ def to_csv(table):
     return ret
 # main(config_B1(), REPETICIONES, 8, 8, 600)
 # main(config_B2(), REPETICIONES, 8, 8, 600)
-# main(config_B3(), REPETICIONES, 8, 8, 600)
+main(config_B3(), REPETICIONES, 12, 12, 600)

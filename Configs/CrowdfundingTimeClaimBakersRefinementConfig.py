@@ -42,4 +42,4 @@ statesNamesModeState = []
 statePreconditionsModeState = []
 
 # epaExtraConditions = ""
-txBound = 10
+txBound = 8

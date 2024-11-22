@@ -37,4 +37,4 @@ statePreconditionsModeState = [
 "!(!isCrowdSaleSetup && !(beneficiaryWallet != address(0x0))) && !(tokensRemaining > 0 && (blockNumber <= fundingEndBlock) && (blockNumber >= fundingStartBlock)) && isCrowdSaleSetup && ((amountRaisedInWei < fundingMinCapInWei) && (isCrowdSaleClosed) && (blockNumber > fundingEndBlock) && (usersEPXfundValueArray.length != 0)) && isCrowdSaleClosed",
 "!(!isCrowdSaleSetup && !(beneficiaryWallet != address(0x0))) && !(tokensRemaining > 0 && (blockNumber <= fundingEndBlock) && (blockNumber >= fundingStartBlock)) && isCrowdSaleSetup && !((amountRaisedInWei < fundingMinCapInWei) && (isCrowdSaleClosed) && (blockNumber > fundingEndBlock) && (usersEPXfundValueArray.length != 0)) && isCrowdSaleClosed",
 ]
-txBound = 6
+txBound = 8

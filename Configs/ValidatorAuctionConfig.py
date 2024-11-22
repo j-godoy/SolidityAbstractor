@@ -35,4 +35,4 @@ statePreconditionsModeState = ["auctionState == AuctionState.Deployed",
 "auctionState == AuctionState.Ended",
 "auctionState == AuctionState.Failed",
 ]
-txBound = 6
+txBound = 8

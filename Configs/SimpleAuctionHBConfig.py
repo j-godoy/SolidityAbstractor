@@ -34,4 +34,4 @@ statePreconditionsModeState = [
 "!ended && highestBidder != address(0x0) && highestBidder != _A",
 "ended && highestBidder != address(0x0) && highestBidder != _A",
 ]
-txBound = 6
+txBound = 8

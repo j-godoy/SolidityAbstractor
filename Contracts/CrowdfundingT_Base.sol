@@ -50,8 +50,7 @@ contract CrowdfundingT_Base {
         balance = balance - val;
     }
 
-    function t(uint n) public {
-        require(n >= 0);
-        blockNumber = blockNumber + n;
+    function t() public {
+        blockNumber = blockNumber + 1;
     }
  }

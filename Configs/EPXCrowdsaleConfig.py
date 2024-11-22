@@ -40,4 +40,4 @@ statePreconditionsModeState = [
     "keccak256(abi.encodePacked(CurrentStatus)) == keccak256(abi.encodePacked('In progress (Eth >= Softcap)!'))",
 
 ]
-txBound = 7
+txBound = 8

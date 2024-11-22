@@ -37,4 +37,4 @@ statePreconditionsModeState = [
 ]
 
 # epaExtraConditions = "pendingReturnsArray[0] != address(0x0)"
-txBound = 10
+txBound = 8

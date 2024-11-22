@@ -13,4 +13,4 @@ statePreconditionsModeState = ["State == StateType.Created", "State == StateType
 statePreconditions = ["State != StateType.Completed", 
 "State != StateType.Completed"]
 
-txBound = 4
+txBound = 8

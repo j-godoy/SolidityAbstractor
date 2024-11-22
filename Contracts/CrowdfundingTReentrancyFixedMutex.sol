@@ -59,9 +59,10 @@ contract CrowdfundingR {
 
         donadores_reentrada.length--;
         countBackers -= 1;
+        lock = false;
     }
 
-    function dummy_balanceGTZero() public { }
+    function dummy_balanceGTZero() public { balance > 0; }
 
     function t() public {
         require(donadores_reentrada.length == 0);

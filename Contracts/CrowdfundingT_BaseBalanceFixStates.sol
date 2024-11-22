@@ -50,7 +50,7 @@ contract CrowdfundingBase {
         balance = balance - val;
     }
 
-    function dummy_balanceGTZero() public { }
+    function dummy_balanceGTZero() public { balance > 0;}
 
     function t() public {
         blockNumber = blockNumber + 1;

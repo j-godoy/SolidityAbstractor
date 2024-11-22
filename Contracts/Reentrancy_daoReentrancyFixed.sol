@@ -45,6 +45,7 @@ contract ReentrancyDAO {
             credit[msg.sender] = 0;
             senders_in_mapping -= 1;
         }
+        lock = false;
     }
 
     function deposit() public payable {

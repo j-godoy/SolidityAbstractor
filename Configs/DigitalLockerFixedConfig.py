@@ -49,4 +49,4 @@ statePreconditionsModeState = ["State == StateType.Requested",
 "State == StateType.SharingRequestPending",
 "State == StateType.SharingWithThirdParty",
 "State == StateType.Terminated"]
-txBound = 4
+txBound = 8

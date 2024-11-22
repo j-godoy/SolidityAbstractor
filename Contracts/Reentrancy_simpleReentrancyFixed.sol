@@ -62,6 +62,7 @@
             userBalance[msg.sender] = 0;
             senders_in_mapping -= 1;
         }
+        lock = false;
     }
 
     function dummy_balanceGTZero() public view { require(balance > 0); }

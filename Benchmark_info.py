@@ -51,21 +51,28 @@ def run(mode, params, extra=""):
     
     table.append([name+"_k="+str(TXBOUND_END), modeName, avgEpa, statesCount , initEpa, finiStates, functions]) 
 
-def config_B3():
+# no transient states
+def config_B3_1():
     configs = [
     ###Benchmark3-original
-    # ["EtherstoreOriginalReentrancyConfig",["e"]],
-    # ["ReentranceOriginalReentrancyConfig",["e"]],
-    # ["Reentrancy_daoOriginalReentrancyConfig",["e"]],
-    # ["Reentrancy_simpleOriginalReentrancyConfig",["e"]],    
-    # ["Simple_daoOriginalReentrancyConfig",["e"]],
+    ["EtherstoreOriginalReentrancyConfig",["e"]],
+    ["ReentranceOriginalReentrancyConfig",["e"]],
+    ["Reentrancy_daoOriginalReentrancyConfig",["e"]],
+    ["Reentrancy_simpleOriginalReentrancyConfig",["e"]],    
+    ["Simple_daoOriginalReentrancyConfig",["e"]],
 
+    ]
+    return configs
+
+# transient states
+def config_B3_2():
+    configs = [
     # ###Benchmark3-claim-split
-    # ["EtherstoreReentrancyConfig",["e"]],
-    # ["ReentranceReentrancyConfig",["e"]],
-    # ["Reentrancy_daoReentrancyConfig",["e"]],
-    # ["Reentrancy_simpleReentrancyConfig",["e"]],    
-    # ["Simple_daoReentrancyConfig",["e"]],
+    ["EtherstoreReentrancyConfig",["e"]],
+    ["ReentranceReentrancyConfig",["e"]],
+    ["Reentrancy_daoReentrancyConfig",["e"]],
+    ["Reentrancy_simpleReentrancyConfig",["e"]],    
+    ["Simple_daoReentrancyConfig",["e"]],
     
     ###Benchmark3-claim-split-fixed
     ["EtherstoreReentrancyFixedConfig",["e"]],
@@ -73,6 +80,13 @@ def config_B3():
     ["Reentrancy_daoReentrancyFixedConfig",["e"]],
     ["Reentrancy_simpleReentrancyFixedConfig",["e"]],    
     ["Simple_daoReentrancyFixedConfig",["e"]],
+    
+    
+    # # Benchmark2-PA
+    ["CrowdfundingTimeReentrancyConfig", ["e"]],
+    ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
+    ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],    
+    
     ]
     return configs
 
@@ -128,7 +142,7 @@ def config_B2():
     
     # ["Crowdfunding_BaseConfig", ["e"]],    
     
-    # # Benchmark2-PA
+    # # # Benchmark2-PA
     ["Crowdfunding_BaseConfig", ["e"]],
     ["CrowdfundingTime_BaseConfig", ["e"]],
     ["CrowdfundingTime_BaseBalanceConfig", ["e"]],
@@ -136,9 +150,11 @@ def config_B2():
     ["CrowdfundingTimeDonateRefinementConfig", ["e"]],
     ["CrowdfundingTimeClaimRefinementConfig", ["e"]],
     ["CrowdfundingTime_BaseBalanceFixStatesConfig", ["e"]],
-    ["CrowdfundingTimeReentrancyConfig", ["e"]],
-    ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
-    ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],    
+    # ["CrowdfundingTimeReentrancyConfig", ["e"]],
+    # ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
+    # ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],    
+    
+    #no los uso
     # ["CrowdfundingTimeClaimBakersRefinementConfig", ["e"]],
     # ["CrowdfundingTimeConfig", ["e"]],
     ]
@@ -245,6 +261,7 @@ def to_csv(table):
         tmp = ",".join(map(str, row))
         ret += tmp.replace("\n","") + "\n"
     return ret
-# main(config_B1(), REPETICIONES, 8, 8, 600)
-# main(config_B2(), REPETICIONES, 8, 8, 600)
-main(config_B3(), REPETICIONES, 12, 12, 600)
+main(config_B1(), REPETICIONES, 8, 8, 600)
+main(config_B2(), REPETICIONES, 8, 8, 600)
+main(config_B3_1(), REPETICIONES, 8, 8, 600)
+main(config_B3_2(), REPETICIONES, 16, 16, 600)

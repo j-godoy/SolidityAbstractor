@@ -349,7 +349,9 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
     if verbose:
        print(command)
     result = ""
-    try:    
+    FAIL_TO = False
+    init = time.time()
+    try:
         if platform.system() == "Windows":
             proc = subprocess.Popen(command.split(" "), stdout=subprocess.PIPE, cwd=final_directory)
             result = proc.communicate(timeout=time_out)
@@ -357,7 +359,9 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
         else:
             #TODO: run with timeout in unix
             result = subprocess.run([command, ""], shell = True, cwd=final_directory, stdout=subprocess.PIPE)
+        end = time.time()
     except Exception as e:
+        end = time.time()
         number_to += 1
         print(f"---EXCEPTION por time out de {time_out} segs al ejecutar '{command}' desde folder '{final_directory}'")
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
@@ -369,8 +373,15 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
             proc.kill()
         process.kill()
         process.wait(2) # wait for killing subprocess
-        return ADD_TX_IF_TIMEOUT,"?" # Si tiró timeout, retorno False.
+        FAIL_TO = True
+    
+    
+    total_query_time = end - init
+    add_query_time(total_query_time, FAIL_TO)
 
+    if FAIL_TO:
+        return ADD_TX_IF_TIMEOUT,"?" # Si tiró timeout, retorno False.
+    
     output_verisol = str(result[0].decode('utf-8'))
     output_successful = "Formal Verification successful"
 
@@ -484,7 +495,7 @@ def make_global_variables(config):
     NO_UNKNOWN_TX = "_no_unknown_tx"
 
 def main():
-    global config, dot, preconditionsThreads, statesThreads, states, preconditions, extraConditionsThreads, extraConditions, SAVE_GRAPH_PATH
+    global config, dot, preconditionsThreads, statesThreads, states, preconditions, extraConditionsThreads, extraConditions, SAVE_GRAPH_PATH, QUERY_TYPE
     make_global_variables(config)
 
     count = len(functions)
@@ -492,7 +503,7 @@ def main():
     funcionesNumeros = list(range(1, count + 1))
 
     #TODO hilos para correr en paralelo. Pasar esto a un parámetro
-    thread_workers = 8
+    thread_workers = 1
     
     
     threads = []
@@ -526,7 +537,7 @@ def main():
 
     # Quiero que haya 1 metodo tipo query por archivo
     # si hay muchas queries en un archivo, por más que se use ignoreMethod, puede llegar a tardar mucho
-    # para no cambiar la implementación, vamos a tener un archivo por cada query
+    # para no cambiar tanto la implementación, vamos a tener un archivo por cada query
     cant_preconditions = len(preconditions)
     preconditionsThreads = preconditions
     preconditionsThreads = np.array_split(preconditionsThreads, cant_preconditions)
@@ -540,9 +551,11 @@ def main():
         print("Length")
         print(len(preconditions))
 
+    
     if mode == Mode.epa and not(reduced):
         print("Reducing combinations...")
         # Otra alternativa
+        QUERY_TYPE = "QUERY_REDUCE_COMBINATION"
         with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
             for i in range(cant_preconditions):
                 executor.submit(reduceCombinations, i)
@@ -608,7 +621,7 @@ def main():
     #     for thread in threads:
     #         thread.join()
             
-    
+    QUERY_TYPE =  "QUERY_NORMAL"
     # Otra alternativa
     with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
         for i in range(cant_valid_states):
@@ -630,6 +643,7 @@ def main():
     # threads.append(thread)
     # for thread in threads:
     #     thread.join()
+    QUERY_TYPE = "QUERY_NORMAL_CONSTRUCTOR"
     with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
         for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
             executor.submit(try_init, states, (indexPreconditionAssert, preconditionAssert))
@@ -706,10 +720,15 @@ number_corral_fail = 0
 number_corral_fail_with_tackvars = 0
 TRACK_VARS = "trackAllVars"
 
+def add_query_time(query_time, time_out):
+    global QUERY_TYPE, query_list
+
+    query_list.append((QUERY_TYPE, time_out, query_time))
+        
 sys.path.append(os.path.join(os.getcwd(), "Configs"))
 
 if __name__ == "__main__":
-    global mode, config, verbose, time_mode, txBound
+    global mode, config, verbose, time_mode, txBound, QUERY_TYPE, query_list
     txBound = None
     time_out = None
     init = time.time()
@@ -719,6 +738,8 @@ if __name__ == "__main__":
     configFile = sys.argv[1]
     verbose = False
     basic_mode = False
+    
+    query_list =[] # (type, query_time) va a guardar el tipo y tiempo de cada query a verisol
     
     
     #TODO: ser consistente
@@ -792,3 +813,11 @@ if __name__ == "__main__":
         file.write(total_to+"\n")
         file.write(total_cfail1+"\n")
         file.write(total_cfail2+"\n")
+        
+    tempFileName = configFile.replace('Config','')+"-"+str(mode)+"_query_time.csv"
+    with open(os.path.join(SAVE_GRAPH_PATH,tempFileName), 'w') as file:
+        file.write("Type,TO?,time(sec)\n")
+        for query in query_list:
+            file.write(f"{query[0]},{str(query[1])},{str(query[2])}\n")
+
+    

@@ -377,14 +377,15 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
     
     
     total_query_time = end - init
-    add_query_time(total_query_time, FAIL_TO)
 
     if FAIL_TO:
+        add_query_time(total_query_time, FAIL_TO, False)
         return ADD_TX_IF_TIMEOUT,"?" # Si tiró timeout, retorno False.
     
     output_verisol = str(result[0].decode('utf-8'))
     output_successful = "Formal Verification successful"
 
+    
     # if verbose:
     #     print(output_verisol)
 
@@ -399,8 +400,12 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
             return False,TRACK_VARS
         else:
             number_corral_fail_with_tackvars += 1
+            add_query_time(total_query_time, FAIL_TO, "fail_corral")
             return ADD_TX_IF_FAIL,"fail?" # if corral fails with trackvars, we don't know if it's a real counterexample or not
-    return tool_output in output_verisol, ""
+        
+    feasible = tool_output in output_verisol
+    add_query_time(total_query_time, FAIL_TO, feasible)
+    return feasible, ""
 
 def get_temp_function_name(indexPrecondtion, indexAssert, indexFunction):
     return str(indexPrecondtion) + "x" + str(indexAssert) + "x" + str(indexFunction)
@@ -720,10 +725,10 @@ number_corral_fail = 0
 number_corral_fail_with_tackvars = 0
 TRACK_VARS = "trackAllVars"
 
-def add_query_time(query_time, time_out):
+def add_query_time(query_time, time_out, feasible):
     global QUERY_TYPE, query_list
 
-    query_list.append((QUERY_TYPE, time_out, query_time))
+    query_list.append((QUERY_TYPE, time_out, feasible, query_time))
         
 sys.path.append(os.path.join(os.getcwd(), "Configs"))
 
@@ -816,8 +821,8 @@ if __name__ == "__main__":
         
     tempFileName = configFile.replace('Config','')+"-"+str(mode)+"_query_time.csv"
     with open(os.path.join(SAVE_GRAPH_PATH,tempFileName), 'w') as file:
-        file.write("Type,TO?,time(sec)\n")
+        file.write("Type,TO?,feasible,time(sec)\n")
         for query in query_list:
-            file.write(f"{query[0]},{str(query[1])},{str(query[2])}\n")
+            file.write(f"{query[0]},{str(query[1])},{str(query[2])},{str(query[3])}\n")
 
     

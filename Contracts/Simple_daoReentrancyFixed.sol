@@ -60,6 +60,7 @@ contract SimpleDAO {
         senders_in_mapping -= 1;
       }
     }
+    lock = false;
   }
 
   function queryCredit(address to) public view returns (uint){

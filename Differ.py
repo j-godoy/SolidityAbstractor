@@ -64,17 +64,17 @@ def load_dot_file(file_path, considerTimeouts=False, considerConstructor=True):
 
 def are_dot_files_equivalent(file1, file2, considerTimeout):
     try:
-        g1, es1, t1 = load_dot_file(file1, considerTimeout)
-        g2, es2, t2 = load_dot_file(file2, considerTimeout)
+        g1, es1, t1, _ = load_dot_file(file1, considerTimeout)
+        g2, es2, t2, _ = load_dot_file(file2, considerTimeout)
     except Exception as e:
         print(e)
         exit(1)
         # return False
-    print(sorted(es1))
-    print()
-    print(sorted(es2))
-    print(sorted(es1) == sorted(es2))
-    print("size: "+str(t1)+" "+str(t2))
+    # print(sorted(es1))
+    # print()
+    # print(sorted(es2))
+    # print(sorted(es1) == sorted(es2))
+    # print("size: "+str(t1)+" "+str(t2))
     return sorted(es1) == sorted(es2) and nx.is_isomorphic(g1,g2)
 
 def discover_new_transitions(file1, file2, considerTimeout):
@@ -195,8 +195,8 @@ def get_diff(solidityabstractor_subjects, benchmark, k, timeout):
 
 
 def main():
-    #Benchmark_to_run = ["B1", "B2", "B3"]
-    benchmarks_to_run = ["B3"]
+    benchmarks_to_run = ["B1", "B2", "B3"]
+    # benchmarks_to_run = ["B3"]
     for Benchmark in benchmarks_to_run:
         if Benchmark == "B1":
             subjects_original = ["AssetTransferFixed_Mode.states", "AssetTransfer_Mode.states", "BasicProvenanceFixed_Mode.states", "BasicProvenance_Mode.states", "DefectiveComponentCounterFixed_Mode.states", "DefectiveComponentCounter_Mode.states", "DigitalLockerFixed_Mode.states", "DigitalLocker_Mode.states", "FrequentFlyerRewardsCalculator_Mode.states", "HelloBlockchainFixed_Mode.states", "HelloBlockchain_Mode.states", "RefrigeratedTransportationFixed_Mode.states", "RefrigeratedTransportation_Mode.states", "RoomThermostat_Mode.states", "SimpleMarketplaceFixed_Mode.states", "SimpleMarketplace_Mode.states"]
@@ -205,7 +205,7 @@ def main():
             subjects_original = ["RefundEscrow_Mode.states", "RefundEscrow_Mode.epa", "RefundEscrowWithdraw_Mode.epa", "EscrowVault_Mode.states", "EscrowVault_Mode.epa", "EPXCrowdsale_Mode.states", "EPXCrowdsale_Mode.epa", "EPXCrowdsaleIsCrowdsaleClosed_Mode.epa", "CrowdfundingTime_Base_Mode.epa", "CrowdfundingTime_BaseBalance_Mode.epa", "CrowdfundingTime_BaseBalanceFix_Mode.epa", "ValidatorAuction_Mode.states", "ValidatorAuction_Mode.epa", "ValidatorAuction_withdraw_Mode.epa", "SimpleAuction_Mode.epa", "SimpleAuctionTime_Mode.epa", "SimpleAuctionEnded_Mode.epa", "SimpleAuctionHB_Mode.states", "Auction_Mode.epa", "AuctionEnded_Mode.epa", "AuctionWithdraw_Mode.epa", "RockPaperScissors_Mode.states", "RockPaperScissors_Mode.epa"]
             # subjects_original = ["EPXCrowdsale_Mode.states"]
         elif Benchmark == "B3":
-            subjects_original = Benchmark_info.config_B3()
+            subjects_original = Benchmark_info.config_B3_1().extend(Benchmark_info.config_B3_2())
     
         subjects = subjects_original
         total_diff_antes = len(subjects)
@@ -278,6 +278,35 @@ def main():
 # file1 = os.path.join(repo_path, "graph", "k_8", "to_600", file_name)
 # file2 = os.path.join(repo_path, "graph", "k_16", "to_600", file_name)
 # print(are_dot_files_equivalent(file1, file2, False))
+
+def compare_diff_runs():
+    # For two different paths, recursively compare files that end in .states or .epa
+    # and generate a report of differences
+    path1 = r"C:\Users\j_god\Repos\SolidityAbstractor\graph_one_thread"
+    path2 = r"C:\Users\j_god\Repos\SolidityAbstractor\graph_sin_query_time"
+    file_ends_with = [".states", ".epa"]
+    diff_subjects = []
+    for root, _, files in os.walk(path1):
+        for file in files:
+            if file.endswith(tuple(file_ends_with)):
+                file_path1 = os.path.join(root, file)
+                file_path2 = file_path1.replace(path1, path2)
+                if not os.path.exists(file_path2):
+                    print(f"El archivo {file_path2} no existe.")
+                    continue
+                # print(f"Comparando {file_path1} con {file_path2}")
+                if diff(file_path1, file_path2, False):
+                    diff_subjects.append((file_path1, file_path2))
+                    # print(f"Diferencias encontradas al comparar {file_path1} con {file_path2}")
+                    print()
+                # else:
+                #     print("No hay diferencias.")
+
+    print(f"Total de archivos con diferencias: {len(diff_subjects)}")
+    for diff_subject in diff_subjects:
+        print(diff_subject)
+    
+compare_diff_runs()
 
 
 # Para ejecutar Differ para todos los subjects de B1 y B2

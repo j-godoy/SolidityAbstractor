@@ -22,6 +22,7 @@ contract ReentrancyDAO {
             require (callResult);
             credit[msg.sender] = 0;
         }
+        lock = false;
     }
 
     function deposit() public payable {

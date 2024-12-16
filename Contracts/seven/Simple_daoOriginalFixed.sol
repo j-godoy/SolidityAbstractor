@@ -22,6 +22,7 @@ contract SimpleDAO {
       bool res = msg.sender.call.value(amount)();
       credit[msg.sender]-=amount;
     }
+    lock = false;
   }
 
   function queryCredit(address to) returns (uint){

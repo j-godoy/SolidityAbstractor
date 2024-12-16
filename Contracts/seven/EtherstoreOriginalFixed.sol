@@ -30,5 +30,6 @@ contract EtherStore {
         require(msg.sender.call.value(_weiToWithdraw)());
         balances[msg.sender] -= _weiToWithdraw;
         lastWithdrawTime[msg.sender] = now;
+        lock = false;
     }
  }

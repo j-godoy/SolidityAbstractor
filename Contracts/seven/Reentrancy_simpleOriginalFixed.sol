@@ -28,5 +28,6 @@
              throw;
          }
          userBalance[msg.sender] = 0;
+         lock = false;
      }
  }

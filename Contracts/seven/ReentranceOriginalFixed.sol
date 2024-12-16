@@ -29,6 +29,7 @@ contract Reentrance {
       }
       balances[msg.sender] -= _amount;
     }
+    lock = false;
   }
 
   function() public payable {}

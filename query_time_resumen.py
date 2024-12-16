@@ -1,7 +1,7 @@
 import os
 import csv
 
-def unir_archivos_query_time(path, resumen_path):
+def unir_archivos_query_time(path, resumen_path, file_ends_with="_query_time.csv"):
     
     # Lista para almacenar las filas combinadas
     filas_combinadas = []
@@ -12,7 +12,7 @@ def unir_archivos_query_time(path, resumen_path):
     # Buscar y procesar todos los archivos que terminan en "_query_time.csv"
     for root, _, files in os.walk(path):
         for file in files:
-            if file.endswith("_query_time.csv"):
+            if file.endswith(file_ends_with):
                 archivo_path = os.path.join(root, file)
                 print(f"Procesando archivo: {archivo_path}")
                 
@@ -30,8 +30,8 @@ def unir_archivos_query_time(path, resumen_path):
                     
                     # Leer y almacenar las filas del archivo, agregando la nueva columna
                     for row in reader:
-                        if len(row) != 4:
-                            continue
+                        # if len(row) != 4:
+                        #     continue
                         filas_combinadas.append(row + [nombre_base])
     
     # Crear el archivo de resumen
@@ -42,9 +42,9 @@ def unir_archivos_query_time(path, resumen_path):
     print(f"Archivo de resumen generado: {resumen_path}")
 
 # Path de búsqueda
-path = r"C:\Users\j_god\Repos\SolidityAbstractor\graph\k_8\to_600"
+path = r"C:\Users\j_god\Repos\SolidityAbstractor\graph"
+file_ends_with="_query_time.csv"
 
-# Llamar a la función
 # Crear el nombre del archivo de resumen
 salida = os.path.join("resumen_query_time.csv")
-unir_archivos_query_time(path, salida)
+unir_archivos_query_time(path, salida, file_ends_with)

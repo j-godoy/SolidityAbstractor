@@ -83,9 +83,9 @@ def config_B3_2():
     
     
     # # Benchmark2-PA
-    ["CrowdfundingTimeReentrancyConfig", ["e"]],
-    ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
-    ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],    
+    # ["CrowdfundingTimeReentrancyConfig", ["e"]],
+    # ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
+    # ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],    
     
     ]
     return configs
@@ -124,9 +124,6 @@ def config_B2():
     ["EPXCrowdsaleConfig", ["s"]],
     ["EPXCrowdsaleConfig", ["e"]],
     ["EPXCrowdsaleIsCrowdsaleClosedConfig", ["e"]],
-    ["CrowdfundingTime_BaseConfig", ["e"]],
-    ["CrowdfundingTime_BaseBalanceConfig", ["e"]],
-    ["CrowdfundingTime_BaseBalanceFixConfig", ["e"]],
     ["ValidatorAuctionConfig", ["s"]],
     ["ValidatorAuctionConfig", ["e"]],
     ["ValidatorAuction_withdrawConfig", ["e"]],
@@ -143,13 +140,15 @@ def config_B2():
     # ["Crowdfunding_BaseConfig", ["e"]],    
     
     # # # Benchmark2-PA
-    ["Crowdfunding_BaseConfig", ["e"]],
+    # ["Crowdfunding_BaseConfig", ["e"]],
     ["CrowdfundingTime_BaseConfig", ["e"]],
     ["CrowdfundingTime_BaseBalanceConfig", ["e"]],
     ["CrowdfundingTime_BaseBalanceFixConfig", ["e"]],
-    ["CrowdfundingTimeDonateRefinementConfig", ["e"]],
-    ["CrowdfundingTimeClaimRefinementConfig", ["e"]],
-    ["CrowdfundingTime_BaseBalanceFixStatesConfig", ["e"]],
+    # ["CrowdfundingTimeDonateRefinementConfig", ["e"]],
+    # ["CrowdfundingTimeClaimRefinementConfig", ["e"]],
+    # ["CrowdfundingTime_BaseBalanceFixStatesConfig", ["e"]],
+    
+    #reentrancy van con k=16
     # ["CrowdfundingTimeReentrancyConfig", ["e"]],
     # ["CrowdfundingTimeReentrancyFixedConfig", ["e"]],
     # ["CrowdfundingTimeReentrancyFixedMutexConfig", ["e"]],    
@@ -261,7 +260,7 @@ def to_csv(table):
         tmp = ",".join(map(str, row))
         ret += tmp.replace("\n","") + "\n"
     return ret
-main(config_B1(), REPETICIONES, 8, 8, 600)
-main(config_B2(), REPETICIONES, 8, 8, 600)
-main(config_B3_1(), REPETICIONES, 8, 8, 600)
-main(config_B3_2(), REPETICIONES, 16, 16, 600)
+# main(config_B1(), REPETICIONES, 8, 8, 600)
+# main(config_B2(), REPETICIONES, 8, 8, 600)
+# main(config_B3_1(), REPETICIONES, 8, 8, 600)
+# main(config_B3_2(), REPETICIONES, 16, 16, 600)

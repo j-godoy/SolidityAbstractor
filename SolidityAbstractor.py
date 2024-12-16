@@ -362,6 +362,7 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
         end = time.time()
     except Exception as e:
         end = time.time()
+        FAIL_TO = True        
         number_to += 1
         print(f"---EXCEPTION por time out de {time_out} segs al ejecutar '{command}' desde folder '{final_directory}'")
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
@@ -373,7 +374,7 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
             proc.kill()
         process.kill()
         process.wait(2) # wait for killing subprocess
-        FAIL_TO = True
+        
     
     
     total_query_time = end - init

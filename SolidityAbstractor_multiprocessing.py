@@ -147,12 +147,14 @@ def output_combination(indexCombination, tempCombinations, mode, functions, stat
 def print_combination(indexCombination, tempCombinations, mode, functions, statesNames):
     output = output_combination(indexCombination, tempCombinations, mode, functions, statesNames)
     if basic_mode == False:
-        print(output + "---------")
+        if verbose:
+            print(output + "---------")
 
 def print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, combinations, fullCombination, succes_by_to, mode, functions, statesNames, basic_mode):
     output ="Desde este estado:\n"+ output_combination(indexPreconditionRequire, combinations, mode, functions, statesNames) + "\nHaciendo " + str(functions[indexFunction]+succes_by_to) + "\n\nLlegas al estado:\n" + output_combination(indexPreconditionAssert, fullCombination, mode, functions, statesNames) + "\n---------"
     if basic_mode == False or succes_by_to != "":
-        print(output)
+        if verbose:
+            print(output)
 
 def create_directory(index):
     current_directory = os.getcwd()
@@ -273,7 +275,8 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
     
     for functionName in tempFunctionNames:
         if basic_mode == False:
-            print(functionName + "---" + str(arg))
+            if verbose:
+                print(functionName + "---" + str(arg))
         indexPreconditionRequire, _, _ = get_params_from_function_name(functionName)
         query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, False, mode, functions, statesNames, states, verbose, query_list, QUERY_TYPE, contractName, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars)
         if query_result[1] == TRACK_VARS:
@@ -286,15 +289,17 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
             statesTemp2.append(statesTemp[indexPreconditionRequire])
             extraConditionsTemp2.append(extraConditionsTemp[indexPreconditionRequire])
             if query_result[1] != "":
-                print("[try_preconditions] Time out en función: " + functionName + " desde estado inicial:")
-                i_state = output_combination(indexPreconditionRequire, statesTemp, mode, functions, statesNames)
-                print(i_state)
+                if verbose:
+                    print("[try_preconditions] Time out en función: " + functionName + " desde estado inicial:")
+                    i_state = output_combination(indexPreconditionRequire, statesTemp)
+                    print(i_state)
     return preconditionsTemp2, statesTemp2, extraConditionsTemp2
 
 def try_transaction(tool, tempFunctionNames, final_directory, statesTemp, states, mode, functions, statesNames, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dot, contractName, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars, arg):
     for functionName in tempFunctionNames:
         if basic_mode == False:
-            print(functionName + "---" + str(arg))
+            if verbose:
+                print(functionName + "---" + str(arg))
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(functionName)
         
         query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, False, mode, functions, statesNames, states, verbose, query_list, QUERY_TYPE, contractName, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars)
@@ -303,13 +308,12 @@ def try_transaction(tool, tempFunctionNames, final_directory, statesTemp, states
         success = query_result[0]
         succes_by_timeout = query_result[1]
         if success:
-            print("agregando transición...")
-            add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_timeout, mode, functions, statesNames, dot)
-            # print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTemp, states, succes_by_timeout, mode, functions, statesNames, basic_mode)
+            add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_timeout)
+            if verbose:
+                print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTemp, states, succes_by_timeout)
 
 def try_init(states, preconditionAssertTuple, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dot, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars):
     try:
-        print(f"Executing task init {preconditionAssertTuple[0]}")  # Agregar un print para ver qué se está ejecutando
         indexPreconditionAssert = preconditionAssertTuple[0]
         preconditionAssert = preconditionAssertTuple[1]
         functionName, body = get_init_output(indexPreconditionAssert, preconditionAssert, extraConditions, functionVariables)
@@ -326,17 +330,12 @@ def try_init(states, preconditionAssertTuple, mode, functions, statesNames, extr
         success = query_result[0]
         succes_by_to = query_result[1]
         if success:
-            print("agregando init...")
-            # dot.node("init", "init")
-            # dot.node(combinationToString(states[indexPreconditionAssert]), output_combination(indexPreconditionAssert, states, mode, functions, statesNames))
-            # dot.edge("init",combinationToString(states[indexPreconditionAssert]) , "constructor"+succes_by_to)
             dot['nodes'].append(("init", "init"))
             dot['nodes'].append((combinationToString(states[indexPreconditionAssert]), output_combination(indexPreconditionAssert, states, mode, functions, statesNames)))
             dot['edges'].append(("init",combinationToString(states[indexPreconditionAssert]) , "constructor"+succes_by_to))
             
         if not verbose:
             delete_directory(final_directory)
-        print("end init")
     except Exception as e:
         print(f"Error en init {preconditionAssertTuple[0]}: {e}")
 
@@ -383,18 +382,21 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
         end = time.time()
     except Exception as e:
         end = time.time()
+        FAIL_TO = True
         number_to += 1
-        print(f"---EXCEPTION por time out de {time_out} segs al ejecutar '{command}' desde folder '{final_directory}'")
+        if verbose:
+            print(f"---EXCEPTION por time out de {time_out} segs al ejecutar '{command}' desde folder '{final_directory}'")
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
         i_state = output_combination(indexPreconditionRequire, statesTemp, mode, functions, statesNames)
         f_state = output_combination(indexPreconditionAssert, states, mode, functions, statesNames)
-        print(f"TimeOut ([indexPre,indexAssert,indxFn][{indexPreconditionRequire},{indexPreconditionAssert},{indexFunction}]) desde state \n{i_state}\n al state \n{f_state}\n con la función '{functions[indexFunction]}'")
+        if verbose:
+            print(f"TimeOut ([indexPre,indexAssert,indxFn][{indexPreconditionRequire},{indexPreconditionAssert},{indexFunction}]) desde state \n{i_state}\n al state \n{f_state}\n con la función '{functions[indexFunction]}'")
         process = psutil.Process(proc.pid)
         for proc in process.children(recursive=True):
             proc.kill()
         process.kill()
         process.wait(2) # wait for killing subprocess
-        FAIL_TO = True
+        
     
     
     total_query_time = end - init
@@ -467,7 +469,6 @@ def reduceCombinations(arg, preconditionsThreads, statesThreads, extraConditions
         print(f"Error en reduceCombinations {arg}: {e}")
 
 def validCombinations(arg, preconditionsThreads, statesThreads, extraConditionsThreads, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, states, dot, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars):
-    print(f"Executing task {arg}")  # Agregar un print para ver qué se está ejecutando
     try:
         # global extraConditions, preconditions, states, contractName, fileName, dot, contractName
         preconditionsTemp = preconditionsThreads[arg]
@@ -482,7 +483,6 @@ def validCombinations(arg, preconditionsThreads, statesThreads, extraConditionsT
         # try_transaction(tool, fuctionCombinations, final_directory, statesTemp, states, arg)
         # if not verbose:
         #     delete_directory(final_directory)
-        print("fin validCombinations")
     except Exception as e:
         print(f"Error en {arg}: {e}")
 
@@ -508,7 +508,8 @@ def make_global_variables(config):
     global fileName, preconditions, dot, statesNames, functions, statePreconditions, contractName, functionVariables
     global functionPreconditions, txBound, time_out, statePreconditionsModeState, statesModeState, SAVE_GRAPH_PATH, NO_UNKNOWN_TX
     fileName = os.path.join("Contracts", config.fileName)
-    print(config.fileName)
+    if verbose:
+        print("Running file:",config.fileName)
     functions = config.functions
     statePreconditions = config.statePreconditions
     statesNames = config.statesNamesModeState
@@ -835,12 +836,12 @@ def main():
     tempFileName = tempFileName + "_" + str(mode)
     output_dot = SAVE_GRAPH_PATH + tempFileName
     dot.render(output_dot)
-    output_with_no_unknown_tx = SAVE_GRAPH_PATH + tempFileName + NO_UNKNOWN_TX
-    ret,removed_tx = remove_unknown_tx.remove_transitions(os.path.join(os.getcwd(), output_dot))
-    ret = "// Total removed tx for timeouts : " + str(removed_tx) + "\n" + ret
-    write_file = open(output_with_no_unknown_tx,'w')
-    write_file.write(ret)
-    write_file.close()
+    # output_with_no_unknown_tx = SAVE_GRAPH_PATH + tempFileName + NO_UNKNOWN_TX
+    # ret,removed_tx = remove_unknown_tx.remove_transitions(os.path.join(os.getcwd(), output_dot))
+    # ret = "// Total removed tx for timeouts : " + str(removed_tx) + "\n" + ret
+    # write_file = open(output_with_no_unknown_tx,'w')
+    # write_file.write(ret)
+    # write_file.close()
     
 
 states = []
@@ -916,7 +917,6 @@ if __name__ == "__main__":
     
     if epaMode:
         mode = Mode.epa
-        print(configFile)
         config = __import__(configFile)
         main()
 

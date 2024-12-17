@@ -2,6 +2,7 @@ import itertools
 import subprocess
 import os
 import shutil
+import threading
 import numpy  as np
 import graphviz
 from threading import Thread
@@ -143,12 +144,14 @@ def output_combination(indexCombination, tempCombinations):
 def print_combination(indexCombination, tempCombinations):
     output = output_combination(indexCombination, tempCombinations)
     if basic_mode == False:
-        print(output + "---------")
+        if verbose:
+            print(output + "---------")
 
 def print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, combinations, fullCombination, succes_by_to):
     output ="Desde este estado:\n"+ output_combination(indexPreconditionRequire, combinations) + "\nHaciendo " + str(functions[indexFunction]+succes_by_to) + "\n\nLlegas al estado:\n" + output_combination(indexPreconditionAssert, fullCombination) + "\n---------"
     if basic_mode == False or succes_by_to != "":
-        print(output)
+        if verbose:
+            print(output)
 
 def create_directory(index):
     current_directory = os.getcwd()
@@ -268,7 +271,8 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
     
     for functionName in tempFunctionNames:
         if basic_mode == False:
-            print(functionName + "---" + str(arg))
+            if verbose:
+                print(functionName + "---" + str(arg))
         indexPreconditionRequire, _, _ = get_params_from_function_name(functionName)
         query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, False)
         if query_result[1] == TRACK_VARS:
@@ -280,16 +284,18 @@ def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, prec
             statesTemp2.append(statesTemp[indexPreconditionRequire])
             extraConditionsTemp2.append(extraConditionsTemp[indexPreconditionRequire])
             if query_result[1] != "":
-                print("[try_preconditions] Time out en función: " + functionName + " desde estado inicial:")
-                i_state = output_combination(indexPreconditionRequire, statesTemp)
-                print(i_state)
+                if verbose:
+                    print("[try_preconditions] Time out en función: " + functionName + " desde estado inicial:")
+                    i_state = output_combination(indexPreconditionRequire, statesTemp)
+                    print(i_state)
     return preconditionsTemp2, statesTemp2, extraConditionsTemp2
 
 def try_transaction(tool, tempFunctionNames, final_directory, statesTemp, states, arg):
     global txBound, time_out
     for functionName in tempFunctionNames:
         if basic_mode == False:
-            print(functionName + "---" + str(arg))
+            if verbose:
+                print(functionName + "---" + str(arg))
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(functionName)
         
         query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, False)
@@ -299,7 +305,8 @@ def try_transaction(tool, tempFunctionNames, final_directory, statesTemp, states
         succes_by_timeout = query_result[1]
         if success:
             add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_timeout)
-            print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTemp, states, succes_by_timeout)
+            if verbose:
+                print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTemp, states, succes_by_timeout)
 
 def try_init(states, preconditionAssertTuple):
     global dot, time_out
@@ -332,8 +339,9 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
     global tool_output, verbose, number_to, number_corral_fail, number_corral_fail_with_tackvars
     ADD_TX_IF_TIMEOUT = False
     ADD_TX_IF_FAIL = False
-    # trackAllVars = True #
-    
+    trackAllVars = True #
+    lock = threading.Lock()
+
     #Evito chequear funciones "dummy"
     if len(statesTemp) > 0:
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
@@ -362,13 +370,17 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
         end = time.time()
     except Exception as e:
         end = time.time()
-        FAIL_TO = True        
+        FAIL_TO = True
+        lock.acquire()
         number_to += 1
-        print(f"---EXCEPTION por time out de {time_out} segs al ejecutar '{command}' desde folder '{final_directory}'")
+        lock.release()
+        if verbose:
+            print(f"---EXCEPTION por time out de {time_out} segs al ejecutar '{command}' desde folder '{final_directory}'")
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
         i_state = output_combination(indexPreconditionRequire, statesTemp)
         f_state = output_combination(indexPreconditionAssert, states)
-        print(f"TimeOut ([indexPre,indexAssert,indxFn][{indexPreconditionRequire},{indexPreconditionAssert},{indexFunction}]) desde state \n{i_state}\n al state \n{f_state}\n con la función '{functions[indexFunction]}'")
+        if verbose:
+            print(f"TimeOut ([indexPre,indexAssert,indxFn][{indexPreconditionRequire},{indexPreconditionAssert},{indexFunction}]) desde state \n{i_state}\n al state \n{f_state}\n con la función '{functions[indexFunction]}'")
         process = psutil.Process(proc.pid)
         for proc in process.children(recursive=True):
             proc.kill()
@@ -397,10 +409,14 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
     output_error = "Corral may have aborted abnormally"
     if output_error in output_verisol:
         if not trackAllVars:
+            lock.acquire()
             number_corral_fail += 1
+            lock.release()
             return False,TRACK_VARS
         else:
+            lock.acquire()
             number_corral_fail_with_tackvars += 1
+            lock.release()
             add_query_time(total_query_time, FAIL_TO, "fail_corral")
             return ADD_TX_IF_FAIL,"fail?" # if corral fails with trackvars, we don't know if it's a real counterexample or not
         
@@ -477,7 +493,8 @@ def make_global_variables(config):
     global fileName, preconditions, dot, statesNames, functions, statePreconditions, contractName, functionVariables
     global functionPreconditions, txBound, time_out, statePreconditionsModeState, statesModeState, SAVE_GRAPH_PATH, NO_UNKNOWN_TX
     fileName = os.path.join("Contracts", config.fileName)
-    print(config.fileName)
+    if verbose:
+        print("Running file:",config.fileName)
     functions = config.functions
     statePreconditions = config.statePreconditions
     statesNames = config.statesNamesModeState
@@ -509,7 +526,7 @@ def main():
     funcionesNumeros = list(range(1, count + 1))
 
     #TODO hilos para correr en paralelo. Pasar esto a un parámetro
-    thread_workers = 1
+    thread_workers = 4
     
     
     threads = []
@@ -710,12 +727,12 @@ def main():
     tempFileName = tempFileName + "_" + str(mode)
     output_dot = SAVE_GRAPH_PATH + tempFileName
     dot.render(output_dot)
-    output_with_no_unknown_tx = SAVE_GRAPH_PATH + tempFileName + NO_UNKNOWN_TX
-    ret,removed_tx = remove_unknown_tx.remove_transitions(os.path.join(os.getcwd(), output_dot))
-    ret = "// Total removed tx for timeouts : " + str(removed_tx) + "\n" + ret
-    write_file = open(output_with_no_unknown_tx,'w')
-    write_file.write(ret)
-    write_file.close()
+    # output_with_no_unknown_tx = SAVE_GRAPH_PATH + tempFileName + NO_UNKNOWN_TX
+    # ret,removed_tx = remove_unknown_tx.remove_transitions(os.path.join(os.getcwd(), output_dot))
+    # ret = "// Total removed tx for timeouts : " + str(removed_tx) + "\n" + ret
+    # write_file = open(output_with_no_unknown_tx,'w')
+    # write_file.write(ret)
+    # write_file.close()
     
 
 states = []
@@ -793,7 +810,6 @@ if __name__ == "__main__":
     
     if epaMode:
         mode = Mode.epa
-        print(configFile)
         config = __import__(configFile)
         main()
 
@@ -808,6 +824,7 @@ if __name__ == "__main__":
     total_cfail1 = "# Corral Fail without trackvars: {}".format(str(number_corral_fail))
     total_cfail2 = "# Corral Fail with trackvars: {}".format(str(number_corral_fail_with_tackvars))
     
+    # if verbose:
     print(total_time)
     print(total_to)
     print(total_cfail1)

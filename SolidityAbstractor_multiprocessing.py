@@ -308,9 +308,9 @@ def try_transaction(tool, tempFunctionNames, final_directory, statesTemp, states
         success = query_result[0]
         succes_by_timeout = query_result[1]
         if success:
-            add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_timeout)
+            add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_timeout, mode, functions, statesNames, dot)
             if verbose:
-                print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTemp, states, succes_by_timeout)
+                print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTemp, states, succes_by_timeout, mode, functions, statesNames, dot)
 
 def try_init(states, preconditionAssertTuple, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dot, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars):
     try:
@@ -450,6 +450,7 @@ def add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFu
         dot['edges'].append((combinationToString(statesTemp[indexPreconditionRequire]),combinationToString(states[indexPreconditionAssert]) , functions[indexFunction]+succes_by_to))
 
 def reduceCombinations(arg, preconditionsThreads, statesThreads, extraConditionsThreads, fileName, functionVariables, contractName, basic_mode, txBound, time_out, mode, functions, statesNames, states, verbose, query_list, QUERY_TYPE, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars):
+    print(f"Starting task reduceCombinations {arg}")  # Agregar un print para ver qué se está ejecutando
     try:
         preconditionsTemp = preconditionsThreads[arg]
         statesTemp = statesThreads[arg]
@@ -469,6 +470,7 @@ def reduceCombinations(arg, preconditionsThreads, statesThreads, extraConditions
         print(f"Error en reduceCombinations {arg}: {e}")
 
 def validCombinations(arg, preconditionsThreads, statesThreads, extraConditionsThreads, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, states, dot, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars):
+    print(f"Starting task validCombinations {arg}")  # Agregar un print para ver qué se está ejecutando
     try:
         # global extraConditions, preconditions, states, contractName, fileName, dot, contractName
         preconditionsTemp = preconditionsThreads[arg]
@@ -540,8 +542,8 @@ def main():
     #lista de numeros de 1 a N, donde N es la cantidad de funciones
     funcionesNumeros = list(range(1, count + 1))
 
-    #TODO hilos para correr en paralelo. Pasar esto a un parámetro
-    thread_workers = 8
+    #TODO cores para correr en paralelo. Pasar esto a un parámetro
+    thread_workers = 4
     
     
     threads = []
@@ -601,15 +603,15 @@ def main():
             with ProcessPoolExecutor(max_workers=thread_workers) as executor:
                 futures = []
                 for i in range(cant_preconditions):
-                    # print(f"Submitting task {i}")  # Agregar un print para ver qué se está ejecutando
-                    executor.submit(reduceCombinations, i, preconditionsThreads2, statesThreads2, 
+                    print(f"Submitting task reduceCombinations {i}")  # Agregar un print para ver qué se está ejecutando
+                    future = executor.submit(reduceCombinations, i, preconditionsThreads2, statesThreads2, 
                                     extraConditionsThreads2, fileName, functionVariables, contractName, 
                                     basic_mode, txBound, time_out, mode, functions, statesNames, 
                                     states, verbose, query_list2, QUERY_TYPE, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars)
-                # futures.append(future)
-                # # Esperar a que todos los procesos finalicen
-                # for future in futures:
-                #     future.result()  # Esto garantiza que todos los procesos se ejecuten correctamente
+                    futures.append(future)
+                # Esperar a que todos los procesos finalicen
+                for future in futures:
+                    future.result()  # Esto garantiza que todos los procesos se ejecuten correctamente
 
             # Retornar las listas administradas fuera del bloque `with`
             return list(preconditionsThreads2), list(statesThreads2), list(extraConditionsThreads2), list(query_list2)
@@ -716,9 +718,16 @@ def main():
             dict_nodes_edges["edges"] = manager.list()
 
             with ProcessPoolExecutor(max_workers=thread_workers) as executor:
+                futures = []
                 for i in range(cant_valid_states):
-                    executor.submit(validCombinations, i, preconditionsThreads2, statesThreads2, extraConditionsThreads2, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list2, QUERY_TYPE, states2, dict_nodes_edges, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars)
+                    print(f"Submitting task validCombinations {i}")  # Agregar un print para ver qué se está ejecutando
+                    future = executor.submit(validCombinations, i, preconditionsThreads2, statesThreads2, extraConditionsThreads2, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list2, QUERY_TYPE, states2, dict_nodes_edges, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars)
+                    futures.append(future)
                 
+                # Esperar a que todos los procesos finalicen
+                for future in futures:
+                    future.result()
+            print("finished validCombinations")
             for n in dict_nodes_edges["nodes"]:
                 dot.node(n[0], n[1])
             for e in dict_nodes_edges["edges"]:
@@ -758,9 +767,15 @@ def main():
             dict_nodes_edges["nodes"] = manager.list()
             dict_nodes_edges["edges"] = manager.list()
             with ProcessPoolExecutor(max_workers=thread_workers) as executor:
+                futures = []
                 for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
                     print(f"Submitting task init {indexPreconditionAssert}")  # Agregar un print para ver qué se está ejecutando
-                    executor.submit(try_init, states2, (indexPreconditionAssert, preconditionAssert), mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list2, QUERY_TYPE, dict_nodes_edges, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars)
+                    future = executor.submit(try_init, states2, (indexPreconditionAssert, preconditionAssert), mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list2, QUERY_TYPE, dict_nodes_edges, tool_output, number_to, number_corral_fail, number_corral_fail_with_tackvars)
+                    futures.append(future)
+                    
+                # Esperar a que todos los procesos finalicen
+                for future in futures:
+                    future.result()
             
             for n in dict_nodes_edges["nodes"]:
                 dot.node(n[0], n[1])

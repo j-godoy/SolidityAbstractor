@@ -1,0 +1,361 @@
+SimpleAuctionConfig
+SimpleAuction.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+8
+Reducing combinations...
+0x0x0---0
+0x0x0---1
+0x0x0---2
+0x0x0---3
+0x0x0---4
+0x0x0---5
+0x0x0---6
+0x0x0---7
+Reducing combinations Ended.
+Length
+8
+0x0x0---1
+0x1x0---1
+Desde este estado:
+bid();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+
+---------
+0x2x0---1
+0x3x0---1
+0x4x0---1
+Desde este estado:
+bid();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+withdraw();
+
+---------
+0x5x0---1
+Desde este estado:
+bid();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+auctionEnd();
+
+---------
+0x6x0---1
+0x7x0---1
+Desde este estado:
+bid();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+withdraw();
+auctionEnd();
+
+---------
+0x0x1---2
+Desde este estado:
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+Vacio
+
+---------
+0x1x1---2
+0x2x1---2
+Desde este estado:
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+withdraw();
+
+---------
+0x3x1---2
+0x4x1---2
+0x5x1---2
+0x6x1---2
+0x7x1---2
+0x0x2---3
+Desde este estado:
+auctionEnd();
+
+Haciendo auctionEnd();
+
+Llegas al estado:
+Vacio
+
+---------
+0x1x2---3
+0x2x2---3
+0x3x2---3
+0x4x2---3
+0x5x2---3
+0x6x2---3
+0x7x2---3
+0x0x0---4
+0x0x1---4
+0x1x0---4
+0x1x1---4
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+bid();
+
+---------
+0x2x0---4
+0x2x1---4
+0x3x0---4
+0x3x1---4
+0x4x0---4
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+withdraw();
+
+---------
+0x4x1---4
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+bid();
+withdraw();
+
+---------
+0x5x0---4
+0x5x1---4
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+bid();
+auctionEnd();
+
+---------
+0x6x0---4
+0x6x1---4
+0x7x0---4
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+withdraw();
+auctionEnd();
+
+---------
+0x7x1---4
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+bid();
+withdraw();
+auctionEnd();
+
+---------
+0x0x0---5
+0x0x2---5
+Desde este estado:
+bid();
+auctionEnd();
+
+Haciendo auctionEnd();
+
+Llegas al estado:
+Vacio
+
+---------
+0x1x0---5
+0x1x2---5
+0x2x0---5
+0x2x2---5
+0x3x0---5
+Desde este estado:
+bid();
+auctionEnd();
+
+Haciendo bid();
+
+Llegas al estado:
+auctionEnd();
+
+---------
+0x3x2---5
+0x4x0---5
+0x4x2---5
+0x5x0---5
+0x5x2---5
+0x6x0---5
+Desde este estado:
+bid();
+auctionEnd();
+
+Haciendo bid();
+
+Llegas al estado:
+withdraw();
+auctionEnd();
+
+---------
+0x6x2---5
+0x7x0---5
+0x7x2---5
+0x0x1---6
+0x0x2---6
+0x1x1---6
+0x1x2---6
+0x2x1---6
+0x2x2---6
+Desde este estado:
+withdraw();
+auctionEnd();
+
+Haciendo auctionEnd();
+
+Llegas al estado:
+withdraw();
+
+---------
+0x3x1---6
+Desde este estado:
+withdraw();
+auctionEnd();
+
+Haciendo withdraw();
+
+Llegas al estado:
+auctionEnd();
+
+---------
+0x3x2---6
+0x4x1---6
+0x4x2---6
+0x5x1---6
+0x5x2---6
+0x6x1---6
+Desde este estado:
+withdraw();
+auctionEnd();
+
+Haciendo withdraw();
+
+Llegas al estado:
+withdraw();
+auctionEnd();
+
+---------
+0x6x2---6
+0x7x1---6
+0x7x2---6
+0x0x0---7
+0x0x1---7
+0x0x2---7
+0x1x0---7
+0x1x1---7
+0x1x2---7
+0x2x0---7
+0x2x1---7
+0x2x2---7
+Desde este estado:
+bid();
+withdraw();
+auctionEnd();
+
+Haciendo auctionEnd();
+
+Llegas al estado:
+withdraw();
+
+---------
+0x3x0---7
+0x3x1---7
+Desde este estado:
+bid();
+withdraw();
+auctionEnd();
+
+Haciendo withdraw();
+
+Llegas al estado:
+auctionEnd();
+
+---------
+0x3x2---7
+0x4x0---7
+0x4x1---7
+0x4x2---7
+0x5x0---7
+0x5x1---7
+0x5x2---7
+0x6x0---7
+Desde este estado:
+bid();
+withdraw();
+auctionEnd();
+
+Haciendo bid();
+
+Llegas al estado:
+withdraw();
+auctionEnd();
+
+---------
+0x6x1---7
+Desde este estado:
+bid();
+withdraw();
+auctionEnd();
+
+Haciendo withdraw();
+
+Llegas al estado:
+withdraw();
+auctionEnd();
+
+---------
+0x6x2---7
+0x7x0---7
+0x7x1---7
+0x7x2---7
+ENDED
+Total time: 266.12019634246826
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

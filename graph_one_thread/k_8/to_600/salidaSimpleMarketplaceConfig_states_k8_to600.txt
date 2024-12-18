@@ -1,0 +1,75 @@
+SimpleMarketplace.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+3
+Reducing combinations Ended.
+Length
+3
+0x0x0---0
+0x0x1---0
+0x0x2---0
+0x1x0---0
+Desde este estado:
+ItemAvailable
+Haciendo MakeOffer(offerPrice);
+
+Llegas al estado:
+OfferPlaced
+---------
+0x1x1---0
+0x1x2---0
+0x2x0---0
+0x2x1---0
+Desde este estado:
+ItemAvailable
+Haciendo AcceptOffer();
+
+Llegas al estado:
+Accepted
+---------
+0x2x2---0
+0x0x0---1
+0x0x1---1
+0x0x2---1
+Desde este estado:
+OfferPlaced
+Haciendo Reject();
+
+Llegas al estado:
+ItemAvailable
+---------
+0x1x0---1
+0x1x1---1
+0x1x2---1
+0x2x0---1
+0x2x1---1
+Desde este estado:
+OfferPlaced
+Haciendo AcceptOffer();
+
+Llegas al estado:
+Accepted
+---------
+0x2x2---1
+0x0x0---2
+0x0x1---2
+0x0x2---2
+0x1x0---2
+0x1x1---2
+0x1x2---2
+0x2x0---2
+0x2x1---2
+Desde este estado:
+Accepted
+Haciendo AcceptOffer();
+
+Llegas al estado:
+Accepted
+---------
+0x2x2---2
+ENDED
+Total time: 48.48899507522583
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

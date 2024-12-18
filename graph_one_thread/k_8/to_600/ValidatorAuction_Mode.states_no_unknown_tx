@@ -1,0 +1,35 @@
+// Total removed tx for timeouts : 0
+digraph G {
+"1-0-0-0-0-" [label=Deployed];
+"1-0-0-0-0-" [label=Deployed];
+"1-0-0-0-0-" -> "1-0-0-0-0-"  [label="addToWhitelist(addressesToWhitelist);"];
+"1-0-0-0-0-" [label=Deployed];
+"0-2-0-0-0-" [label=Started];
+"1-0-0-0-0-" -> "0-2-0-0-0-"  [label="startAuction();"];
+"0-2-0-0-0-" [label=Started];
+"0-2-0-0-0-" [label=Started];
+"0-2-0-0-0-" -> "0-2-0-0-0-"  [label="bid();"];
+"0-2-0-0-0-" [label=Started];
+"0-0-3-0-0-" [label=DepositPending];
+"0-2-0-0-0-" -> "0-0-3-0-0-"  [label="bid();"];
+"0-2-0-0-0-" [label=Started];
+"0-0-3-0-0-" [label=DepositPending];
+"0-2-0-0-0-" -> "0-0-3-0-0-"  [label="closeAuction();"];
+"0-2-0-0-0-" [label=Started];
+"0-0-0-0-5-" [label=Failed];
+"0-2-0-0-0-" -> "0-0-0-0-5-"  [label="closeAuction();"];
+"0-0-3-0-0-" [label=DepositPending];
+"0-0-0-4-0-" [label=Ended];
+"0-0-3-0-0-" -> "0-0-0-4-0-"  [label="depositBids();"];
+"0-0-0-4-0-" [label=Ended];
+"0-0-0-4-0-" [label=Ended];
+"0-0-0-4-0-" -> "0-0-0-4-0-"  [label="withdraw();"];
+"0-0-0-0-5-" [label=Failed];
+"0-0-0-0-5-" [label=Failed];
+"0-0-0-0-5-" -> "0-0-0-0-5-"  [label="withdraw();"];
+init [label=init];
+"1-0-0-0-0-" [label=Deployed];
+init -> "1-0-0-0-0-"  [label=constructor];
+}
+
+

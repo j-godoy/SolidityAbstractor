@@ -1,0 +1,276 @@
+SimpleAuctionHB.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+6
+Reducing combinations Ended.
+Length
+6
+0x0x0---0
+0x0x1---0
+0x0x2---0
+0x0x3---0
+0x1x0---0
+0x1x1---0
+0x1x2---0
+0x1x3---0
+Desde este estado:
+No bids && !ended
+Haciendo auctionEnd();
+
+Llegas al estado:
+No bids && ended
+---------
+0x2x0---0
+Desde este estado:
+No bids && !ended
+Haciendo bid();
+
+Llegas al estado:
+HighestBidder = A && !ended
+---------
+0x2x1---0
+0x2x2---0
+0x2x3---0
+0x3x0---0
+0x3x1---0
+0x3x2---0
+0x3x3---0
+0x4x0---0
+Desde este estado:
+No bids && !ended
+Haciendo bid();
+
+Llegas al estado:
+HighestBidder != A && !ended
+---------
+0x4x1---0
+0x4x2---0
+0x4x3---0
+0x5x0---0
+0x5x1---0
+0x5x2---0
+0x5x3---0
+0x0x0---1
+0x0x1---1
+0x0x2---1
+0x0x3---1
+0x1x0---1
+0x1x1---1
+0x1x2---1
+0x1x3---1
+0x2x0---1
+0x2x1---1
+0x2x2---1
+0x2x3---1
+0x3x0---1
+0x3x1---1
+0x3x2---1
+0x3x3---1
+0x4x0---1
+0x4x1---1
+0x4x2---1
+0x4x3---1
+0x5x0---1
+0x5x1---1
+0x5x2---1
+0x5x3---1
+0x0x0---2
+0x0x1---2
+0x0x2---2
+0x0x3---2
+0x1x0---2
+0x1x1---2
+0x1x2---2
+0x1x3---2
+0x2x0---2
+Desde este estado:
+HighestBidder = A && !ended
+Haciendo bid();
+
+Llegas al estado:
+HighestBidder = A && !ended
+---------
+0x2x1---2
+Desde este estado:
+HighestBidder = A && !ended
+Haciendo withdrawA();
+
+Llegas al estado:
+HighestBidder = A && !ended
+---------
+0x2x2---2
+Desde este estado:
+HighestBidder = A && !ended
+Haciendo withdrawOther();
+
+Llegas al estado:
+HighestBidder = A && !ended
+---------
+0x2x3---2
+0x3x0---2
+0x3x1---2
+0x3x2---2
+0x3x3---2
+Desde este estado:
+HighestBidder = A && !ended
+Haciendo auctionEnd();
+
+Llegas al estado:
+HighestBidder = A && ended
+---------
+0x4x0---2
+Desde este estado:
+HighestBidder = A && !ended
+Haciendo bid();
+
+Llegas al estado:
+HighestBidder != A && !ended
+---------
+0x4x1---2
+0x4x2---2
+0x4x3---2
+0x5x0---2
+0x5x1---2
+0x5x2---2
+0x5x3---2
+0x0x0---3
+0x0x1---3
+0x0x2---3
+0x0x3---3
+0x1x0---3
+0x1x1---3
+0x1x2---3
+0x1x3---3
+0x2x0---3
+0x2x1---3
+0x2x2---3
+0x2x3---3
+0x3x0---3
+0x3x1---3
+Desde este estado:
+HighestBidder = A && ended
+Haciendo withdrawA();
+
+Llegas al estado:
+HighestBidder = A && ended
+---------
+0x3x2---3
+Desde este estado:
+HighestBidder = A && ended
+Haciendo withdrawOther();
+
+Llegas al estado:
+HighestBidder = A && ended
+---------
+0x3x3---3
+0x4x0---3
+0x4x1---3
+0x4x2---3
+0x4x3---3
+0x5x0---3
+0x5x1---3
+0x5x2---3
+0x5x3---3
+0x0x0---4
+0x0x1---4
+0x0x2---4
+0x0x3---4
+0x1x0---4
+0x1x1---4
+0x1x2---4
+0x1x3---4
+0x2x0---4
+Desde este estado:
+HighestBidder != A && !ended
+Haciendo bid();
+
+Llegas al estado:
+HighestBidder = A && !ended
+---------
+0x2x1---4
+0x2x2---4
+0x2x3---4
+0x3x0---4
+0x3x1---4
+0x3x2---4
+0x3x3---4
+0x4x0---4
+Desde este estado:
+HighestBidder != A && !ended
+Haciendo bid();
+
+Llegas al estado:
+HighestBidder != A && !ended
+---------
+0x4x1---4
+Desde este estado:
+HighestBidder != A && !ended
+Haciendo withdrawA();
+
+Llegas al estado:
+HighestBidder != A && !ended
+---------
+0x4x2---4
+Desde este estado:
+HighestBidder != A && !ended
+Haciendo withdrawOther();
+
+Llegas al estado:
+HighestBidder != A && !ended
+---------
+0x4x3---4
+0x5x0---4
+0x5x1---4
+0x5x2---4
+0x5x3---4
+Desde este estado:
+HighestBidder != A && !ended
+Haciendo auctionEnd();
+
+Llegas al estado:
+HighestBidder != A && ended
+---------
+0x0x0---5
+0x0x1---5
+0x0x2---5
+0x0x3---5
+0x1x0---5
+0x1x1---5
+0x1x2---5
+0x1x3---5
+0x2x0---5
+0x2x1---5
+0x2x2---5
+0x2x3---5
+0x3x0---5
+0x3x1---5
+0x3x2---5
+0x3x3---5
+0x4x0---5
+0x4x1---5
+0x4x2---5
+0x4x3---5
+0x5x0---5
+0x5x1---5
+Desde este estado:
+HighestBidder != A && ended
+Haciendo withdrawA();
+
+Llegas al estado:
+HighestBidder != A && ended
+---------
+0x5x2---5
+Desde este estado:
+HighestBidder != A && ended
+Haciendo withdrawOther();
+
+Llegas al estado:
+HighestBidder != A && ended
+---------
+0x5x3---5
+ENDED
+Total time: 415.6195397377014
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

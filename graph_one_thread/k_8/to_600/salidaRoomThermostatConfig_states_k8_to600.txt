@@ -1,0 +1,46 @@
+RoomThermostat.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+2
+Reducing combinations Ended.
+Length
+2
+0x0x0---0
+0x0x1---0
+0x0x2---0
+0x1x0---0
+Desde este estado:
+Created
+Haciendo StartThermostat();
+
+Llegas al estado:
+InUse
+---------
+0x1x1---0
+0x1x2---0
+0x0x0---1
+0x0x1---1
+0x0x2---1
+0x1x0---1
+0x1x1---1
+Desde este estado:
+InUse
+Haciendo SetTargetTemperature(targetTemperature);
+
+Llegas al estado:
+InUse
+---------
+0x1x2---1
+Desde este estado:
+InUse
+Haciendo SetMode(mode);
+
+Llegas al estado:
+InUse
+---------
+ENDED
+Total time: 22.6383695602417
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

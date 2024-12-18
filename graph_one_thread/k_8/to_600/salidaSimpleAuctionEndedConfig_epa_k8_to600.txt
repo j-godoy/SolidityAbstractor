@@ -1,0 +1,410 @@
+SimpleAuctionEndedConfig
+SimpleAuctionEnded.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+16
+Reducing combinations...
+0x0x0---0
+0x0x0---1
+0x0x0---2
+0x0x0---3
+0x0x0---4
+0x0x0---5
+0x0x0---6
+0x0x0---7
+0x0x0---8
+0x0x0---9
+0x0x0---10
+0x0x0---11
+0x0x0---12
+0x0x0---13
+0x0x0---14
+0x0x0---15
+Reducing combinations Ended.
+Length
+8
+0x0x0---0
+Desde este estado:
+bid();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+
+---------
+0x1x0---0
+0x2x0---0
+0x3x0---0
+Desde este estado:
+bid();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+withdraw();
+
+---------
+0x4x0---0
+Desde este estado:
+bid();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+auctionEnd();
+
+---------
+0x5x0---0
+0x6x0---0
+0x7x0---0
+Desde este estado:
+bid();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+withdraw();
+auctionEnd();
+
+---------
+0x0x2---1
+0x1x2---1
+0x2x2---1
+Desde este estado:
+auctionEnd();
+
+Haciendo auctionEnd();
+
+Llegas al estado:
+dummy_isEnded();
+
+---------
+0x3x2---1
+0x4x2---1
+0x5x2---1
+0x6x2---1
+0x7x2---1
+0x0x3---2
+0x1x3---2
+0x2x3---2
+Desde este estado:
+dummy_isEnded();
+
+Haciendo dummy_isEnded();
+
+Llegas al estado:
+dummy_isEnded();
+
+---------
+0x3x3---2
+0x4x3---2
+0x5x3---2
+0x6x3---2
+0x7x3---2
+0x0x0---3
+0x0x1---3
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+bid();
+
+---------
+0x1x0---3
+0x1x1---3
+0x2x0---3
+0x2x1---3
+0x3x0---3
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+withdraw();
+
+---------
+0x3x1---3
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+bid();
+withdraw();
+
+---------
+0x4x0---3
+0x4x1---3
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+bid();
+auctionEnd();
+
+---------
+0x5x0---3
+0x5x1---3
+0x6x0---3
+0x6x1---3
+0x7x0---3
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo bid();
+
+Llegas al estado:
+bid();
+withdraw();
+auctionEnd();
+
+---------
+0x7x1---3
+Desde este estado:
+bid();
+withdraw();
+
+Haciendo withdraw();
+
+Llegas al estado:
+bid();
+withdraw();
+auctionEnd();
+
+---------
+0x0x0---4
+0x0x2---4
+0x1x0---4
+Desde este estado:
+bid();
+auctionEnd();
+
+Haciendo bid();
+
+Llegas al estado:
+auctionEnd();
+
+---------
+0x1x2---4
+0x2x0---4
+0x2x2---4
+Desde este estado:
+bid();
+auctionEnd();
+
+Haciendo auctionEnd();
+
+Llegas al estado:
+dummy_isEnded();
+
+---------
+0x3x0---4
+0x3x2---4
+0x4x0---4
+0x4x2---4
+0x5x0---4
+Desde este estado:
+bid();
+auctionEnd();
+
+Haciendo bid();
+
+Llegas al estado:
+withdraw();
+auctionEnd();
+
+---------
+0x5x2---4
+0x6x0---4
+0x6x2---4
+0x7x0---4
+0x7x2---4
+0x0x1---5
+0x0x2---5
+0x1x1---5
+Desde este estado:
+withdraw();
+auctionEnd();
+
+Haciendo withdraw();
+
+Llegas al estado:
+auctionEnd();
+
+---------
+0x1x2---5
+0x2x1---5
+0x2x2---5
+0x3x1---5
+0x3x2---5
+0x4x1---5
+0x4x2---5
+0x5x1---5
+Desde este estado:
+withdraw();
+auctionEnd();
+
+Haciendo withdraw();
+
+Llegas al estado:
+withdraw();
+auctionEnd();
+
+---------
+0x5x2---5
+0x6x1---5
+0x6x2---5
+Desde este estado:
+withdraw();
+auctionEnd();
+
+Haciendo auctionEnd();
+
+Llegas al estado:
+withdraw();
+dummy_isEnded();
+
+---------
+0x7x1---5
+0x7x2---5
+0x0x1---6
+0x0x3---6
+0x1x1---6
+0x1x3---6
+0x2x1---6
+Desde este estado:
+withdraw();
+dummy_isEnded();
+
+Haciendo withdraw();
+
+Llegas al estado:
+dummy_isEnded();
+
+---------
+0x2x3---6
+0x3x1---6
+0x3x3---6
+0x4x1---6
+0x4x3---6
+0x5x1---6
+0x5x3---6
+0x6x1---6
+Desde este estado:
+withdraw();
+dummy_isEnded();
+
+Haciendo withdraw();
+
+Llegas al estado:
+withdraw();
+dummy_isEnded();
+
+---------
+0x6x3---6
+Desde este estado:
+withdraw();
+dummy_isEnded();
+
+Haciendo dummy_isEnded();
+
+Llegas al estado:
+withdraw();
+dummy_isEnded();
+
+---------
+0x7x1---6
+0x7x3---6
+0x0x0---7
+0x0x1---7
+0x0x2---7
+0x1x0---7
+0x1x1---7
+Desde este estado:
+bid();
+withdraw();
+auctionEnd();
+
+Haciendo withdraw();
+
+Llegas al estado:
+auctionEnd();
+
+---------
+0x1x2---7
+0x2x0---7
+0x2x1---7
+0x2x2---7
+0x3x0---7
+0x3x1---7
+0x3x2---7
+0x4x0---7
+0x4x1---7
+0x4x2---7
+0x5x0---7
+Desde este estado:
+bid();
+withdraw();
+auctionEnd();
+
+Haciendo bid();
+
+Llegas al estado:
+withdraw();
+auctionEnd();
+
+---------
+0x5x1---7
+Desde este estado:
+bid();
+withdraw();
+auctionEnd();
+
+Haciendo withdraw();
+
+Llegas al estado:
+withdraw();
+auctionEnd();
+
+---------
+0x5x2---7
+0x6x0---7
+0x6x1---7
+0x6x2---7
+Desde este estado:
+bid();
+withdraw();
+auctionEnd();
+
+Haciendo auctionEnd();
+
+Llegas al estado:
+withdraw();
+dummy_isEnded();
+
+---------
+0x7x0---7
+0x7x1---7
+0x7x2---7
+ENDED
+Total time: 283.8212854862213
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

@@ -1,0 +1,130 @@
+// Reentrancy_daoOriginalReentrancy.sol
+digraph {
+	"1-0-0-0-" [label="deposit();
+"]
+	"1-0-0-0-" [label="deposit();
+"]
+	"1-0-0-0-" -> "1-0-0-0-" [label="deposit();"]
+	"1-0-0-0-" [label="deposit();
+"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-0-0-0-" -> "1-2-3-0-" [label="deposit();"]
+	"1-0-0-0-" [label="deposit();
+"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-0-" -> "1-2-3-4-" [label="deposit();"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-0-0-0-" [label="deposit();
+"]
+	"1-2-3-0-" -> "1-0-0-0-" [label="withdrawAll();"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-0-" [label="deposit();"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-0-" [label="withdrawAll();"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-4-" [label="deposit();"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-0-" [label="deposit();
+"]
+	"1-2-3-4-" -> "1-0-0-0-" [label="withdrawAll();"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-0-" [label="withdrawAll();"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-4-" [label="deposit();"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-4-" [label="withdrawAll();"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	init [label=init]
+	"1-0-0-0-" [label="deposit();
+"]
+	init -> "1-0-0-0-" [label=constructor]
+}

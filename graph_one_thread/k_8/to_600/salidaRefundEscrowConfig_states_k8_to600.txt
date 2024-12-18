@@ -1,0 +1,123 @@
+RefundEscrow.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+3
+Reducing combinations Ended.
+Length
+3
+0x0x0---0
+Desde este estado:
+Active
+Haciendo deposit(refundee);
+
+Llegas al estado:
+Active
+---------
+0x0x1---0
+0x0x2---0
+0x0x3---0
+0x0x4---0
+0x0x5---0
+Desde este estado:
+Active
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+Active
+---------
+0x1x0---0
+0x1x1---0
+0x1x2---0
+Desde este estado:
+Active
+Haciendo enableRefunds();
+
+Llegas al estado:
+Refunding
+---------
+0x1x3---0
+0x1x4---0
+0x1x5---0
+0x2x0---0
+0x2x1---0
+Desde este estado:
+Active
+Haciendo close();
+
+Llegas al estado:
+Close
+---------
+0x2x2---0
+0x2x3---0
+0x2x4---0
+0x2x5---0
+0x0x0---1
+0x0x1---1
+0x0x2---1
+0x0x3---1
+0x0x4---1
+0x0x5---1
+0x1x0---1
+0x1x1---1
+0x1x2---1
+0x1x3---1
+0x1x4---1
+Desde este estado:
+Refunding
+Haciendo withdraw(payee);
+
+Llegas al estado:
+Refunding
+---------
+0x1x5---1
+Desde este estado:
+Refunding
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+Refunding
+---------
+0x2x0---1
+0x2x1---1
+0x2x2---1
+0x2x3---1
+0x2x4---1
+0x2x5---1
+0x0x0---2
+0x0x1---2
+0x0x2---2
+0x0x3---2
+0x0x4---2
+0x0x5---2
+0x1x0---2
+0x1x1---2
+0x1x2---2
+0x1x3---2
+0x1x4---2
+0x1x5---2
+0x2x0---2
+0x2x1---2
+0x2x2---2
+0x2x3---2
+Desde este estado:
+Close
+Haciendo beneficiaryWithdraw();
+
+Llegas al estado:
+Close
+---------
+0x2x4---2
+0x2x5---2
+Desde este estado:
+Close
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+Close
+---------
+ENDED
+Total time: 108.71001124382019
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

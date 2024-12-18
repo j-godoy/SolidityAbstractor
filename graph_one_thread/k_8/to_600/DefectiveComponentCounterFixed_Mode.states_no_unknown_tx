@@ -1,0 +1,8 @@
+// Total removed tx for timeouts : 0
+digraph G {
+init [label=init];
+"1-0-" [label=Create];
+init -> "1-0-"  [label=constructor];
+}
+
+

@@ -1,0 +1,1149 @@
+Simple_daoReentrancyFixedConfig
+Simple_daoReentrancyFixed.sol
+txBound en config ignorado. Usando parámetro txBound=16
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+16
+Reducing combinations...
+0x0x0---0
+0x0x0---1
+0x0x0---2
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output2\OutputTemp2.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output2'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+withdraw_End();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---3
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output3\OutputTemp3.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output3'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+dummy_balanceGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---4
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output4\OutputTemp4.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output4'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---5
+0x0x0---6
+0x0x0---7
+0x0x0---8
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output8\OutputTemp8.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output8'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+withdraw_End();
+dummy_balanceGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---9
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output9\OutputTemp9.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output9'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+withdraw_End();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---10
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output10\OutputTemp10.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output10'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---11
+0x0x0---12
+0x0x0---13
+0x0x0---14
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output14\OutputTemp14.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output14'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---15
+Reducing combinations Ended.
+Length
+9
+0x0x0---0
+Desde este estado:
+donate(to);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+
+---------
+0x1x0---0
+0x2x0---0
+0x3x0---0
+Desde este estado:
+donate(to);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+---------
+0x4x0---0
+0x5x0---0
+0x6x0---0
+0x7x0---0
+Desde este estado:
+donate(to);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x8x0---0
+0x0x0---1
+0x0x1---1
+0x1x0---1
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+
+---------
+0x1x1---1
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+
+---------
+0x2x0---1
+0x2x1---1
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+---------
+0x3x0---1
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+---------
+0x3x1---1
+0x4x0---1
+0x4x1---1
+0x5x0---1
+0x5x1---1
+0x6x0---1
+0x6x1---1
+0x7x0---1
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x7x1---1
+0x8x0---1
+0x8x1---1
+0x0x0---2
+0x0x1---2
+0x0x2---2
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+Haciendo withdraw_End();
+
+Llegas al estado:
+donate(to);
+
+---------
+0x1x0---2
+0x1x1---2
+0x1x2---2
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+Haciendo withdraw_End();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+
+---------
+0x2x0---2
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+---------
+0x2x1---2
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output2_0x2x1\OutputTemp2_0x2x1.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output2_0x2x1'
+TimeOut ([indexPre,indexAssert,indxFn][0,2,1]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+ con la función 'withdraw_Init(amount);'
+0x2x2---2
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output2_0x2x2\OutputTemp2_0x2x2.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output2_0x2x2'
+TimeOut ([indexPre,indexAssert,indxFn][0,2,2]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+ con la función 'withdraw_End();'
+0x3x0---2
+0x3x1---2
+0x3x2---2
+0x4x0---2
+0x4x1---2
+0x4x2---2
+0x5x0---2
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+---------
+0x5x1---2
+0x5x2---2
+0x6x0---2
+0x6x1---2
+0x6x2---2
+0x7x0---2
+0x7x1---2
+0x7x2---2
+0x8x0---2
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x8x1---2
+0x8x2---2
+0x0x0---3
+0x0x1---3
+0x0x3---3
+0x1x0---3
+0x1x1---3
+0x1x3---3
+0x2x0---3
+0x2x1---3
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+---------
+0x2x3---3
+0x3x0---3
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+---------
+0x3x1---3
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+---------
+0x3x3---3
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+---------
+0x4x0---3
+0x4x1---3
+0x4x3---3
+0x5x0---3
+0x5x1---3
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+---------
+0x5x3---3
+0x6x0---3
+0x6x1---3
+0x6x3---3
+0x7x0---3
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x7x1---3
+0x7x3---3
+0x8x0---3
+0x8x1---3
+0x8x3---3
+0x0x0---4
+0x0x1---4
+0x0x4---4
+0x1x0---4
+0x1x1---4
+0x1x4---4
+0x2x0---4
+0x2x1---4
+0x2x4---4
+0x3x0---4
+0x3x1---4
+0x3x4---4
+0x4x0---4
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+---------
+0x4x1---4
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+---------
+0x4x4---4
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceAGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+---------
+0x5x0---4
+0x5x1---4
+0x5x4---4
+0x6x0---4
+0x6x1---4
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+---------
+0x6x4---4
+0x7x0---4
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x7x1---4
+0x7x4---4
+0x8x0---4
+0x8x1---4
+0x8x4---4
+0x0x0---5
+0x0x1---5
+0x0x2---5
+0x0x3---5
+0x1x0---5
+0x1x1---5
+0x1x2---5
+0x1x3---5
+0x2x0---5
+0x2x1---5
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output5_0x2x1\OutputTemp5_0x2x1.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output5_0x2x1'
+TimeOut ([indexPre,indexAssert,indxFn][0,2,1]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+ con la función 'withdraw_Init(amount);'
+0x2x2---5
+0x2x3---5
+0x3x0---5
+0x3x1---5
+0x3x2---5
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+Haciendo withdraw_End();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+---------
+0x3x3---5
+0x4x0---5
+0x4x1---5
+0x4x2---5
+0x4x3---5
+0x5x0---5
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+---------
+0x5x1---5
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output5_0x5x1\OutputTemp5_0x5x1.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output5_0x5x1'
+TimeOut ([indexPre,indexAssert,indxFn][0,5,1]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+ con la función 'withdraw_Init(amount);'
+0x5x2---5
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output5_0x5x2\OutputTemp5_0x5x2.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output5_0x5x2'
+TimeOut ([indexPre,indexAssert,indxFn][0,5,2]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+ con la función 'withdraw_End();'
+0x5x3---5
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+---------
+0x6x0---5
+0x6x1---5
+0x6x2---5
+0x6x3---5
+0x7x0---5
+0x7x1---5
+0x7x2---5
+0x7x3---5
+0x8x0---5
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x8x1---5
+0x8x2---5
+0x8x3---5
+0x0x0---6
+0x0x1---6
+0x0x2---6
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+Haciendo withdraw_End();
+
+Llegas al estado:
+donate(to);
+
+---------
+0x0x4---6
+0x1x0---6
+0x1x1---6
+0x1x2---6
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+Haciendo withdraw_End();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+
+---------
+0x1x4---6
+0x2x0---6
+0x2x1---6
+0x2x2---6
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output6_0x2x2\OutputTemp6_0x2x2.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output6_0x2x2'
+TimeOut ([indexPre,indexAssert,indxFn][0,2,2]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+
+ con la función 'withdraw_End();'
+0x2x4---6
+0x3x0---6
+0x3x1---6
+0x3x2---6
+0x3x4---6
+0x4x0---6
+0x4x1---6
+0x4x2---6
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+Haciendo withdraw_End();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceAGTZero();
+
+---------
+0x4x4---6
+0x5x0---6
+0x5x1---6
+0x5x2---6
+0x5x4---6
+0x6x0---6
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+---------
+0x6x1---6
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output6_0x6x1\OutputTemp6_0x6x1.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output6_0x6x1'
+TimeOut ([indexPre,indexAssert,indxFn][0,6,1]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+ con la función 'withdraw_Init(amount);'
+0x6x2---6
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output6_0x6x2\OutputTemp6_0x6x2.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output6_0x6x2'
+TimeOut ([indexPre,indexAssert,indxFn][0,6,2]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+ con la función 'withdraw_End();'
+0x6x4---6
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceAGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+---------
+0x7x0---6
+0x7x1---6
+0x7x2---6
+0x7x4---6
+0x8x0---6
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x8x1---6
+0x8x2---6
+0x8x4---6
+0x0x0---7
+0x0x1---7
+0x0x3---7
+0x0x4---7
+0x1x0---7
+0x1x1---7
+0x1x3---7
+0x1x4---7
+0x2x0---7
+0x2x1---7
+0x2x3---7
+0x2x4---7
+0x3x0---7
+0x3x1---7
+0x3x3---7
+0x3x4---7
+0x4x0---7
+0x4x1---7
+0x4x3---7
+0x4x4---7
+0x5x0---7
+0x5x1---7
+0x5x3---7
+0x5x4---7
+0x6x0---7
+0x6x1---7
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+---------
+0x6x3---7
+0x6x4---7
+0x7x0---7
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x7x1---7
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x7x3---7
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x7x4---7
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceAGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x8x0---7
+0x8x1---7
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdraw_Init(amount);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x8x3---7
+0x8x4---7
+0x0x0---8
+0x0x1---8
+0x0x2---8
+0x0x3---8
+0x0x4---8
+0x1x0---8
+0x1x1---8
+0x1x2---8
+0x1x3---8
+0x1x4---8
+0x2x0---8
+0x2x1---8
+0x2x2---8
+0x2x3---8
+0x2x4---8
+0x3x0---8
+0x3x1---8
+0x3x2---8
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdraw_End();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+
+---------
+0x3x3---8
+0x3x4---8
+0x4x0---8
+0x4x1---8
+0x4x2---8
+0x4x3---8
+0x4x4---8
+0x5x0---8
+0x5x1---8
+0x5x2---8
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output8_0x5x2\OutputTemp8_0x5x2.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output8_0x5x2'
+TimeOut ([indexPre,indexAssert,indxFn][0,5,2]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+
+ con la función 'withdraw_End();'
+0x5x3---8
+0x5x4---8
+0x6x0---8
+0x6x1---8
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output8_0x6x1\OutputTemp8_0x6x1.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output8_0x6x1'
+TimeOut ([indexPre,indexAssert,indxFn][0,6,1]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceAGTZero();
+
+ con la función 'withdraw_Init(amount);'
+0x6x2---8
+0x6x3---8
+0x6x4---8
+0x7x0---8
+0x7x1---8
+0x7x2---8
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdraw_End();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x7x3---8
+0x7x4---8
+0x8x0---8
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x8x1---8
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output8_0x8x1\OutputTemp8_0x8x1.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output8_0x8x1'
+TimeOut ([indexPre,indexAssert,indxFn][0,8,1]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ con la función 'withdraw_Init(amount);'
+0x8x2---8
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output8_0x8x2\OutputTemp8_0x8x2.sol SimpleDAO /txBound:16 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output8_0x8x2'
+TimeOut ([indexPre,indexAssert,indxFn][0,8,2]) desde state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ con la función 'withdraw_End();'
+0x8x3---8
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x8x4---8
+Desde este estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceAGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw_Init(amount);
+withdraw_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+ENDED
+Total time: 11844.945876121521
+# Time Out: 19
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

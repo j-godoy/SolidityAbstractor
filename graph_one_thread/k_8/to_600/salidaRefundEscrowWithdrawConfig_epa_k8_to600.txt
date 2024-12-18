@@ -1,0 +1,355 @@
+RefundEscrowWithdrawConfig
+RefundEscrowWithdraw.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+16
+Reducing combinations...
+0x0x0---0
+0x0x0---1
+0x0x0---2
+0x0x0---3
+0x0x0---4
+0x0x0---5
+0x0x0---6
+0x0x0---7
+0x0x0---8
+0x0x0---9
+0x0x0---10
+0x0x0---11
+0x0x0---12
+0x0x0---13
+0x0x0---14
+0x0x0---15
+Reducing combinations Ended.
+Length
+6
+0x0x6---0
+Desde este estado:
+transferPrimary(recipient);
+
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+transferPrimary(recipient);
+
+---------
+0x1x6---0
+0x2x6---0
+0x3x6---0
+0x4x6---0
+0x5x6---0
+0x0x3---1
+Desde este estado:
+beneficiaryWithdraw();
+transferPrimary(recipient);
+
+Haciendo beneficiaryWithdraw();
+
+Llegas al estado:
+transferPrimary(recipient);
+
+---------
+0x0x6---1
+0x1x3---1
+0x1x6---1
+Desde este estado:
+beneficiaryWithdraw();
+transferPrimary(recipient);
+
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+beneficiaryWithdraw();
+transferPrimary(recipient);
+
+---------
+0x2x3---1
+0x2x6---1
+0x3x3---1
+0x3x6---1
+0x4x3---1
+0x4x6---1
+0x5x3---1
+0x5x6---1
+0x0x4---2
+Desde este estado:
+withdrawA(payee);
+transferPrimary(recipient);
+
+Haciendo withdrawA(payee);
+
+Llegas al estado:
+transferPrimary(recipient);
+
+---------
+0x0x6---2
+0x1x4---2
+0x1x6---2
+0x2x4---2
+0x2x6---2
+Desde este estado:
+withdrawA(payee);
+transferPrimary(recipient);
+
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+withdrawA(payee);
+transferPrimary(recipient);
+
+---------
+0x3x4---2
+0x3x6---2
+0x4x4---2
+0x4x6---2
+0x5x4---2
+0x5x6---2
+0x0x5---3
+Desde este estado:
+withdrawOther(payee);
+transferPrimary(recipient);
+
+Haciendo withdrawOther(payee);
+
+Llegas al estado:
+transferPrimary(recipient);
+
+---------
+0x0x6---3
+0x1x5---3
+0x1x6---3
+0x2x5---3
+0x2x6---3
+0x3x5---3
+Desde este estado:
+withdrawOther(payee);
+transferPrimary(recipient);
+
+Haciendo withdrawOther(payee);
+
+Llegas al estado:
+withdrawOther(payee);
+transferPrimary(recipient);
+
+---------
+0x3x6---3
+Desde este estado:
+withdrawOther(payee);
+transferPrimary(recipient);
+
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+withdrawOther(payee);
+transferPrimary(recipient);
+
+---------
+0x4x5---3
+0x4x6---3
+0x5x5---3
+0x5x6---3
+0x0x4---4
+0x0x5---4
+0x0x6---4
+0x1x4---4
+0x1x5---4
+0x1x6---4
+0x2x4---4
+0x2x5---4
+Desde este estado:
+withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+
+Haciendo withdrawOther(payee);
+
+Llegas al estado:
+withdrawA(payee);
+transferPrimary(recipient);
+
+---------
+0x2x6---4
+0x3x4---4
+Desde este estado:
+withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+
+Haciendo withdrawA(payee);
+
+Llegas al estado:
+withdrawOther(payee);
+transferPrimary(recipient);
+
+---------
+0x3x5---4
+0x3x6---4
+0x4x4---4
+0x4x5---4
+Desde este estado:
+withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+
+Haciendo withdrawOther(payee);
+
+Llegas al estado:
+withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+
+---------
+0x4x6---4
+Desde este estado:
+withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+
+---------
+0x5x4---4
+0x5x5---4
+0x5x6---4
+0x0x0---5
+0x0x1---5
+Desde este estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+Haciendo close();
+
+Llegas al estado:
+transferPrimary(recipient);
+
+---------
+0x0x2---5
+Desde este estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+Haciendo enableRefunds();
+
+Llegas al estado:
+transferPrimary(recipient);
+
+---------
+0x0x6---5
+0x1x0---5
+0x1x1---5
+Desde este estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+Haciendo close();
+
+Llegas al estado:
+beneficiaryWithdraw();
+transferPrimary(recipient);
+
+---------
+0x1x2---5
+0x1x6---5
+0x2x0---5
+0x2x1---5
+0x2x2---5
+Desde este estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+Haciendo enableRefunds();
+
+Llegas al estado:
+withdrawA(payee);
+transferPrimary(recipient);
+
+---------
+0x2x6---5
+0x3x0---5
+0x3x1---5
+0x3x2---5
+Desde este estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+Haciendo enableRefunds();
+
+Llegas al estado:
+withdrawOther(payee);
+transferPrimary(recipient);
+
+---------
+0x3x6---5
+0x4x0---5
+0x4x1---5
+0x4x2---5
+Desde este estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+Haciendo enableRefunds();
+
+Llegas al estado:
+withdrawA(payee);
+withdrawOther(payee);
+transferPrimary(recipient);
+
+---------
+0x4x6---5
+0x5x0---5
+Desde este estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+Haciendo deposit(refundee);
+
+Llegas al estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+---------
+0x5x1---5
+0x5x2---5
+0x5x6---5
+Desde este estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+Haciendo transferPrimary(recipient);
+
+Llegas al estado:
+deposit(refundee);
+close();
+enableRefunds();
+transferPrimary(recipient);
+
+---------
+ENDED
+Total time: 253.82404208183289
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

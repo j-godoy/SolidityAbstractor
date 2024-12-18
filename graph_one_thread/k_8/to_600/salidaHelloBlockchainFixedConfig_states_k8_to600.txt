@@ -1,0 +1,35 @@
+HelloBlockchain_fixed.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+2
+Reducing combinations Ended.
+Length
+2
+0x0x0---0
+0x0x1---0
+0x1x0---0
+0x1x1---0
+Desde este estado:
+Request
+Haciendo SendResponse(responseMessage);
+
+Llegas al estado:
+Respond
+---------
+0x0x0---1
+Desde este estado:
+Respond
+Haciendo SendRequest(requestMessage);
+
+Llegas al estado:
+Request
+---------
+0x0x1---1
+0x1x0---1
+0x1x1---1
+ENDED
+Total time: 15.736140966415405
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

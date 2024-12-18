@@ -1,0 +1,130 @@
+// Simple_daoOriginalReentrancy.sol
+digraph {
+	"1-0-0-0-" [label="donate(to);
+"]
+	"1-0-0-0-" [label="donate(to);
+"]
+	"1-0-0-0-" -> "1-0-0-0-" [label="donate(to);"]
+	"1-0-0-0-" [label="donate(to);
+"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-0-0-0-" -> "1-2-3-0-" [label="donate(to);"]
+	"1-0-0-0-" [label="donate(to);
+"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-0-" -> "1-2-3-4-" [label="donate(to);"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-0-0-0-" [label="donate(to);
+"]
+	"1-2-3-0-" -> "1-0-0-0-" [label="withdraw(amount);"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-0-" [label="donate(to);"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-0-" [label="withdraw(amount);"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-4-" [label="donate(to);"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-0-" [label="donate(to);
+"]
+	"1-2-3-4-" -> "1-0-0-0-" [label="withdraw(amount);"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-0-" [label="withdraw(amount);"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-4-" [label="donate(to);"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-4-" [label="withdraw(amount);"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	init [label=init]
+	"1-0-0-0-" [label="donate(to);
+"]
+	init -> "1-0-0-0-" [label=constructor]
+}

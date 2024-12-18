@@ -1,0 +1,344 @@
+EtherstoreOriginalReentrancyConfig
+EtherstoreOriginalReentrancy.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+8
+Reducing combinations...
+0x0x0---0
+0x0x0---1
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output1\OutputTemp1.sol EtherStore /txBound:8 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output1'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+
+ al state 
+depositFunds();
+t(_time);
+
+ con la función 'depositFunds();'
+0x0x0---2
+0x0x0---3
+SpecFilesDir = C:\Users\j_god\Repos\SolidityAbstractor\output3
+... running Solc on C:\Users\j_god\Repos\SolidityAbstractor\output3\OutputTemp3.sol
+... running SolToBoogie to translate Solidity to Boogie
+... running C:\Users\j_god\.dotnet\tools\corral.exe /recursionBound:8 /k:1  /main:CorralEntry_EtherStore /tryCTrace /printDataValues:1 __SolToBoogieTest_out.bpl
+	*** Corral may have aborted abnormally (see corral.txt)
+
+0x0x0---4
+0x0x0---5
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output5\OutputTemp5.sol EtherStore /txBound:8 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output5'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceAGTZero();
+
+ al state 
+depositFunds();
+t(_time);
+
+ con la función 'depositFunds();'
+0x0x0---6
+SpecFilesDir = C:\Users\j_god\Repos\SolidityAbstractor\output6
+... running Solc on C:\Users\j_god\Repos\SolidityAbstractor\output6\OutputTemp6.sol
+... running SolToBoogie to translate Solidity to Boogie
+... running C:\Users\j_god\.dotnet\tools\corral.exe /recursionBound:8 /k:1  /main:CorralEntry_EtherStore /tryCTrace /printDataValues:1 __SolToBoogieTest_out.bpl
+	*** Corral may have aborted abnormally (see corral.txt)
+
+0x0x0---7
+Reducing combinations Ended.
+Length
+3
+0x0x0---0
+Desde este estado:
+depositFunds();
+t(_time);
+
+Haciendo depositFunds();
+
+Llegas al estado:
+depositFunds();
+t(_time);
+
+---------
+0x0x2---0
+Desde este estado:
+depositFunds();
+t(_time);
+
+Haciendo t(_time);
+
+Llegas al estado:
+depositFunds();
+t(_time);
+
+---------
+0x1x0---0
+Desde este estado:
+depositFunds();
+t(_time);
+
+Haciendo depositFunds();
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+---------
+0x1x2---0
+0x2x0---0
+Desde este estado:
+depositFunds();
+t(_time);
+
+Haciendo depositFunds();
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x2---0
+0x0x0---1
+0x0x1---1
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+Haciendo withdrawFunds(_weiToWithdraw);
+
+Llegas al estado:
+depositFunds();
+t(_time);
+
+---------
+0x0x2---1
+0x0x3---1
+0x1x0---1
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+Haciendo depositFunds();
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+---------
+0x1x1---1
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+Haciendo withdrawFunds(_weiToWithdraw);
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+---------
+0x1x2---1
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+Haciendo t(_time);
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+---------
+0x1x3---1
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+---------
+0x2x0---1
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+Haciendo depositFunds();
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x1---1
+0x2x2---1
+0x2x3---1
+0x0x0---2
+0x0x1---2
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdrawFunds(_weiToWithdraw);
+
+Llegas al estado:
+depositFunds();
+t(_time);
+
+---------
+0x0x2---2
+0x0x3---2
+0x0x4---2
+0x1x0---2
+0x1x1---2
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdrawFunds(_weiToWithdraw);
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+
+---------
+0x1x2---2
+0x1x3---2
+0x1x4---2
+0x2x0---2
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo depositFunds();
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x1---2
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdrawFunds(_weiToWithdraw);
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x2---2
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo t(_time);
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x3---2
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x4---2
+Desde este estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceAGTZero();
+
+Llegas al estado:
+depositFunds();
+withdrawFunds(_weiToWithdraw);
+t(_time);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+ENDED
+Total time: 1997.743631362915
+# Time Out: 2
+# Corral Fail without trackvars: 2
+# Corral Fail with trackvars: 0

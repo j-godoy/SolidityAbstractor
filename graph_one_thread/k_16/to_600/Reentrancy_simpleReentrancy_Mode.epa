@@ -1,0 +1,696 @@
+// Reentrancy_simpleReentrancy.sol
+digraph {
+	"1-0-0-0-0-" [label="addToBalance();
+"]
+	"1-0-0-0-0-" [label="addToBalance();
+"]
+	"1-0-0-0-0-" -> "1-0-0-0-0-" [label="addToBalance();"]
+	"1-0-0-0-0-" [label="addToBalance();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-0-0-0-0-" -> "1-2-0-4-0-" [label="addToBalance();"]
+	"1-0-0-0-0-" [label="addToBalance();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-0-0-" -> "1-2-0-4-5-" [label="addToBalance();"]
+	"1-2-0-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+"]
+	"1-2-0-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+"]
+	"1-2-0-0-0-" -> "1-2-0-0-0-" [label="addToBalance();"]
+	"1-2-0-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+"]
+	"1-2-0-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+"]
+	"1-2-0-0-0-" -> "1-2-0-0-0-" [label="withdrawBalance_Init();"]
+	"1-2-0-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-0-0-0-" -> "1-2-0-4-0-" [label="addToBalance();"]
+	"1-2-0-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-0-" -> "1-2-0-4-5-" [label="addToBalance();"]
+	"1-0-3-0-0-" [label="addToBalance();
+withdrawBalance_End();
+"]
+	"1-0-3-0-0-" [label="addToBalance();
+withdrawBalance_End();
+"]
+	"1-0-3-0-0-" -> "1-0-3-0-0-" [label="addToBalance();"]
+	"1-0-3-0-0-" [label="addToBalance();
+withdrawBalance_End();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-0-3-0-0-" -> "1-2-3-4-0-" [label="addToBalance();"]
+	"1-0-3-0-0-" [label="addToBalance();
+withdrawBalance_End();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-3-0-0-" -> "1-2-3-4-5-" [label="addToBalance();"]
+	"1-0-0-4-0-" [label="addToBalance();
+dummy_balanceGTZero();
+"]
+	"1-0-0-4-0-" [label="addToBalance();
+dummy_balanceGTZero();
+"]
+	"1-0-0-4-0-" -> "1-0-0-4-0-" [label="addToBalance();"]
+	"1-0-0-4-0-" [label="addToBalance();
+dummy_balanceGTZero();
+"]
+	"1-0-0-4-0-" [label="addToBalance();
+dummy_balanceGTZero();
+"]
+	"1-0-0-4-0-" [label="addToBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-0-0-4-0-" -> "1-2-0-4-0-" [label="addToBalance();"]
+	"1-0-0-4-0-" [label="addToBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-4-0-" -> "1-2-0-4-5-" [label="addToBalance();"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-0-0-0-0-" [label="addToBalance();
+"]
+	"1-2-3-0-0-" -> "1-0-0-0-0-" [label="withdrawBalance_End();"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-0-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+"]
+	"1-2-3-0-0-" -> "1-2-0-0-0-" [label="withdrawBalance_End();"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-0-3-0-0-" [label="addToBalance();
+withdrawBalance_End();
+"]
+	"1-2-3-0-0-" -> "1-0-3-0-0-" [label="withdrawBalance_End();"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-0-0-" -> "1-2-3-0-0-" [label="addToBalance();"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-0-0-" -> "1-2-3-0-0-" [label="withdrawBalance_Init();"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-0-0-" -> "1-2-3-0-0-" [label="withdrawBalance_End();"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-0-" -> "1-2-3-4-0-" [label="addToBalance();"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-0-" -> "1-2-3-4-5-" [label="addToBalance();"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-0-4-0-" -> "1-2-3-0-0-" [label="withdrawBalance_Init();"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" -> "1-2-0-4-0-" [label="addToBalance();"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" -> "1-2-0-4-0-" [label="withdrawBalance_Init();"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" -> "1-2-3-4-0-" [label="withdrawBalance_Init();"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-0-" -> "1-2-0-4-5-" [label="addToBalance();"]
+	"1-2-0-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-5-" -> "1-2-0-0-5-" [label="addToBalance();"]
+	"1-2-0-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-5-" -> "1-2-0-0-5-" [label="withdrawBalance_Init();"]
+	"1-2-0-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-5-" -> "1-2-0-4-5-" [label="addToBalance();"]
+	"1-0-3-4-0-" [label="addToBalance();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-0-3-4-0-" [label="addToBalance();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-0-3-4-0-" [label="addToBalance();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-0-3-4-0-" -> "1-2-3-4-0-" [label="addToBalance();"]
+	"1-0-3-4-0-" [label="addToBalance();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-3-4-0-" -> "1-2-3-4-5-" [label="addToBalance();"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-0-0-4-0-" [label="addToBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" -> "1-0-0-4-0-" [label="withdrawBalance_End();"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-4-0-" -> "1-2-3-0-0-" [label="withdrawBalance_Init();"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" -> "1-2-0-4-0-" [label="withdrawBalance_End();"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-0-3-4-0-" [label="addToBalance();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" -> "1-0-3-4-0-" [label="withdrawBalance_End();"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" -> "1-2-3-4-0-" [label="addToBalance();"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" -> "1-2-3-4-0-" [label="withdrawBalance_Init();"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" -> "1-2-3-4-0-" [label="withdrawBalance_End();"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-0-" -> "1-2-3-4-5-" [label="addToBalance();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-0-0-" [label="addToBalance();
+"]
+	"1-2-3-0-5-" -> "1-0-0-0-0-" [label="withdrawBalance_End();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+"]
+	"1-2-3-0-5-" -> "1-2-0-0-0-" [label="withdrawBalance_End();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-0-3-0-0-" [label="addToBalance();
+withdrawBalance_End();
+"]
+	"1-2-3-0-5-" -> "1-0-3-0-0-" [label="withdrawBalance_End();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+"]
+	"1-2-3-0-5-" -> "1-2-3-0-0-" [label="withdrawBalance_End();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" -> "1-2-0-0-5-" [label="withdrawBalance_End();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" -> "1-2-3-0-5-" [label="addToBalance();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" -> "1-2-3-0-5-" [label="withdrawBalance_Init();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" -> "1-2-3-0-5-" [label="withdrawBalance_End();"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" -> "1-2-3-4-5-" [label="addToBalance();"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" -> "1-2-3-0-5-" [label="withdrawBalance_Init();"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" -> "1-2-0-4-5-" [label="addToBalance();"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" -> "1-2-0-4-5-" [label="withdrawBalance_Init();"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" -> "1-2-3-4-5-" [label="withdrawBalance_Init();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-4-0-" [label="addToBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-5-" -> "1-0-0-4-0-" [label="withdrawBalance_End();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-5-" -> "1-2-0-4-0-" [label="withdrawBalance_End();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-3-4-0-" [label="addToBalance();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-5-" -> "1-0-3-4-0-" [label="withdrawBalance_End();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-0-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-5-" -> "1-2-3-4-0-" [label="withdrawBalance_End();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" -> "1-2-3-0-5-" [label="withdrawBalance_Init();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-0-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" -> "1-2-0-4-5-" [label="withdrawBalance_End();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" -> "1-2-3-4-5-" [label="addToBalance();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" -> "1-2-3-4-5-" [label="withdrawBalance_Init();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" -> "1-2-3-4-5-" [label="withdrawBalance_End();"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-5-" [label="addToBalance();
+withdrawBalance_Init();
+withdrawBalance_End();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	init [label=init]
+	"1-0-0-0-0-" [label="addToBalance();
+"]
+	init -> "1-0-0-0-0-" [label=constructor]
+}

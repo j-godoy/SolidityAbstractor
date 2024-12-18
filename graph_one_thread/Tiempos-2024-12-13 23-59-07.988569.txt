@@ -1,0 +1,7 @@
+Config                                         Mode    Time       Inital pre count    Pre count after true    Reduce Pr count    Functions count
+---------------------------------------------  ------  -------  ------------------  ----------------------  -----------------  -----------------
+EtherstoreOriginalReentrancyConfig_k=8         epa     0:33:18                  32                       8                  3                  5
+ReentranceOriginalReentrancyConfig_k=8         epa     0:50:40                  16                       8                  3                  4
+Reentrancy_daoOriginalReentrancyConfig_k=8     epa     0:07:16                  16                       8                  3                  4
+Reentrancy_simpleOriginalReentrancyConfig_k=8  epa     0:06:58                  16                       8                  3                  4
+Simple_daoOriginalReentrancyConfig_k=8         epa     0:50:40                  16                       8                  3                  4

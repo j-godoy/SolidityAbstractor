@@ -1,0 +1,164 @@
+AuctionEndedConfig
+AuctionEnded.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+16
+Reducing combinations...
+0x0x0---0
+0x0x0---1
+0x0x0---2
+0x0x0---3
+0x0x0---4
+0x0x0---5
+0x0x0---6
+0x0x0---7
+0x0x0---8
+0x0x0---9
+0x0x0---10
+0x0x0---11
+0x0x0---12
+0x0x0---13
+0x0x0---14
+0x0x0---15
+Reducing combinations Ended.
+Length
+4
+0x0x0---1
+Desde este estado:
+Bid();
+
+Haciendo Bid();
+
+Llegas al estado:
+Vacio
+
+---------
+0x1x0---1
+Desde este estado:
+Bid();
+
+Haciendo Bid();
+
+Llegas al estado:
+Bid();
+
+---------
+0x2x0---1
+Desde este estado:
+Bid();
+
+Haciendo Bid();
+
+Llegas al estado:
+Withdraw();
+
+---------
+0x3x0---1
+Desde este estado:
+Bid();
+
+Haciendo Bid();
+
+Llegas al estado:
+Bid();
+Withdraw();
+
+---------
+0x0x1---2
+Desde este estado:
+Withdraw();
+
+Haciendo Withdraw();
+
+Llegas al estado:
+Vacio
+
+---------
+0x1x1---2
+0x2x1---2
+Desde este estado:
+Withdraw();
+
+Haciendo Withdraw();
+
+Llegas al estado:
+Withdraw();
+
+---------
+0x3x1---2
+0x0x0---3
+0x0x1---3
+Desde este estado:
+Bid();
+Withdraw();
+
+Haciendo Withdraw();
+
+Llegas al estado:
+Vacio
+
+---------
+0x1x0---3
+0x1x1---3
+Desde este estado:
+Bid();
+Withdraw();
+
+Haciendo Withdraw();
+
+Llegas al estado:
+Bid();
+
+---------
+0x2x0---3
+Desde este estado:
+Bid();
+Withdraw();
+
+Haciendo Bid();
+
+Llegas al estado:
+Withdraw();
+
+---------
+0x2x1---3
+Desde este estado:
+Bid();
+Withdraw();
+
+Haciendo Withdraw();
+
+Llegas al estado:
+Withdraw();
+
+---------
+0x3x0---3
+Desde este estado:
+Bid();
+Withdraw();
+
+Haciendo Bid();
+
+Llegas al estado:
+Bid();
+Withdraw();
+
+---------
+0x3x1---3
+Desde este estado:
+Bid();
+Withdraw();
+
+Haciendo Withdraw();
+
+Llegas al estado:
+Bid();
+Withdraw();
+
+---------
+ENDED
+Total time: 77.90533018112183
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

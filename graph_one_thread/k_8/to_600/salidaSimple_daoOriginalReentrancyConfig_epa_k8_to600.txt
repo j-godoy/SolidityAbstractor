@@ -1,0 +1,276 @@
+Simple_daoOriginalReentrancyConfig
+Simple_daoOriginalReentrancy.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+8
+Reducing combinations...
+0x0x0---0
+0x0x0---1
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output1\OutputTemp1.sol SimpleDAO /txBound:8 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output1'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+withdraw(amount);
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---2
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output2\OutputTemp2.sol SimpleDAO /txBound:8 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output2'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+dummy_balanceGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---3
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output3\OutputTemp3.sol SimpleDAO /txBound:8 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output3'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---4
+0x0x0---5
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output5\OutputTemp5.sol SimpleDAO /txBound:8 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output5'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+withdraw(amount);
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---6
+---EXCEPTION por time out de 600.0 segs al ejecutar 'VeriSol C:\Users\j_god\Repos\SolidityAbstractor\output6\OutputTemp6.sol SimpleDAO /txBound:8 /noPrf ' desde folder 'C:\Users\j_god\Repos\SolidityAbstractor\output6'
+TimeOut ([indexPre,indexAssert,indxFn][0,0,0]) desde state 
+donate(to);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+ al state 
+donate(to);
+
+ con la función 'donate(to);'
+0x0x0---7
+Reducing combinations Ended.
+Length
+3
+0x0x0---0
+Desde este estado:
+donate(to);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+
+---------
+0x1x0---0
+Desde este estado:
+donate(to);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+---------
+0x2x0---0
+Desde este estado:
+donate(to);
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x0x0---1
+0x0x1---1
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+Haciendo withdraw(amount);
+
+Llegas al estado:
+donate(to);
+
+---------
+0x0x2---1
+0x1x0---1
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+---------
+0x1x1---1
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+Haciendo withdraw(amount);
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+---------
+0x1x2---1
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+---------
+0x2x0---1
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x1---1
+0x2x2---1
+0x0x0---2
+0x0x1---2
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdraw(amount);
+
+Llegas al estado:
+donate(to);
+
+---------
+0x0x2---2
+0x0x3---2
+0x1x0---2
+0x1x1---2
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdraw(amount);
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+
+---------
+0x1x2---2
+0x1x3---2
+0x2x0---2
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo donate(to);
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x1---2
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdraw(amount);
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x2---2
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x3---2
+Desde este estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceAGTZero();
+
+Llegas al estado:
+donate(to);
+withdraw(amount);
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+ENDED
+Total time: 3040.3248064517975
+# Time Out: 5
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

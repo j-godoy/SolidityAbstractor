@@ -1,0 +1,130 @@
+// Reentrancy_simpleOriginalReentrancy.sol
+digraph {
+	"1-0-0-0-" [label="addToBalance();
+"]
+	"1-0-0-0-" [label="addToBalance();
+"]
+	"1-0-0-0-" -> "1-0-0-0-" [label="addToBalance();"]
+	"1-0-0-0-" [label="addToBalance();
+"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-0-0-0-" -> "1-2-3-0-" [label="addToBalance();"]
+	"1-0-0-0-" [label="addToBalance();
+"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-0-" -> "1-2-3-4-" [label="addToBalance();"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-0-0-0-" [label="addToBalance();
+"]
+	"1-2-3-0-" -> "1-0-0-0-" [label="withdrawBalance();"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-0-" [label="addToBalance();"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-0-" [label="withdrawBalance();"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-" -> "1-2-3-4-" [label="addToBalance();"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-0-0-0-" [label="addToBalance();
+"]
+	"1-2-3-4-" -> "1-0-0-0-" [label="withdrawBalance();"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-0-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-0-" [label="withdrawBalance();"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-4-" [label="addToBalance();"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" -> "1-2-3-4-" [label="withdrawBalance();"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	"1-2-3-4-" [label="addToBalance();
+withdrawBalance();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+"]
+	init [label=init]
+	"1-0-0-0-" [label="addToBalance();
+"]
+	init -> "1-0-0-0-" [label=constructor]
+}

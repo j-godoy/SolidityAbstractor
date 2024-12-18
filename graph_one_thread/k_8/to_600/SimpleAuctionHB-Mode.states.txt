@@ -1,0 +1,5 @@
+Subject: SimpleAuctionHB-Mode.states
+Total time: 415.6195397377014
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

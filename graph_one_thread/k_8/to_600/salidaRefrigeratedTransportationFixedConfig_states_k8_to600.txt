@@ -1,0 +1,110 @@
+RefrigeratedTransportation_fixed.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+4
+Reducing combinations Ended.
+Length
+4
+0x0x0---0
+Desde este estado:
+Created
+Haciendo IngestTelemetry(humidity, temperature, timestamp);
+
+Llegas al estado:
+Created
+---------
+0x0x1---0
+0x0x2---0
+0x1x0---0
+0x1x1---0
+Desde este estado:
+Created
+Haciendo TransferResponsibility(newCounterparty);
+
+Llegas al estado:
+InTransit
+---------
+0x1x2---0
+0x2x0---0
+0x2x1---0
+0x2x2---0
+0x3x0---0
+Desde este estado:
+Created
+Haciendo IngestTelemetry(humidity, temperature, timestamp);
+
+Llegas al estado:
+OutOfCompliance
+---------
+0x3x1---0
+0x3x2---0
+0x0x0---1
+0x0x1---1
+0x0x2---1
+0x1x0---1
+Desde este estado:
+InTransit
+Haciendo IngestTelemetry(humidity, temperature, timestamp);
+
+Llegas al estado:
+InTransit
+---------
+0x1x1---1
+Desde este estado:
+InTransit
+Haciendo TransferResponsibility(newCounterparty);
+
+Llegas al estado:
+InTransit
+---------
+0x1x2---1
+0x2x0---1
+0x2x1---1
+0x2x2---1
+Desde este estado:
+InTransit
+Haciendo Complete();
+
+Llegas al estado:
+Completed
+---------
+0x3x0---1
+Desde este estado:
+InTransit
+Haciendo IngestTelemetry(humidity, temperature, timestamp);
+
+Llegas al estado:
+OutOfCompliance
+---------
+0x3x1---1
+0x3x2---1
+0x0x0---2
+0x0x1---2
+0x0x2---2
+0x1x0---2
+0x1x1---2
+0x1x2---2
+0x2x0---2
+0x2x1---2
+0x2x2---2
+0x3x0---2
+0x3x1---2
+0x3x2---2
+0x0x0---3
+0x0x1---3
+0x0x2---3
+0x1x0---3
+0x1x1---3
+0x1x2---3
+0x2x0---3
+0x2x1---3
+0x2x2---3
+0x3x0---3
+0x3x1---3
+0x3x2---3
+ENDED
+Total time: 94.71559858322144
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

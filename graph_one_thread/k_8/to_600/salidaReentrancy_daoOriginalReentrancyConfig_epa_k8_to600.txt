@@ -1,0 +1,229 @@
+Reentrancy_daoOriginalReentrancyConfig
+Reentrancy_daoOriginalReentrancy.sol
+txBound en config ignorado. Usando parámetro txBound=8
+time_out en config ignorado. Usando parámetro time_out=600.0
+Length
+8
+Reducing combinations...
+0x0x0---0
+0x0x0---1
+0x0x0---2
+0x0x0---3
+0x0x0---4
+0x0x0---5
+0x0x0---6
+0x0x0---7
+Reducing combinations Ended.
+Length
+3
+0x0x0---0
+Desde este estado:
+deposit();
+
+Haciendo deposit();
+
+Llegas al estado:
+deposit();
+
+---------
+0x1x0---0
+Desde este estado:
+deposit();
+
+Haciendo deposit();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+---------
+0x2x0---0
+Desde este estado:
+deposit();
+
+Haciendo deposit();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x0x0---1
+0x0x1---1
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+Haciendo withdrawAll();
+
+Llegas al estado:
+deposit();
+
+---------
+0x0x2---1
+0x1x0---1
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+Haciendo deposit();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+---------
+0x1x1---1
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+Haciendo withdrawAll();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+---------
+0x1x2---1
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+---------
+0x2x0---1
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+Haciendo deposit();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x1---1
+0x2x2---1
+0x0x0---2
+0x0x1---2
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdrawAll();
+
+Llegas al estado:
+deposit();
+
+---------
+0x0x2---2
+0x0x3---2
+0x1x0---2
+0x1x1---2
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdrawAll();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+
+---------
+0x1x2---2
+0x1x3---2
+0x2x0---2
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo deposit();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x1---2
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo withdrawAll();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x2---2
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceGTZero();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+0x2x3---2
+Desde este estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+Haciendo dummy_balanceAGTZero();
+
+Llegas al estado:
+deposit();
+withdrawAll();
+dummy_balanceGTZero();
+dummy_balanceAGTZero();
+
+---------
+ENDED
+Total time: 436.24475145339966
+# Time Out: 0
+# Corral Fail without trackvars: 0
+# Corral Fail with trackvars: 0

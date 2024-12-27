@@ -2,7 +2,6 @@ import itertools
 import subprocess
 import os
 import shutil
-import threading
 import numpy  as np
 import graphviz
 from threading import Thread
@@ -13,6 +12,11 @@ import platform
 import psutil
 import remove_unknown_tx
 import concurrent.futures
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from multiprocessing import Manager, Process
+import traceback
+
+
 
 def getCombinations(funcionesNumeros):
     global statePreconditions
@@ -86,11 +90,10 @@ def combinationToString(combination):
         output += str(i) + "-"
     return output
 
-def functionOutput(number):
+def functionOutput(number, functionVariables):
     return "function vc" + number + "(" + functionVariables + ") payable public {"
 
-def getToolCommand(includeNumber, toolCommand, combinations, txBound, trackAllVars):
-    global contractName
+def getToolCommand(includeNumber, toolCommand, combinations, txBound, trackAllVars, contractName):
     command = toolCommand + " " 
     command = command + "/txBound:" + str(txBound) + " "
     command = command + "/noPrf "
@@ -108,7 +111,7 @@ def get_extra_condition_output(condition):
         extraConditionOutput = "require("+condition+");\n"
     return extraConditionOutput 
 
-def output_transitions_function(preconditionRequire, function, preconditionAssert, functionIndex, extraConditionPre, extraConditionPost):
+def output_transitions_function(preconditionRequire, function, preconditionAssert, functionIndex, extraConditionPre, extraConditionPost, mode, functionPreconditions):
     if mode == Mode.epa:
         precondictionFunction = functionPreconditions[functionIndex]
     else:
@@ -127,7 +130,7 @@ def output_valid_state(preconditionRequire, extraCondition):
     extraConditionOutput = get_extra_condition_output(extraCondition)
     return "require("+preconditionRequire+");\n" + extraConditionOutput + "assert(false);\n"
 
-def output_combination(indexCombination, tempCombinations):
+def output_combination(indexCombination, tempCombinations, mode, functions, statesNames):
     combination = tempCombinations[indexCombination]
     output = ""
     for function in combination:
@@ -141,17 +144,16 @@ def output_combination(indexCombination, tempCombinations):
         output = "Vacio\n"
     return output
 
-def print_combination(indexCombination, tempCombinations):
-    output = output_combination(indexCombination, tempCombinations)
+def print_combination(indexCombination, tempCombinations, mode, functions, statesNames):
+    output = output_combination(indexCombination, tempCombinations, mode, functions, statesNames)
     if basic_mode == False:
         if verbose:
             print(output + "---------")
 
-def print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, combinations, fullCombination, succes_by_to):
-    output ="Desde este estado:\n"+ output_combination(indexPreconditionRequire, combinations) + "\nHaciendo " + str(functions[indexFunction]+succes_by_to) + "\n\nLlegas al estado:\n" + output_combination(indexPreconditionAssert, fullCombination) + "\n---------"
-    if basic_mode == False or succes_by_to != "":
-        if verbose:
-            print(output)
+def print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, combinations, fullCombination, succes_by_to, mode, functions, statesNames, basic_mode):
+    output ="Desde este estado:\n"+ output_combination(indexPreconditionRequire, combinations, mode, functions, statesNames) + "\nHaciendo " + str(functions[indexFunction]+succes_by_to) + "\n\nLlegas al estado:\n" + output_combination(indexPreconditionAssert, fullCombination, mode, functions, statesNames) + "\n---------"
+    if verbose or succes_by_to != "":
+        print(output)
 
 def create_directory(index):
     current_directory = os.getcwd()
@@ -173,8 +175,7 @@ def delete_directory(final_directory):
     except Exception as e:
         print("Excepción al querer borrar carpeta: " + str(e))
 
-def create_file(index, final_directory):
-    global contractName, fileName
+def create_file(index, final_directory, fileName):
     fileNameTemp = "OutputTemp"+str(index)+".sol"
     fileNameTemp = os.path.join(final_directory, fileNameTemp)
     if os.path.isfile(fileNameTemp):
@@ -190,7 +191,7 @@ def create_file_base(final_directory, name):
     shutil.copyfile(fileName, fileNameTemp)
     return fileNameTemp
 
-def write_file(fileNameTemp, body):
+def write_file(fileNameTemp, body, contractName):
     inputfile = open(fileNameTemp, 'r').readlines()
     write_file = open(fileNameTemp,'w')
     for line in inputfile:
@@ -199,163 +200,151 @@ def write_file(fileNameTemp, body):
                 write_file.write(body)
     write_file.close()
 
-def get_valid_preconditions_output(preconditions, extraConditions):
+def get_valid_preconditions_output(preconditions, extraConditions, functionVariables):
     temp_output = ""
     tempFunctionNames = []
     for indexPreconditionRequire, preconditionRequire in enumerate(preconditions):
         functionName = get_temp_function_name(indexPreconditionRequire, "0", "0")
         tempFunctionNames.append(functionName)
-        temp_function = functionOutput(functionName) + "\n"
+        temp_function = functionOutput(functionName, functionVariables) + "\n"
         temp_function += output_valid_state(preconditionRequire, extraConditions[indexPreconditionRequire])
         temp_output += temp_function + "}\n"
     return temp_output, tempFunctionNames
 
-def get_valid_transitions_output(arg, preconditionsThread, preconditions, extraConditionsTemp, extraConditions, functions, statesThread): 
-    global mode
-    temp_output = ""
+def get_valid_transitions_output(arg, preconditionsThread, preconditions, extraConditionsTemp, extraConditions, functions, statesThread, contractName, mode, statesNames, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, states, dot, tool_output, trackAllVars):
     tempFunctionNames = []
-    for indexPreconditionRequire, preconditionRequire in enumerate(preconditionsThread):
-        #TODO refactorizar esto, no tiene sentido que se pase el indexPreconditionRequire
-        #busco el índice real de la precondición, preconditionsThread va a tener solo un elemento, por lo que indexPreconditionRequire siempre es 0
-        for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
-            if str(preconditionRequire) == str(preconditionAssert):
-                indexPreconditionRequireReal = indexPreconditionRequire
-                break
-        for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
-            for indexFunction, function in enumerate(functions):
-                extraConditionPre = extraConditionsTemp[indexPreconditionRequire]
-                extraConditionPost = extraConditions[indexPreconditionAssert]
-                if ((indexFunction + 1) in statesThread[indexPreconditionRequire] and mode == Mode.epa) or (mode == Mode.states):
-                    functionName = get_temp_function_name(indexPreconditionRequireReal, indexPreconditionAssert, indexFunction)
-                    tempFunctionNames.append(functionName)
-                    temp_function = functionOutput(functionName) + "\n"
-                    temp_function += output_transitions_function(preconditionRequire, function, preconditionAssert, indexFunction, extraConditionPre, extraConditionPost)
-                    temp_output += temp_function + "}\n"
-                    # TODO ejecutar aca Verisol para cada fn?
-                    dirname = str(arg)+"_"+functionName
-                    final_directory = create_directory(dirname)
-                    fileNameTemp = create_file(dirname, final_directory)
-                    write_file(fileNameTemp, temp_output)
-                    tool = "VeriSol " + fileNameTemp + " " + contractName
-                    try_transaction(tool, tempFunctionNames, final_directory, statesThread, states, arg)
-                    if not verbose:
-                        delete_directory(final_directory)
-                    tempFunctionNames = []
-                    temp_output = ""
-    return temp_output, tempFunctionNames
+    tempToolCommands = []
+    tempDirectories = []
+    try:
+        for indexPreconditionRequire, preconditionRequire in enumerate(preconditionsThread):
+            #TODO refactorizar esto, no tiene sentido que se pase el indexPreconditionRequire
+            #busco el índice real de la precondición, preconditionsThread va a tener solo un elemento, por lo que indexPreconditionRequire siempre es 0
+            for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
+                if str(preconditionRequire) == str(preconditionAssert):
+                    indexPreconditionRequireReal = indexPreconditionRequire
+                    break
+            for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
+                for indexFunction, function in enumerate(functions):
+                    extraConditionPre = extraConditionsTemp[indexPreconditionRequire]
+                    extraConditionPost = extraConditions[indexPreconditionAssert]
+                    if ((indexFunction + 1) in statesThread[indexPreconditionRequire] and mode == Mode.epa) or (mode == Mode.states):
+                        functionName = get_temp_function_name(indexPreconditionRequireReal, indexPreconditionAssert, indexFunction)
+                        tempFunctionNames.append(functionName)
+                        temp_function = functionOutput(functionName, functionVariables) + "\n"
+                        temp_function += output_transitions_function(preconditionRequire, function, preconditionAssert, indexFunction, extraConditionPre, extraConditionPost, mode, functionPreconditions)
+                        temp_function += "}\n"
+                        # TODO ejecutar aca Verisol para cada fn?
+                        dirname = str(arg)+"_"+functionName
+                        final_directory = create_directory(dirname)
+                        fileNameTemp = create_file(dirname, final_directory, fileName)
+                        write_file(fileNameTemp, temp_function, contractName)
+                        tool = "VeriSol " + fileNameTemp + " " + contractName
+                        tempToolCommands.append(tool)
+                        tempDirectories.append(final_directory)
+    except Exception as e:
+        print(f"Error en get_valid_transitions_output {arg}: {e}")
+        traceback.print_exc()
+    return tempToolCommands, tempFunctionNames, tempDirectories
 
-# def get_init_output(preconditions, extraConditions): 
-#     temp_output = ""
-#     tempFunctionNames = []
-#     for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
-#         functionName = get_temp_function_name(indexPreconditionAssert, "0" , "0")
-#         tempFunctionNames.append(functionName)
-#         temp_function = functionOutput(functionName) + "\n"
-#         temp_function += output_init_function(preconditionAssert, extraConditions[indexPreconditionAssert])
-#         temp_output += temp_function + "}\n"
-#     return temp_output, tempFunctionNames
-
-def get_init_output(indexPreconditionAssert, preconditionAssert, extraConditions): 
+def get_init_output(indexPreconditionAssert, preconditionAssert, extraConditions, functionVariables): 
     temp_output = ""
     functionName = get_temp_function_name(indexPreconditionAssert, "0" , "0")
-    temp_function = functionOutput(functionName) + "\n"
+    temp_function = functionOutput(functionName, functionVariables) + "\n"
     temp_function += output_init_function(preconditionAssert, extraConditions[indexPreconditionAssert])
     temp_output += temp_function + "}\n"
     return functionName, temp_output
 
-def try_preconditions(tool, tempFunctionNames, final_directory, statesTemp, preconditionsTemp, extraConditionsTemp, arg): 
-    global txBound, time_out
-    preconditionsTemp2 = []
-    statesTemp2 = []
-    extraConditionsTemp2 = []
-    
-    for functionName in tempFunctionNames:
-        if basic_mode == False:
-            if verbose:
-                print(functionName + "---" + str(arg))
-        indexPreconditionRequire, _, _ = get_params_from_function_name(functionName)
-        query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, False)
-        if query_result[1] == TRACK_VARS:
-            query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, True)
-        success = query_result[0]
-        if success:
-            # print_combination(indexPreconditionRequire, statesTemp)
-            preconditionsTemp2.append(preconditionsTemp[indexPreconditionRequire])
-            statesTemp2.append(statesTemp[indexPreconditionRequire])
-            extraConditionsTemp2.append(extraConditionsTemp[indexPreconditionRequire])
-            if query_result[1] != "":
-                if verbose:
-                    print("[try_preconditions] Time out en función: " + functionName + " desde estado inicial:")
-                    i_state = output_combination(indexPreconditionRequire, statesTemp)
-                    print(i_state)
-    return preconditionsTemp2, statesTemp2, extraConditionsTemp2
 
-def try_transaction(tool, tempFunctionNames, final_directory, statesTemp, states, arg):
-    global txBound, time_out
-    for functionName in tempFunctionNames:
-        if basic_mode == False:
-            if verbose:
-                print(functionName + "---" + str(arg))
-        indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(functionName)
+def try_init(states, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dot, tool_output, trackAllVars, TRACK_VARS):
+    try:
+        tempFunctionNames = []
+        tool_commands = []
+        final_directories = []
+        txBound_constructor = 1
+        indexPreconditionAssertMap = {}
+        for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
+            functionName, body = get_init_output(indexPreconditionAssert, preconditionAssert, extraConditions, functionVariables)
+            indexPreconditionAssertMap[functionName] = indexPreconditionAssert
+            dirname = f"_init_{indexPreconditionAssert}_{functionName}"
+            final_directory = create_directory(dirname)
+            fileNameTemp = create_file(dirname, final_directory, fileName)
+            write_file(fileNameTemp, body, contractName)
+            tool = f"VeriSol {fileNameTemp} {contractName}"
+            
+            tempFunctionNames.append(functionName)
+            tool_commands.append(tool)
+            final_directories.append(final_directory)
+
+        # Ejecutar en paralelo
+        results = execute_try_command_in_parallel(tool_commands, tempFunctionNames, final_directories, [], txBound_constructor,
+                                              time_out, trackAllVars, mode, functions, statesNames,
+                                              states, verbose, query_list, QUERY_TYPE, contractName,
+                                              tool_output, TRACK_VARS)
+
+        if len(results) != len(tempFunctionNames):
+            print("long de results: ", len(results))
+            print(results)
+            print("long de tempFunctionNames: ", len(tempFunctionNames))
+            print("Error: La longitud de resultados no coincide con los nombres de funciones.")
+            traceback.print_exc()
+            exit(1)
+
+
+        for functionName, success, to_or_fail in results:
+            if success:
+                dot['nodes'].append(("init", "init"))
+                dot['nodes'].append((combinationToString(states[indexPreconditionAssertMap[functionName]]), output_combination(indexPreconditionAssertMap[functionName], states, mode, functions, statesNames)))
+                dot['edges'].append(("init", combinationToString(states[indexPreconditionAssertMap[functionName]]), f"constructor{to_or_fail}"))
         
-        query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, False)
-        if query_result[1] == TRACK_VARS:
-            query_result = try_command(tool, functionName, tempFunctionNames, final_directory, statesTemp, txBound, time_out, True)
-        success = query_result[0]
-        succes_by_timeout = query_result[1]
-        if success:
-            add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_timeout)
-            if verbose:
-                print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTemp, states, succes_by_timeout)
-
-def try_init(states, preconditionAssertTuple):
-    global dot, time_out
-    
-    indexPreconditionAssert = preconditionAssertTuple[0]
-    preconditionAssert = preconditionAssertTuple[1]
-    functionName, body = get_init_output(indexPreconditionAssert, preconditionAssert, extraConditions)
-    dirname = f"_init_{indexPreconditionAssert}_{functionName}"
-    final_directory = create_directory(dirname)
-    fileNameTemp = create_file(dirname, final_directory)
-    write_file(fileNameTemp, body)
-    tool = "VeriSol " + fileNameTemp + " " + contractName
-    txBound_constructor = 1
-    tempFunctionNames = [] # Esto se usa para ignorar metodos que no sean functionName, pero ahora tengo una función tipo query por archivo
-    query_result = try_command(tool, functionName, tempFunctionNames, final_directory, [], txBound_constructor, time_out, False)
-    if query_result[1] == TRACK_VARS:
-        query_result = try_command(tool, functionName, tempFunctionNames, final_directory, [], txBound_constructor, time_out, True)
-    success = query_result[0]
-    succes_by_to = query_result[1]
-    if success:
-        dot.node("init", "init")
-        dot.node(combinationToString(states[indexPreconditionAssert]), output_combination(indexPreconditionAssert, states))
-        dot.edge("init",combinationToString(states[indexPreconditionAssert]) , "constructor"+succes_by_to)
-        
-    if not verbose:
-        delete_directory(final_directory)
+        if not verbose:
+            for final_directory in final_directories:
+                delete_directory(final_directory)
+    except Exception as e:
+        print(f"Error en try_init: {e}")
+        traceback.print_exc()
 
 
-def try_command(tool, temp_function_name, tempFunctionNames, final_directory, statesTemp, txBound, time_out, trackAllVars):
-    global tool_output, verbose, number_to, number_corral_fail, number_corral_fail_with_tackvars
+def try_command_task(function_name, tempFunctionNames, tool, final_directory, statesTemp,
+                     txBound, time_out, trackAllVars, mode, functions,
+                     statesNames, states, verbose, QUERY_TYPE, contractName,
+                     tool_output, TRACK_VARS):
+    """
+    Ejecuta `try_command` para una tarea específica y actualiza las variables compartidas.
+    """
+    feasible, to_or_fail, query_values = try_command(tool, function_name, tempFunctionNames, final_directory, statesTemp,
+                        txBound, time_out, trackAllVars, mode, functions,
+                        statesNames, states, verbose, QUERY_TYPE, contractName,
+                        tool_output, TRACK_VARS)
+    if to_or_fail == TRACK_VARS: #Lo vuelvo a ejecutar, pero con el parámetro trackAllVars=True
+        feasible, to_or_fail, query_values = try_command(tool, function_name, tempFunctionNames, final_directory, statesTemp,
+                        txBound, time_out, True, mode, functions,
+                        statesNames, states, verbose, QUERY_TYPE, contractName,
+                        tool_output, TRACK_VARS)
+    return feasible, to_or_fail, query_values
+
+
+def try_command(tool, temp_function_name, tempFunctionName, final_directory, statesTemp,
+                txBound, time_out, trackAllVars, mode, functions,
+                statesNames, states, verbose, QUERY_TYPE, contractName,
+                tool_output, TRACK_VARS):
     ADD_TX_IF_TIMEOUT = False
     ADD_TX_IF_FAIL = False
-    trackAllVars = True #
-    lock = threading.Lock()
-
+    
     #Evito chequear funciones "dummy"
     if len(statesTemp) > 0:
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
-        i_state = output_combination(indexPreconditionRequire, statesTemp)
-        f_state = output_combination(indexPreconditionAssert, states)
+        i_state = output_combination(indexPreconditionRequire, statesTemp, mode, functions, statesNames)
+        f_state = output_combination(indexPreconditionAssert, states, mode, functions, statesNames)
         if functions[indexFunction].startswith("dummy_"):
             if i_state != f_state:
-                return (False,"")
+                return False,"",()
             else:
-                return (True,"")
+                return True,"",()
     
-    command = getToolCommand(temp_function_name, tool, tempFunctionNames, txBound, trackAllVars)
+    command = getToolCommand(temp_function_name, tool, tempFunctionName, txBound, trackAllVars, contractName)
     if verbose:
        print(command)
+    
     result = ""
     FAIL_TO = False
     init = time.time()
@@ -371,14 +360,11 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
     except Exception as e:
         end = time.time()
         FAIL_TO = True
-        lock.acquire()
-        number_to += 1
-        lock.release()
         if verbose:
             print(f"---EXCEPTION por time out de {time_out} segs al ejecutar '{command}' desde folder '{final_directory}'")
         indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(temp_function_name)
-        i_state = output_combination(indexPreconditionRequire, statesTemp)
-        f_state = output_combination(indexPreconditionAssert, states)
+        i_state = output_combination(indexPreconditionRequire, statesTemp, mode, functions, statesNames)
+        f_state = output_combination(indexPreconditionAssert, states, mode, functions, statesNames)
         if verbose:
             print(f"TimeOut ([indexPre,indexAssert,indxFn][{indexPreconditionRequire},{indexPreconditionAssert},{indexFunction}]) desde state \n{i_state}\n al state \n{f_state}\n con la función '{functions[indexFunction]}'")
         process = psutil.Process(proc.pid)
@@ -392,15 +378,14 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
     total_query_time = end - init
 
     if FAIL_TO:
-        add_query_time(total_query_time, FAIL_TO, False)
-        return ADD_TX_IF_TIMEOUT,"?" # Si tiró timeout, retorno False.
+        return ADD_TX_IF_TIMEOUT,"?", (QUERY_TYPE, FAIL_TO, False, total_query_time) # Si tiró timeout, retorno False.
     
     output_verisol = str(result[0].decode('utf-8'))
     output_successful = "Formal Verification successful"
 
     
     # if verbose:
-    #     print(output_verisol)
+    #   print(output_verisol)
 
     if not tool_output in output_verisol and not output_successful in output_verisol:
         print(output_verisol)
@@ -409,20 +394,106 @@ def try_command(tool, temp_function_name, tempFunctionNames, final_directory, st
     output_error = "Corral may have aborted abnormally"
     if output_error in output_verisol:
         if not trackAllVars:
-            lock.acquire()
-            number_corral_fail += 1
-            lock.release()
-            return False,TRACK_VARS
+            return False,TRACK_VARS, (QUERY_TYPE, FAIL_TO, "fail_corral_no_trackAllVars", total_query_time)
         else:
-            lock.acquire()
-            number_corral_fail_with_tackvars += 1
-            lock.release()
-            add_query_time(total_query_time, FAIL_TO, "fail_corral")
-            return ADD_TX_IF_FAIL,"fail?" # if corral fails with trackvars, we don't know if it's a real counterexample or not
+            return ADD_TX_IF_FAIL,"fail?", (QUERY_TYPE, FAIL_TO, "fail_corral_with_trackAllVars", total_query_time) # if corral fails with trackvars, we don't know if it's a real counterexample or not
         
     feasible = tool_output in output_verisol
-    add_query_time(total_query_time, FAIL_TO, feasible)
-    return feasible, ""
+    return feasible, "", (QUERY_TYPE, FAIL_TO, feasible, total_query_time)
+
+def execute_try_command_in_parallel_reduce(args, toolCommands, tempFunctionNames, final_directories, statesTemp, txBound,
+                                    time_out, trackAllVars, mode, functions, statesNames,
+                                    states, verbose, query_list, QUERY_TYPE, contractName,
+                                    tool_output, TRACK_VARS, thread_workers):
+    global number_to, number_corral_fail, number_corral_fail_with_tackvars
+    
+    results = []
+    errors = []
+    print(f"Executing {len(args)} tasks in parallel - execute_try_command_in_parallel_reduce")
+    
+    with ProcessPoolExecutor(max_workers=thread_workers) as executor:
+        future_to_function = {executor.submit(try_command_task, fn, [], tool, final_directory, stateTemp,
+                      txBound, time_out, trackAllVars, mode, functions,
+                      statesNames, states, verbose, QUERY_TYPE, contractName,
+                      tool_output, TRACK_VARS): (fn,arg) for arg, tool, fn, final_directory, stateTemp in zip(args, toolCommands, tempFunctionNames, final_directories, statesTemp)}
+
+        for future, value in future_to_function.items():
+            function_name = value[0]
+            arg = value[1]
+            try:
+                feasible, to_or_fail, query_values = future.result()
+                results.append((arg, function_name, feasible, to_or_fail))
+                if to_or_fail == "?":
+                    number_to += 1
+                elif to_or_fail == "fail?":
+                    number_corral_fail_with_tackvars += 1
+                elif to_or_fail != "":
+                    number_corral_fail += 1
+
+                # Extiende `query_list` con los valores obtenidos
+                if query_values:
+                    query_list.append(query_values)
+            except Exception as e:
+                traceback.print_exc()
+                errors.append((function_name, e))
+                print(f"Error en la tarea: {e}")
+
+    if errors:
+        print(f"Errores encontrados en {len(errors)} tareas: {errors}")
+        exit(1)
+
+    return results
+
+def execute_try_command_in_parallel(toolCommands, tempFunctionNames, final_directories, statesTemp, txBound,
+                                    time_out, trackAllVars, mode, functions, statesNames,
+                                    states, verbose, query_list, QUERY_TYPE, contractName,
+                                    tool_output, TRACK_VARS):
+    global number_to, number_corral_fail, number_corral_fail_with_tackvars
+    """
+    Ejecuta try_command en paralelo y actualiza las variables compartidas.
+
+    Args:
+        function_names (list): Lista de nombres de función a procesar.
+        tool (str): Comando base de la herramienta.
+        Otros parámetros: Configuración necesaria para ejecutar `try_command`.
+
+    Returns:
+        list: Resultados de las ejecuciones paralelas.
+    """
+
+    results = []
+    errors = []
+    print("Iniciando ejecución execute_try_command_in_parallel con las siguientes funciones:", len(tempFunctionNames))
+    with ProcessPoolExecutor(max_workers=4) as executor:
+        future_to_function = {executor.submit(try_command_task, fn, [fn], tool, final_directory, statesTemp,
+                                              txBound, time_out, trackAllVars, mode, functions,
+                                              statesNames, states, verbose, QUERY_TYPE, contractName,
+                                              tool_output, TRACK_VARS): fn for tool, fn, final_directory in zip(toolCommands, tempFunctionNames, final_directories)}
+        for future in as_completed(future_to_function):
+            function_name = future_to_function[future]
+            try:
+                feasible, to_or_fail, query_values = future.result()
+                results.append((function_name, feasible, to_or_fail))
+                if to_or_fail == "?":
+                    number_to += 1
+                elif to_or_fail == "fail?":
+                    number_corral_fail_with_tackvars += 1
+                elif to_or_fail != "":
+                    number_corral_fail += 1
+
+                # Extiende `query_list` con los valores obtenidos
+                if query_values:
+                    query_list.append(query_values)
+            except Exception as e:
+                traceback.print_exc()
+                errors.append((function_name, e))
+                print(f"Error en la tarea: {e}")
+
+    if errors:
+        print(f"Errores encontrados en {len(errors)} tareas: {errors}")
+        exit(1)
+
+    return results
 
 def get_temp_function_name(indexPrecondtion, indexAssert, indexFunction):
     return str(indexPrecondtion) + "x" + str(indexAssert) + "x" + str(indexFunction)
@@ -431,59 +502,147 @@ def get_params_from_function_name(temp_function_name):
     array = temp_function_name.split('x')
     return int(array[0]), int(array[1]), int(array[2])
 
-def add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_to):
-    global dot, functions
-    dot.node(combinationToString(statesTemp[indexPreconditionRequire]), output_combination(indexPreconditionRequire, statesTemp))
-    dot.node(combinationToString(states[indexPreconditionAssert]), output_combination(indexPreconditionAssert, states))
+def add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTemp, states, succes_by_to, mode, functions, statesNames, dot):
+    dot['nodes'].append((combinationToString(statesTemp[indexPreconditionRequire]), output_combination(indexPreconditionRequire, statesTemp, mode, functions, statesNames)))
+    dot['nodes'].append((combinationToString(states[indexPreconditionAssert]), output_combination(indexPreconditionAssert, states, mode, functions, statesNames)))
     # transiciones dummy no las agrego
     if not functions[indexFunction].startswith("dummy_"):
-        dot.edge(combinationToString(statesTemp[indexPreconditionRequire]),combinationToString(states[indexPreconditionAssert]) , label=str(functions[indexFunction]+succes_by_to))
+        dot['edges'].append((combinationToString(statesTemp[indexPreconditionRequire]),combinationToString(states[indexPreconditionAssert]) , functions[indexFunction]+succes_by_to))
 
-def reduceCombinations(arg):
-    global fileName, preconditionsThreads, statesThreads, extraConditionsThreads, contractName
-    preconditionsTemp = preconditionsThreads[arg]
-    statesTemp = statesThreads[arg]
-    extraConditionsTemp = extraConditionsThreads[arg]
-    final_directory = create_directory(arg)
-    fileNameTemp = create_file(arg, final_directory)
-    body,fuctionCombinations = get_valid_preconditions_output(preconditionsTemp, extraConditionsTemp)
-    write_file(fileNameTemp, body)
-    tool = "VeriSol " + fileNameTemp + " " + contractName
-    preconditionsTemp2, statesTemp2, extraConditionsTemp2 = try_preconditions(tool, fuctionCombinations, final_directory, statesTemp, preconditionsTemp, extraConditionsTemp , arg)
-    preconditionsThreads[arg] = preconditionsTemp2
-    statesThreads[arg] = statesTemp2
-    extraConditionsThreads[arg] = extraConditionsTemp
-    if not verbose:
-        delete_directory(final_directory)
 
-def validCombinations(arg):
-    global preconditionsThreads, statesThreads, extraConditionsThreads, extraConditions, preconditions, states, contractName, fileName, dot
-    preconditionsTemp = preconditionsThreads[arg]
-    statesTemp = statesThreads[arg]
-    extraConditionsTemp = extraConditionsThreads[arg]
-    # final_directory = create_directory(arg)
-    # fileNameTemp = create_file(arg, final_directory)
-    #TODO refactorizar esto, simplificar ahora que se guarda un archivo por query
-    body, fuctionCombinations = get_valid_transitions_output(arg, preconditionsTemp, preconditions, extraConditionsTemp, extraConditions, functions, statesTemp)
-    # write_file(fileNameTemp, body)
-    # tool = "VeriSol " + fileNameTemp + " " + contractName
-    # try_transaction(tool, fuctionCombinations, final_directory, statesTemp, states, arg)
-    # if not verbose:
-    #     delete_directory(final_directory)
+def reduceCombinations(cant_preconditions, preconditionsThreads, statesThreads, extraConditionsThreads, fileName, functionVariables, contractName, basic_mode, txBound, time_out, mode, functions, statesNames, states, verbose, query_list, QUERY_TYPE, tool_output, TRACK_VARS, trackAllVars, thread_workers):
+    print(f"Starting task reduceCombinations para estados = {cant_preconditions}")  # Agregar un print para ver qué se está ejecutando
+    try:
+        args = []
+        toolCommands = []
+        tempFunctionNames = []
+        final_directories = []
+        
+        preconditionsTempList = []
+        statesTempList = []
+        extraConditionsTempList = []
+        
+        for arg in range(cant_preconditions):
+            args.append(arg)
+            preconditionsTemp = preconditionsThreads[arg]
+            statesTemp = statesThreads[arg]
+            extraConditionsTemp = extraConditionsThreads[arg]
+            final_directory = create_directory(arg)
+            fileNameTemp = create_file(arg, final_directory, fileName)
+            body,fuctionCombinations = get_valid_preconditions_output(preconditionsTemp, extraConditionsTemp, functionVariables)
+            write_file(fileNameTemp, body, contractName)
+            tool = "VeriSol " + fileNameTemp + " " + contractName
+            toolCommands.append(tool)
+            tempFunctionNames.append(fuctionCombinations[0])
+            final_directories.append(final_directory)
+            preconditionsTempList.append(preconditionsTemp)
+            statesTempList.append(statesTemp)
+            extraConditionsTempList.append(extraConditionsTemp)
+            
+            
+        # Ejecutar en paralelo
+        results = execute_try_command_in_parallel_reduce(args,toolCommands, tempFunctionNames, final_directories, statesTempList, txBound,
+                                                time_out, trackAllVars, mode, functions, statesNames,
+                                                states, verbose, query_list, QUERY_TYPE, contractName,
+                                                tool_output, TRACK_VARS, thread_workers)
 
-def validInit(arg):
-    global preconditionsThreads, extraConditions, preconditions, states, contractName, fileName, dot
-    # final_directory = create_directory(arg)
-    # fileNameTemp = create_file(arg, final_directory)
+        
+        for i, functionName, success, to_or_fail in results:
+            indexPreconditionRequire, _, _ = get_params_from_function_name(functionName)
+            preconditionsTemp2 = []
+            statesTemp2 = []
+            extraConditionsTemp2 = []
+            
+            if success:
+                preconditionsTemp2.append(preconditionsTempList[i][indexPreconditionRequire])
+                statesTemp2.append(statesTempList[i][indexPreconditionRequire])
+                extraConditionsTemp2.append(extraConditionsTempList[i][indexPreconditionRequire])
+                if to_or_fail:
+                    print(f"[try_preconditions] Timeout en función: {functionName}")
+                    i_state = output_combination(indexPreconditionRequire, statesTempList[i])
+                    print(i_state)
+        
+            preconditionsThreads[i] = preconditionsTemp2
+            statesThreads[i] = statesTemp2
+            extraConditionsThreads[i] = extraConditionsTemp2
+            
+        if not verbose:
+            for final_directory in final_directories:
+                delete_directory(final_directory)
+        
+    except Exception as e:
+        traceback.print_exc()
+        print(f"Error en reduceCombinations: {e}")
+        exit(1)
 
-    # body, fuctionCombinations = get_init_output(preconditions, extraConditions)
-    # write_file(fileNameTemp, body)
-    
-    # tool = "VeriSol " + fileNameTemp + " " + contractName
-    # try_init(tool, fuctionCombinations, final_directory, states)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
-            executor.submit(try_init, states, (indexPreconditionAssert, preconditionAssert))
+def validCombinations(cant_valid_states, preconditionsThreads, statesThreads, extraConditionsThreads, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, states, dot, tool_output, trackAllVars, TRACK_VARS, thread_workers):
+    print(f"Starting task validCombinations para estados={cant_valid_states}")  # Agregar un print para ver qué se está ejecutando
+    try:
+        tempFunctionNames = []
+        tempToolCommands = []
+        tempDirectories = []
+        statesTempList = []
+        args = []
+        cont = 0
+        for arg in range(cant_valid_states):
+            preconditionsTemp = preconditionsThreads[arg]
+            statesTemp = statesThreads[arg]
+            extraConditionsTemp = extraConditionsThreads[arg]
+            #TODO refactorizar esto, simplificar ahora que se guarda un archivo por query
+            toolCommands, functionNames, directories = get_valid_transitions_output(arg, preconditionsTemp, preconditions, extraConditionsTemp, extraConditions, functions, statesTemp, contractName, mode, statesNames, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, states, dot, tool_output, trackAllVars)
+            tempToolCommands.extend(toolCommands)
+            tempFunctionNames.extend(functionNames)
+            tempDirectories.extend(directories)
+            
+            # se usa el mismo statesTemp para estas functionNames
+            statesTempList.extend([statesTemp]*len(functionNames))
+            # en args voy guardarndo un identificador para cada query
+            for _ in range(0, len(functionNames)):
+                args.append(cont)
+                cont += 1
+            
+            if len(tempToolCommands) != len(tempFunctionNames) or len(tempFunctionNames) != len(tempDirectories) or len(tempFunctionNames) != len(statesTempList) or len(tempFunctionNames) != len(args):
+                print("Error: Las longitudes de las listas no coinciden.")
+                print("longitud de tempToolCommands: ", len(tempToolCommands))
+                print("longitud de tempFunctionNames: ", len(tempFunctionNames))
+                print("longitud de tempDirectories: ", len(tempDirectories))
+                print("longitud de statesTempList: ", len(statesTempList))
+                print("longitud de args: ", len(args))
+                exit(1)
+            
+            
+        
+        if verbose:
+            print(f"Procesando transacciones: {tempFunctionNames}")
+
+        results = execute_try_command_in_parallel_reduce(args, tempToolCommands, tempFunctionNames, tempDirectories, statesTempList, txBound,
+                                              time_out, trackAllVars, mode, functions, statesNames,
+                                              states, verbose, query_list, QUERY_TYPE, contractName,
+                                              tool_output, TRACK_VARS, thread_workers)
+
+        if len(results) != len(tempFunctionNames):
+            print("long de results: ", len(results))
+            print(results)
+            print("long de tempFunctionNames: ", len(tempFunctionNames))
+            print("Error: La longitud de resultados no coincide con los nombres de funciones.")
+            traceback.print_exc()
+            exit(1)
+
+
+        for i, functionName, success, to_or_fail in results:
+            indexPreconditionRequire, indexPreconditionAssert, indexFunction = get_params_from_function_name(functionName)           
+            if success:
+                add_node_to_graph(indexPreconditionRequire, indexPreconditionAssert, indexFunction, statesTempList[i], states, to_or_fail, mode, functions, statesNames, dot)
+                if verbose:
+                    print_output(indexPreconditionRequire, indexFunction, indexPreconditionAssert, statesTempList[i], states, to_or_fail, mode, functions, statesNames, dot)
+        if not verbose:
+            for final_directory in tempDirectories:
+                delete_directory(final_directory)
+    except Exception as e:
+        traceback.print_exc()
+        print(f"Error en validCombinations: {e}")
+        exit(1)
+
 
 class Mode(Enum):
     epa = "epa"
@@ -493,8 +652,7 @@ def make_global_variables(config):
     global fileName, preconditions, dot, statesNames, functions, statePreconditions, contractName, functionVariables
     global functionPreconditions, txBound, time_out, statePreconditionsModeState, statesModeState, SAVE_GRAPH_PATH, NO_UNKNOWN_TX
     fileName = os.path.join("Contracts", config.fileName)
-    if verbose:
-        print("Running file:",config.fileName)
+    print("Running file:",config.fileName)
     functions = config.functions
     statePreconditions = config.statePreconditions
     statesNames = config.statesNamesModeState
@@ -518,19 +676,14 @@ def make_global_variables(config):
     NO_UNKNOWN_TX = "_no_unknown_tx"
 
 def main():
-    global config, dot, preconditionsThreads, statesThreads, states, preconditions, extraConditionsThreads, extraConditions, SAVE_GRAPH_PATH, QUERY_TYPE
+    global query_list, fileName, config, dot, preconditionsThreads, statesThreads, states, preconditions, extraConditionsThreads, extraConditions, SAVE_GRAPH_PATH, QUERY_TYPE
     make_global_variables(config)
 
     count = len(functions)
     #lista de numeros de 1 a N, donde N es la cantidad de funciones
     funcionesNumeros = list(range(1, count + 1))
-
-    #TODO hilos para correr en paralelo. Pasar esto a un parámetro
-    thread_workers = 4
     
     
-    threads = []
-
     dot = graphviz.Digraph(comment=config.fileName)
 
     extraConditions = []
@@ -553,7 +706,7 @@ def main():
             extraConditions = config.statesExtraConditions
         except:
            extraConditions = ["true" for i in range(len(states))]
-    
+        
     tempDir = create_directory_base("temp")
 
     countPreInitial = len(preconditions)
@@ -573,24 +726,24 @@ def main():
     if basic_mode == False:
         print("Length")
         print(len(preconditions))
+        
 
+    tool_output = "Found a counterexample"
+    
+    # Pasar a parámetros
+    TRACK_VARS = "trackAllVars"
+    trackAllVars = True
+    thread_workers = os.cpu_count()
+    
     
     if mode == Mode.epa and not(reduced):
         print("Reducing combinations...")
         # Otra alternativa
         QUERY_TYPE = "QUERY_REDUCE_COMBINATION"
-        with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
-            for i in range(cant_preconditions):
-                executor.submit(reduceCombinations, i)
-        
-        # for i in range(threadCount):
-        #     thread = Thread(target = reduceCombinations, args = [i])
-        #     thread.start()
-        #     threads.append(thread)
-
-        # for thread in threads:
-        #     thread.join()
-
+        reduceCombinations(cant_preconditions, preconditionsThreads, statesThreads, 
+                            extraConditionsThreads, fileName, functionVariables, contractName, 
+                            basic_mode, txBound, time_out, mode, functions, statesNames, 
+                            states, verbose, query_list, QUERY_TYPE, tool_output, TRACK_VARS, trackAllVars, thread_workers)
     print("Reducing combinations Ended.")
 
     preconditionsThreads = [x for x in preconditionsThreads if len(x)]
@@ -612,116 +765,37 @@ def main():
     f.write(str(countPreInitial) + "\n" + str(countPreFinal) + "\n" + str(len(functions)))
     f.close()
 
-    threads = []
-    divideThreads = 1
-    moduleThreadsConut = 0
-    divideCount = realThreadCount
     if basic_mode == False:
         print("Length")
         print(len(preconditionsThreads))
-    # if len(preconditionsThreads) > 30:
-    #     if basic_mode == False:
-    #         print("MAYOR A 200")
-    #     divideCount = len(preconditionsThreads)
-    #     divideThreads = int(divideCount/threadCount)
-    #     moduleThreadsConut = divideCount % threadCount
-
-    # preconditionsThreads = np.array_split(preconditionsThreads, divideCount)
-    # statesThreads = np.array_split(statesThreads, divideCount)
-    # extraConditionsThreads = np.array_split(extraConditionsThreads, divideCount)
     cant_valid_states = len(preconditionsThreads)
     preconditionsThreads = np.array_split(preconditionsThreads, cant_valid_states)
     statesThreads = np.array_split(statesThreads, cant_valid_states)
     extraConditionsThreads = np.array_split(extraConditionsThreads, cant_valid_states)
 
-    # for y in range(divideThreads):
-    #     threads = []
-    #     for i in range(realThreadCount):
-    #         thread = Thread(target = validCombinations, args = [i + y * threadCount])
-    #         thread.start()
-    #         threads.append(thread)
-
-    #     for thread in threads:
-    #         thread.join()
-            
     QUERY_TYPE =  "QUERY_NORMAL"
-    # Otra alternativa
-    with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
-        for i in range(cant_valid_states):
-            executor.submit(validCombinations, i)
 
-    threads = []
+    dict_nodes_edges = {}
+    dict_nodes_edges['nodes'] = []
+    dict_nodes_edges['edges'] = []
     
-    # for index in range(moduleThreadsConut):
-    #     thread = Thread(target = validCombinations, args = [threadCount * divideThreads + index])
-    #     thread.start()
-    #     threads.append(thread)
     
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
-    #     for index in range(moduleThreadsConut):
-    #         executor.submit(validCombinations, threadCount * divideThreads + index)
-                
-    # thread = Thread(target = validInit, args = [len(preconditionsThreads)])
-    # thread.start()
-    # threads.append(thread)
-    # for thread in threads:
-    #     thread.join()
+    validCombinations(cant_valid_states, preconditionsThreads, statesThreads, extraConditionsThreads, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, states, dict_nodes_edges, tool_output, trackAllVars, TRACK_VARS, thread_workers)
+    print("FIN ValidCombinations")
+
+    
     QUERY_TYPE = "QUERY_NORMAL_CONSTRUCTOR"
-    with concurrent.futures.ThreadPoolExecutor(max_workers=thread_workers) as executor:
-        for indexPreconditionAssert, preconditionAssert in enumerate(preconditions):
-            executor.submit(try_init, states, (indexPreconditionAssert, preconditionAssert))
-    print("ENDED")
     
-    # threads = []
-    # threadCount = thread_workers # TODO fix temporal para mantener código anterior
-    # divideThreads = 1
-    # moduleThreadsConut = 0
-    # divideCount = realThreadCount
-    # if basic_mode == False:
-    #     print("Length")
-    #     print(len(preconditionsThreads))
-    # if len(preconditionsThreads) > 30:
-    #     if basic_mode == False:
-    #         print("MAYOR A 200")
-    #     divideCount = len(preconditionsThreads)
-    #     divideThreads = int(divideCount/threadCount)
-    #     moduleThreadsConut = divideCount % threadCount
+    try_init(states, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dict_nodes_edges, tool_output, trackAllVars, TRACK_VARS)
 
-    # preconditionsThreads = np.array_split(preconditionsThreads, divideCount)
-    # statesThreads = np.array_split(statesThreads, divideCount)
-    # extraConditionsThreads = np.array_split(extraConditionsThreads, divideCount)
-
-    # for y in range(divideThreads):
-    #     threads = []
-    #     for i in range(realThreadCount):
-    #         thread = Thread(target = validCombinations, args = [i + y * threadCount])
-    #         thread.start()
-    #         threads.append(thread)
-
-    #     for thread in threads:
-    #         thread.join()
-            
     
-    # Otra alternativa
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=threadCount) as executor:
-    #     for y in range(divideThreads):
-    #         for i in range(realThreadCount):
-    #             executor.submit(validCombinations, i + y * threadCount)
-
-    # threads = []
-    
-    # for index in range(moduleThreadsConut):
-    #     thread = Thread(target = validCombinations, args = [threadCount * divideThreads + index])
-    #     thread.start()
-    #     threads.append(thread)
-    
-    # thread = Thread(target = validInit, args = [len(preconditionsThreads)])
-    # thread.start()
-    # threads.append(thread)
-    # for thread in threads:
-    #     thread.join()
-    # print("ENDED")
-    
+    for n in dict_nodes_edges['nodes']:
+        dot.node(n[0], n[1])
+    for e in dict_nodes_edges['edges']:
+        dot.edge(e[0], e[1], label=str(e[2]))
+                
+                
+    print("ENDED")    
     
     tempFileName = configFile.replace('Config','')
     tempFileName = tempFileName + "_" + str(mode)
@@ -737,17 +811,11 @@ def main():
 
 states = []
 preconditions = []
-tool_output = "Found a counterexample"
 number_to = 0
 number_corral_fail = 0
 number_corral_fail_with_tackvars = 0
-TRACK_VARS = "trackAllVars"
 
-def add_query_time(query_time, time_out, feasible):
-    global QUERY_TYPE, query_list
-
-    query_list.append((QUERY_TYPE, time_out, feasible, query_time))
-        
+       
 sys.path.append(os.path.join(os.getcwd(), "Configs"))
 
 if __name__ == "__main__":
@@ -762,7 +830,7 @@ if __name__ == "__main__":
     verbose = False
     basic_mode = False
     
-    query_list =[] # (type, query_time) va a guardar el tipo y tiempo de cada query a verisol
+    query_list =[] # (Type,TO?,feasible,time(sec)) para cada query a verisol
     
     
     #TODO: ser consistente
@@ -824,7 +892,6 @@ if __name__ == "__main__":
     total_cfail1 = "# Corral Fail without trackvars: {}".format(str(number_corral_fail))
     total_cfail2 = "# Corral Fail with trackvars: {}".format(str(number_corral_fail_with_tackvars))
     
-    # if verbose:
     print(total_time)
     print(total_to)
     print(total_cfail1)
@@ -840,7 +907,5 @@ if __name__ == "__main__":
     tempFileName = configFile.replace('Config','')+"-"+str(mode)+"_query_time.csv"
     with open(os.path.join(SAVE_GRAPH_PATH,tempFileName), 'w') as file:
         file.write("Type,TO?,feasible,time(sec)\n")
-        for query in query_list:
-            file.write(f"{query[0]},{str(query[1])},{str(query[2])},{str(query[3])}\n")
-
-    
+        for type, timeout, feasible, time_secs in query_list:
+            file.write(f"{str(type)},{str(timeout)},{str(feasible)},{str(time_secs)}\n")

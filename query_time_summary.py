@@ -46,5 +46,5 @@ path = r"C:\Users\j_god\Repos\SolidityAbstractor\graph"
 file_ends_with="_query_time.csv"
 
 # Crear el nombre del archivo de resumen
-salida = os.path.join("resumen_query_time.csv")
+salida = os.path.join("summary_query_time.csv")
 unir_archivos_query_time(path, salida, file_ends_with)

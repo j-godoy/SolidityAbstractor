@@ -255,7 +255,7 @@ def get_init_output(indexPreconditionAssert, preconditionAssert, extraConditions
     return functionName, temp_output
 
 
-def try_init(states, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dot, tool_output, trackAllVars, TRACK_VARS):
+def try_init(states, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dot, tool_output, trackAllVars, TRACK_VARS, thread_workers):
     try:
         tempFunctionNames = []
         tool_commands = []
@@ -279,7 +279,7 @@ def try_init(states, mode, functions, statesNames, extraConditions, contractName
         results = execute_try_command_in_parallel(tool_commands, tempFunctionNames, final_directories, [], txBound_constructor,
                                               time_out, trackAllVars, mode, functions, statesNames,
                                               states, verbose, query_list, QUERY_TYPE, contractName,
-                                              tool_output, TRACK_VARS)
+                                              tool_output, TRACK_VARS, thread_workers)
 
         if len(results) != len(tempFunctionNames):
             print("long de results: ", len(results))
@@ -447,7 +447,7 @@ def execute_try_command_in_parallel_reduce(args, toolCommands, tempFunctionNames
 def execute_try_command_in_parallel(toolCommands, tempFunctionNames, final_directories, statesTemp, txBound,
                                     time_out, trackAllVars, mode, functions, statesNames,
                                     states, verbose, query_list, QUERY_TYPE, contractName,
-                                    tool_output, TRACK_VARS):
+                                    tool_output, TRACK_VARS, thread_workers):
     global number_to, number_corral_fail, number_corral_fail_with_tackvars
     """
     Ejecuta try_command en paralelo y actualiza las variables compartidas.
@@ -464,7 +464,7 @@ def execute_try_command_in_parallel(toolCommands, tempFunctionNames, final_direc
     results = []
     errors = []
     print("Iniciando ejecución execute_try_command_in_parallel con las siguientes funciones:", len(tempFunctionNames))
-    with ProcessPoolExecutor(max_workers=4) as executor:
+    with ProcessPoolExecutor(max_workers=thread_workers) as executor:
         future_to_function = {executor.submit(try_command_task, fn, [fn], tool, final_directory, statesTemp,
                                               txBound, time_out, trackAllVars, mode, functions,
                                               statesNames, states, verbose, QUERY_TYPE, contractName,
@@ -786,7 +786,7 @@ def main():
     
     QUERY_TYPE = "QUERY_NORMAL_CONSTRUCTOR"
     
-    try_init(states, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dict_nodes_edges, tool_output, trackAllVars, TRACK_VARS)
+    try_init(states, mode, functions, statesNames, extraConditions, contractName, preconditions, functionVariables, functionPreconditions, fileName, basic_mode, txBound, time_out, verbose, query_list, QUERY_TYPE, dict_nodes_edges, tool_output, trackAllVars, TRACK_VARS, thread_workers)
 
     
     for n in dict_nodes_edges['nodes']:

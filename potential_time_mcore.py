@@ -66,7 +66,7 @@ def process_csv(file_path, n_cores, summary_data):
 def process_directory(path, n_cores):
     
     summary_data = []
-    output_file = "resumen_query_time_ncores.csv"
+    output_file = "summary_query_time_ncores.csv"
     
     # Buscar todos los archivos que terminan en _query_time.csv
     for root, _, files in os.walk(path):

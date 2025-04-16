@@ -33,6 +33,7 @@ contract Auction {
 
     function Bid() public payable {
         require(initialized);
+        require(auctionStart != 150 && auctionStart != 155);
         uint end = auctionStart + biddingTime;
         if(end < blockNumber || ended) {
             revert();
@@ -98,14 +99,18 @@ contract Auction {
         constructor_f(_auctionStart, _biddingTime, _beneficiary);
 
         bool constructor_f = !initialized;
-        bool pre_Bid2 = (initialized && !ended && (auctionStart + biddingTime) >= blockNumber);
-        bool pre_Withdraw2 = initialized && pendingReturnsCount > 0 && (auctionStart + biddingTime < blockNumber);
-        bool pre_AuctionEnd2 = (initialized && !ended && blockNumber > (auctionStart + biddingTime));
-        bool pre_t2 = initialized;
+        bool pre_Bid = (initialized && !ended && (auctionStart + biddingTime) >= blockNumber && auctionStart != 150 && auctionStart != 155);
+        bool pre_Withdraw = initialized && pendingReturnsCount > 0 && (auctionStart + biddingTime < blockNumber);
+        bool pre_AuctionEnd = (initialized && !ended && blockNumber > (auctionStart + biddingTime));
+        bool pre_t = initialized;
 
-        bool Q = !constructor_f && pre_Bid2 && !pre_Withdraw2 && !pre_AuctionEnd2 && pre_t2;
-        bool R = !constructor_f && !pre_Bid2 && !pre_Withdraw2 && pre_AuctionEnd2 && pre_t2;
+        // !bid !withdraw auctionEnd t
+        bool Q = !constructor_f && !pre_Bid && !pre_Withdraw && pre_AuctionEnd && pre_t;
+        require(!Q);
+
+        // bid !withdraw !auctionEnd t
+        bool R = !constructor_f && pre_Bid && !pre_Withdraw && !pre_AuctionEnd && pre_t;
         // require(!R);
-        assert(Q);
+        assert(R);
     }
 }

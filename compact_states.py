@@ -2,7 +2,13 @@ import os
 import re
 from os.path import expanduser
 
-fun_crowdfunding = [("Donate","D", "donate"), ("GetFunds","F", "getFunds"), ("Claim_Init","Ci", "Claim_Init"), ("Claim_End","Ce", "Claim_End"), ("t", "τ", "τ"), ("dummy_balanceGTZero", "B", "")]
+fun_crowdfunding = [("Donate","D", "donate"), ("GetFunds","F", "getFunds"),
+                    ("Claim_A", "CA", "Claim_A"), ("Claim_B", "CB", "Claim_B"),
+                    # ("Claim_Init","Ci", "Claim_Init"), ("Claim_End","Ce", "Claim_End"), ("dummy_balanceGTZero", "B", "")
+                    ("t", "τ", "τ"),
+                    ("dummy_balanceAGTZero", "B[A]>0", "B[A]>0"),
+                    ("dummy_balanceBGTZero", "B[B]>0", "B[B]>0")
+                    ]
 FUNCTIONS = fun_crowdfunding
 
 def replace_label(input):
@@ -34,10 +40,10 @@ def replace_label(input):
     # # Puede ser algo como label="t();" o [label="Donate();t();"
     # T = "τ" if "\"t()" in input or ";t();" in input else "!τ"
     # BGTZ = "B" if "dummy_balanceGTZero()" in input else "!B"
-    # BAG =  "B[A]>0\n& B[B]=0" if "dummy_balanceAGTZeroAndNotB()" in input else ""
-    # BABG = "B[A]>0\n& B[B]>0" if "dummy_balanceAGTZeroAndBGTZero()" in input else ""
-    # BBG =  "B[A]=0\n& B[B]>0" if "dummy_balanceBGTZeroAndNotA()" in input else ""
-    # BAZ0 = "B[A]=0\n& B[B]=0" if "dummy_balanceAAndBZero()" in input else ""
+    BAG =  "B[A]>0\n& B[B]=0" if "dummy_balanceAGTZeroAndNotB()" in input else ""
+    BABG = "B[A]>0\n& B[B]>0" if "dummy_balanceAGTZeroAndBGTZero()" in input else ""
+    BBG =  "B[A]=0\n& B[B]>0" if "dummy_balanceBGTZeroAndNotA()" in input else ""
+    BAZ0 = "B[A]=0\n& B[B]=0" if "dummy_balanceAAndBZero()" in input else ""
     
     #classic
     #replaced_string = re.sub(pattern, r'label="{} & {}\\n& {}"'.format(D, F, C), input)
@@ -122,8 +128,8 @@ def compactar_trx_mismo_estado(ret_transiciones):
             ret_transiciones.append("{} {}".format(tx, new_f_name(new_txs[tx])))
 
 if __name__ == "__main__":
-    repo_path = os.path.join(expanduser("~"), "Repos","sosym23", "graphs")
-    file_path = os.path.join(repo_path, "crowdfunding_base_time_reentrancy_fixed_mutex", "CrowdfundingTimeReentrancyFixedMutex_Mode_original.epa")
+    repo_path = os.path.join(expanduser("~"), "Repos","tesis_doc", "figures")
+    file_path = os.path.join(repo_path, "crowdfunding-base-time-claim-backers-refinement", "CrowdfundingTimeClaimBakersRefinement_Mode.epa")
     file = open(file_path, "r", encoding="utf-8")
     lines = file.readlines()
     output = []

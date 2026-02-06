@@ -5,15 +5,18 @@ import Benchmark_info
 import time
 from os.path import expanduser
 
-def load_dot_file(file_path, considerTimeouts=False, considerConstructor=True):
+def load_dot_file(file_path, considerTimeouts=False, considerConstructor=True, considerColor=False):
     graph = pydot.graph_from_dot_file(file_path)[0]
 
-    # Remove all attributes from the graph object for all edges, except attribute "label"
-    
+    # Remove all attributes from the graph object for all edges, except attribute "label" and "color"
     for edge in graph.get_edge_list():
         label = edge.get('label')
+        color = edge.get('color')
+        if color is None:
+            color = '\"black\"'
         edge.obj_dict['attributes'].clear()
         edge.set_label(label)
+        edge.set_color(color)
     
 
     dot_representation = graph.to_string()
@@ -40,10 +43,15 @@ def load_dot_file(file_path, considerTimeouts=False, considerConstructor=True):
                 total_edges += 1
                 edge_name = edge_name.split("(")[0].strip().lower()
                 key = str(from_node)+str(to_node)
-                if key in outgoing_edges:
-                    outgoing_edges[key].append(edge_name)
+                if considerColor:
+                    color = parts[1].split('color="')[1].split('"')[0] if 'color=' in parts[1] else "black"
+                    edge_name_and_color = edge_name + "_" + color
                 else:
-                    outgoing_edges[key] = [edge_name]
+                    edge_name_and_color = edge_name
+                if key in outgoing_edges:
+                    outgoing_edges[key].append(edge_name_and_color)
+                else:
+                    outgoing_edges[key] = [edge_name_and_color]
 
     edge_sets = ["".join(sorted(outgoing_edges[node])) for node in outgoing_edges]
 
@@ -282,10 +290,14 @@ def main():
 def compare_diff_runs():
     # For two different paths, recursively compare files that end in .states or .epa
     # and generate a report of differences
-    path1 = r"C:\Users\j_god\Repos\SolidityAbstractor\graph_one_thread"
-    path2 = r"C:\Users\j_god\Repos\SolidityAbstractor\graph_sin_query_time"
-    file_ends_with = [".states", ".epa"]
+    # path1 = r"C:\Users\j_god\Repos\SolidityAbstractor\graph"
+    # path2 = r"C:\Users\j_god\Repos\SolidityAbstractor\graph_one_thread"
+    path1 = r"C:\Users\j_god\Repos\Predicate_Queries_Alloy\examples\Benchmarks\B2"
+    path2 = r"D:\Documentos\Git\imdea\subjects\Benchmark2\generated"
+    # file_ends_with = [".states", ".epa"]
+    file_ends_with = ["_parsed.dot"]
     diff_subjects = []
+    eq_subjects = []
     for root, _, files in os.walk(path1):
         for file in files:
             if file.endswith(tuple(file_ends_with)):
@@ -295,16 +307,18 @@ def compare_diff_runs():
                     print(f"El archivo {file_path2} no existe.")
                     continue
                 # print(f"Comparando {file_path1} con {file_path2}")
-                if diff(file_path1, file_path2, False):
+                if diff(file_path1, file_path2):
                     diff_subjects.append((file_path1, file_path2))
-                    # print(f"Diferencias encontradas al comparar {file_path1} con {file_path2}")
                     print()
-                # else:
-                #     print("No hay diferencias.")
+                else:
+                    eq_subjects.append((file_path1, file_path2))
 
     print(f"Total de archivos con diferencias: {len(diff_subjects)}")
     for diff_subject in diff_subjects:
         print(diff_subject)
+    print(f"Total de archivos iguales: {len(eq_subjects)}")
+    # for eq_subject in eq_subjects:
+    #     print(eq_subject)
     
 compare_diff_runs()
 

@@ -2,14 +2,21 @@ import os
 import re
 from os.path import expanduser
 
-fun_crowdfunding = [("Donate","D", "donate"), ("GetFunds","F", "getFunds"),
-                    ("Claim_A", "CA", "Claim_A"), ("Claim_B", "CB", "Claim_B"),
-                    # ("Claim_Init","Ci", "Claim_Init"), ("Claim_End","Ce", "Claim_End"), ("dummy_balanceGTZero", "B", "")
-                    ("t", "τ", "τ"),
-                    ("dummy_balanceAGTZero", "B[A]>0", "B[A]>0"),
-                    ("dummy_balanceBGTZero", "B[B]>0", "B[B]>0")
-                    ]
-FUNCTIONS = fun_crowdfunding
+# fun_crowdfunding = [("Donate","D", "donate"), ("GetFunds","F", "getFunds"),
+#                     ("Claim_A", "CA", "Claim_A"), ("Claim_B", "CB", "Claim_B"),
+#                     # ("Claim_Init","Ci", "Claim_Init"), ("Claim_End","Ce", "Claim_End"), ("dummy_balanceGTZero", "B", "")
+#                     ("t", "τ", "τ"),
+#                     ("dummy_balanceAGTZero", "B[A]>0", "B[A]>0"),
+#                     ("dummy_balanceBGTZero", "B[B]>0", "B[B]>0")
+#                     ]
+
+fun_simple_dao = [("donate","D", "donate"),
+                  ("withdraw_Init","Wi", "withdraw_init"),
+                  ("withdraw_End","We", "withdraw_end"),
+                  ("dummy_balanceGTZero", "B>0", "B>0"),
+                  ("dummy_balanceAGTZero", "B[A]>0", "B[A]>0"),
+                  ]
+FUNCTIONS = fun_simple_dao
 
 def replace_label(input):
     global FUNCTIONS
@@ -40,10 +47,10 @@ def replace_label(input):
     # # Puede ser algo como label="t();" o [label="Donate();t();"
     # T = "τ" if "\"t()" in input or ";t();" in input else "!τ"
     # BGTZ = "B" if "dummy_balanceGTZero()" in input else "!B"
-    BAG =  "B[A]>0\n& B[B]=0" if "dummy_balanceAGTZeroAndNotB()" in input else ""
-    BABG = "B[A]>0\n& B[B]>0" if "dummy_balanceAGTZeroAndBGTZero()" in input else ""
-    BBG =  "B[A]=0\n& B[B]>0" if "dummy_balanceBGTZeroAndNotA()" in input else ""
-    BAZ0 = "B[A]=0\n& B[B]=0" if "dummy_balanceAAndBZero()" in input else ""
+    # BAG =  "B[A]>0\n& B[B]=0" if "dummy_balanceAGTZeroAndNotB()" in input else ""
+    # BABG = "B[A]>0\n& B[B]>0" if "dummy_balanceAGTZeroAndBGTZero()" in input else ""
+    # BBG =  "B[A]=0\n& B[B]>0" if "dummy_balanceBGTZeroAndNotA()" in input else ""
+    # BAZ0 = "B[A]=0\n& B[B]=0" if "dummy_balanceAAndBZero()" in input else ""
     
     #classic
     #replaced_string = re.sub(pattern, r'label="{} & {}\\n& {}"'.format(D, F, C), input)
@@ -128,8 +135,8 @@ def compactar_trx_mismo_estado(ret_transiciones):
             ret_transiciones.append("{} {}".format(tx, new_f_name(new_txs[tx])))
 
 if __name__ == "__main__":
-    repo_path = os.path.join(expanduser("~"), "Repos","tesis_doc", "figures")
-    file_path = os.path.join(repo_path, "crowdfunding-base-time-claim-backers-refinement", "CrowdfundingTimeClaimBakersRefinement_Mode.epa")
+    repo_path = os.path.join(expanduser("~"), "Repos","PASCo", "graph", "k_16", "to_600")
+    file_path = os.path.join(repo_path, "Simple_daoReentrancyFixed_lock_Mode.epa")
     file = open(file_path, "r", encoding="utf-8")
     lines = file.readlines()
     output = []
@@ -157,7 +164,7 @@ if __name__ == "__main__":
     for index_linea in range(len(primeras_lineas)):
         if not "[" in primeras_lineas[index_linea]:
             continue
-        estilo_circulo = ", shape=circle]"
+        estilo_circulo = ",shape=circle]"
         primeras_lineas[index_linea] = primeras_lineas[index_linea][0:-1] + estilo_circulo
         primeras_lineas[index_linea] = replace_label(primeras_lineas[index_linea])
         primeras_lineas[index_linea] = primeras_lineas[index_linea].replace("t();", "τ")
@@ -173,6 +180,7 @@ if __name__ == "__main__":
     output.append("}")
     
     ELIMINAR_NO_CONFIRMADOS = False
+    transient_symbols = ["Wi", "We"]
     
     estados_iniciales = []
     for index_linea in output:
@@ -189,6 +197,14 @@ if __name__ == "__main__":
             if not "->"in index_linea and s in index_linea.split(" ")[0]:
                 index_linea = index_linea.replace("circle","doublecircle")
                 break
-        if "!τ" in index_linea and "shape" in index_linea:
+        if (("!τ" in index_linea or
+            (not "!We" in index_linea
+            and "We" in index_linea))
+            and "shape" in index_linea):
             index_linea = index_linea.replace("circle","square")
+        if ("shape" in index_linea and
+            ("square" not in index_linea) and
+            ("!B>0" in index_linea) and
+            ("B[A]>0" in index_linea and not "!B[A]>0" in index_linea)):
+            index_linea = index_linea[:-1]+",color=\"red\",style=\"filled\"]"
         print(index_linea)

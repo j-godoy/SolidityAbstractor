@@ -13,15 +13,15 @@ statePreconditions = [
 "(max_block > blockNumber)",
 "(max_block < blockNumber && goal <= balance)",
 "(blockNumber > max_block && !funded && goal > balance && countBackers > 0)",
-"donadores_reentrada.length > 0",
-"balance > 0",
+"(donadores_reentrada.length > 0)",
+"(balance > 0)",
 # "balance == 0",
-"donadores_reentrada.length == 0"
+"(donadores_reentrada.length == 0)"
 ]
 functionPreconditions = [
-"backers[msg.sender] == 0",
-"msg.sender == owner",
-"backers[msg.sender] > 0",
+"(backers[msg.sender] == 0)",
+"(msg.sender == owner)",
+"(backers[msg.sender] > 0)",
 "true",
 "true",
 # "true",

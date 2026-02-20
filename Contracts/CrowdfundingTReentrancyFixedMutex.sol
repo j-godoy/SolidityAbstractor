@@ -12,18 +12,20 @@ contract CrowdfundingR {
     uint balance = 0;
     address[] donadores_reentrada = new address[](0);
     bool lock = false;
+    address A;
 
-    constructor ( address payable _owner , uint _max_block , uint _goal, uint _blockNumber ) public {
+    constructor ( address payable _owner , uint _max_block , uint _goal, uint _blockNumber, address _A) public {
         owner = _owner;
         max_block = _max_block;
         goal = _goal;
         balance = 0;
         blockNumber = _blockNumber;
+        A = _A;
     }
 
     function Donate () public payable {
-        require ( max_block > blockNumber);
-        require ( backers [msg.sender] == 0);
+        require (max_block > blockNumber);
+        require (backers [msg.sender] == 0);
         backers [msg.sender] = msg.value;
         if (msg.value > 0) {
             balance = balance + msg.value;

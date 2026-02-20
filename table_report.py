@@ -138,7 +138,7 @@ def get_latex_table():
         print(ts)
 
 
-get_latex_table()
+# get_latex_table()
 
 def contar_transiciones():
     jsons = ["assettransfer.json",
@@ -159,13 +159,44 @@ def contar_transiciones():
         txs = 0
         print("Estados:", states)
         for state in data['Workflows'][0]['States']:
-            # if "Transitions" in state:
-            #     txs += len(state['Transitions'])
             for transition in state['Transitions']:
                 txs += len(transition['NextStates'])
         print("Transiciones:", txs)
+        
+def roles_por_subject():
+    jsons = ["assettransfer.json",
+             "BasicProvenance.json",
+             "DefectiveComponentCounter.json",
+             "DigitalLocker.json",
+             "FrequentFlyerRewardsCalculator.json",
+             "HelloBlockchain.json",
+             "RefrigeratedTransportation.json",
+             "RoomThermostat.json",
+             "SimpleMarketplace.json"]
+    for json_file in jsons:
+        print(json_file)
+        with open(json_file, "r") as file:
+            data = json.load(file)
+        
+        states = len(data['Workflows'][0]['States'])
+        txs = 0
+        # print("Estados:", states)
+        roles = {}
+        for state in data['Workflows'][0]['States']:
+            for transition in state['Transitions']:
+                air = transition['AllowedInstanceRoles']
+                txs = len(transition['NextStates'])
+                for role in air:
+                    if role not in roles:
+                        roles[role] = txs
+                    else:
+                        roles[role] += txs
+                
+        print("roles:", roles)
 
-contar_transiciones()
+# contar_transiciones()
+
+# roles_por_subject()
 
 
 
